@@ -18,10 +18,14 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    [self.actor addOperationWithBlock:^{
+    if ([[NSOperationQueue currentQueue] isEqual:self.actor]) {
         [invocation invokeWithTarget:self.actor];
-    }];
-    [self.actor waitUntilAllOperationsAreFinished];
+    } else {
+        [self.actor addOperationWithBlock:^{
+            [invocation invokeWithTarget:self.actor];
+        }];
+        [self.actor waitUntilAllOperationsAreFinished];
+    }
 }
 
 @end
