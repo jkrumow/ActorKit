@@ -1,24 +1,57 @@
 # ActorKit
 
-[![CI Status](http://img.shields.io/travis/Julian Krumow/ActorKit.svg?style=flat)](https://travis-ci.org/Julian Krumow/ActorKit)
 [![Version](https://img.shields.io/cocoapods/v/ActorKit.svg?style=flat)](http://cocoapods.org/pods/ActorKit)
 [![License](https://img.shields.io/cocoapods/l/ActorKit.svg?style=flat)](http://cocoapods.org/pods/ActorKit)
 [![Platform](https://img.shields.io/cocoapods/p/ActorKit.svg?style=flat)](http://cocoapods.org/pods/ActorKit)
+[![CI Status](http://img.shields.io/travis/Julian Krumow/ActorKit.svg?style=flat)](https://travis-ci.org/Julian Krumow/ActorKit)
+[![Coverage Status](https://img.shields.io/coveralls/tarbrain/ActorKit/master.svg?style=flat)](https://coveralls.io/r/tarbrain/ActorKit)
 
-## Usage
+A lightweight actor framework in Objective-C.
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+## Features
+
+* soon
+
+## Example Project
+
+To run the example project, clone the repo, and run `pod install` from the `Example` directory first.
 
 ## Requirements
+
+* Xcode 6
+* watchOS 2.0
+* iOS 5.0
+* OS X 10.7
 
 ## Installation
 
 ActorKit is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-```ruby
-pod "ActorKit"
+	pod "ActorKit"
+
+## Usage
+
+### Configuration
+
+```objc
+#import <ActorKit/ActorKit.h>
 ```
+
+### Debug Support
+
+`ActorKit` offers debug support through the subspec `DebugSupport`. Simply add it to your `Podfile` (most likely to a beta target to keep it out of production code):
+
+```
+target 'MyBetaApp', :exclusive => true do
+  pod 'ActorKit/DebugSupport'
+end
+```
+
+## Useful Theory on Actors
+
+- https://en.wikipedia.org/wiki/Actor_model
+- 
 
 ## Author
 
