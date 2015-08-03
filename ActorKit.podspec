@@ -26,6 +26,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'DebugSupport' do |debug|
     debug.source_files = "Pod/DebugSupport"
-    debug.dependency 'Actorkit/Core'
+    debug.dependency 'ActorKit/Core'
   end
 end
