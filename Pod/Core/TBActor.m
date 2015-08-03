@@ -10,12 +10,16 @@
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
 
+
+static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActorQueue";
+
 @implementation TBActor
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        self.name = TBAKActorQueue;
         self.maxConcurrentOperationCount = 1;
     }
     return self;
