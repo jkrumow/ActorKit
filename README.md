@@ -38,16 +38,6 @@ it, simply add the following line to your Podfile:
 #import <ActorKit/ActorKit.h>
 ```
 
-### Debug Support
-
-`ActorKit` offers debug support through the subspec `DebugSupport`. Simply add it to your `Podfile` (most likely to a beta target to keep it out of production code):
-
-```
-target 'MyBetaApp', :exclusive => true do
-  pod 'ActorKit/DebugSupport'
-end
-```
-
 ## Useful Theory on Actors
 
 - https://en.wikipedia.org/wiki/Actor_model
