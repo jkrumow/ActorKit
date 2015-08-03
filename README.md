@@ -41,7 +41,6 @@ it, simply add the following line to your Podfile:
 ## Useful Theory on Actors
 
 - https://en.wikipedia.org/wiki/Actor_model
-- 
 
 ## Author
 
