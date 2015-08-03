@@ -1,38 +1,31 @@
-#
-# Be sure to run `pod lib lint ActorKit.podspec' to ensure this is a
-# valid spec and remove all comments before submitting the spec.
-#
-# Any lines starting with a # are optional, but encouraged
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
   s.version          = "0.1.0"
-  s.summary          = "A short description of ActorKit."
+  s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
-                       An optional longer description of ActorKit
+                       Brings actors to Objective-C development.
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       * feature
+                       * feature
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/ActorKit"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/tarbrain/ActorKit"
   s.license          = 'MIT'
   s.author           = { "Julian Krumow" => "julian.krumow@tarbrain.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/ActorKit.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.platform     = :ios, '7.0'
+  s.ios.deployment_target = '5.0'
+  s.watchos.deployment_target = '2.0'
+  s.osx.deployment_target = '10.7'
+
   s.requires_arc = true
+  s.source = { :git => "https://github.com/tarbrain/ActorKit.git", :tag => s.version.to_s }
+  
+  s.default_subspec = 'Core'
+  s.subspec 'Core' do |core|
+    core.source_files = 'Pod/Core'
+  end
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'ActorKit' => ['Pod/Assets/*.png']
-  }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.subspec 'DebugSupport' do |debug|
+    debug.source_files = "Pod/DebugSupport"
+    debug.dependency 'Actorkit/Core'
+  end
 end

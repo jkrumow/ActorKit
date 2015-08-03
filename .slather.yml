@@ -1,0 +1,5 @@
+coverage_service: coveralls
+xcodeproj: Example/ActorKit.xcodeproj
+source_directory: ./Pod/*
+ignore:
+  - Example/*
