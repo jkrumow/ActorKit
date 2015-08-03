@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		153411C41B70240400572739 /* TestActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 153411C31B70240400572739 /* TestActor.m */; };
+		153411C71B70275900572739 /* TBActorProxySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 153411C61B70275900572739 /* TBActorProxySpec.m */; };
 		15FD5ED61B70009500CDFE32 /* TBActorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FD5ED51B70009500CDFE32 /* TBActorSpec.m */; };
 		3FA985A2551100051E96A9BB /* Pods_ActorKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B18E7E7810908E40BD76A40 /* Pods_ActorKit_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
@@ -17,6 +19,9 @@
 
 /* Begin PBXFileReference section */
 		00CC15284005743E01C8C963 /* Pods-ActorKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKit_Tests/Pods-ActorKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		153411C21B70240400572739 /* TestActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestActor.h; sourceTree = "<group>"; };
+		153411C31B70240400572739 /* TestActor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestActor.m; sourceTree = "<group>"; };
+		153411C61B70275900572739 /* TBActorProxySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorProxySpec.m; sourceTree = "<group>"; };
 		15FD5ED51B70009500CDFE32 /* TBActorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorSpec.m; sourceTree = "<group>"; };
 		4A72FC616B86F44EFC43FD53 /* Pods-ActorKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKit_Tests/Pods-ActorKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -97,7 +102,10 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				153411C21B70240400572739 /* TestActor.h */,
+				153411C31B70240400572739 /* TestActor.m */,
 				15FD5ED51B70009500CDFE32 /* TBActorSpec.m */,
+				153411C61B70275900572739 /* TBActorProxySpec.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -238,7 +246,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				153411C71B70275900572739 /* TBActorProxySpec.m in Sources */,
 				15FD5ED61B70009500CDFE32 /* TBActorSpec.m in Sources */,
+				153411C41B70240400572739 /* TestActor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
