@@ -11,5 +11,5 @@
 @interface TestActor : TBActor
 
 - (void)doStuff;
-- (void)doStuff:(NSString *)stuff withFooBar:(NSUInteger)foobar;
+- (void)doStuff:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
 @end

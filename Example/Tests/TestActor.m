@@ -15,9 +15,13 @@
     NSLog(@"doStuff.");
 }
 
-- (void)doStuff:(NSString *)stuff withFooBar:(NSUInteger)foobar
+- (void)doStuff:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
 {
-    NSLog(@"doStuff %@ foobar: %lu", stuff, (unsigned long)foobar);
+    NSLog(@"doStuff %@", stuff);
+    
+    if (completion) {
+        completion(stuff);
+    }
 }
 
 @end

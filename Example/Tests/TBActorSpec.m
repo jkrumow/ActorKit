@@ -35,18 +35,15 @@ describe(@"TBActor", ^{
     });
     
     it (@"executes a parameterized method synchronuously.", ^{
-        [actor.sync doStuff:@"aaaaaah" withFooBar:666];
-    });
-    
-    it (@"executes a method asynchronuously.", ^{
-        [actor.async doStuff];
-        
-        sleep(0.1);
+        [actor.sync doStuff:@"aaaaaah" withCompletion:^(NSString *string){
+            NSLog(@"string: %@", string);
+        }];
     });
     
     it (@"executes a parameterized method asynchronuously.", ^{
-        [actor.async doStuff:@"aaaaaah" withFooBar:666];
-        
+        [actor.async doStuff:@"aaaaaah" withCompletion:^(NSString *string){
+            NSLog(@"string: %@", string);
+        }];
         sleep(0.1);
     });
 });
