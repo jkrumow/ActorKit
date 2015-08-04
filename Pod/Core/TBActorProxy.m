@@ -24,7 +24,7 @@
     if (self.class == TBActorProxy.class) {
         @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     }
-    self.actor = actor;
+    _actor = actor;
     return self;
 }
 

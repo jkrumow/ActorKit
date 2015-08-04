@@ -8,19 +8,17 @@
 
 #import <ActorKit/ActorKit.h>
 
-#import "TestActor.h"
-
 
 SpecBegin(TBActorProxy)
 
 __block TBActorProxy *proxy;
-__block TestActor *actor;
+__block TBActor *actor;
 
 
 describe(@"TBActorProxy", ^{
     
     beforeEach(^{
-        actor = [[TestActor alloc] init];
+        actor = [[TBActor alloc] init];
     });
     
     it (@"throws an exception when base class is created", ^{

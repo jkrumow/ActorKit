@@ -11,7 +11,12 @@
 #import "TBActorProxyAsync.h"
 
 
-static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActorQueue";
+static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
+
+@interface TBActor ()
+@property (nonatomic, strong)TBActorProxy *proxySync;
+@property (nonatomic, strong)TBActorProxy *proxyAsync;
+@end
 
 @implementation TBActor
 
@@ -27,12 +32,18 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActorQueue";
 
 - (id)sync
 {
-    return [TBActorProxySync proxyWithActor:self];
+    if (_proxySync == nil) {
+        _proxySync = [TBActorProxySync proxyWithActor:self];
+    }
+    return _proxySync;
 }
 
 - (id)async
 {
-    return [TBActorProxyAsync proxyWithActor:self];
+    if (_proxyAsync == nil) {
+        _proxyAsync = [TBActorProxyAsync proxyWithActor:self];
+    }
+    return _proxyAsync;
 }
 
 @end

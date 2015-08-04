@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import <ActorKit/ActorKit.h>
-
 #import "TestActor.h"
 
 SpecBegin(TBActor)
@@ -18,6 +16,18 @@ describe(@"TBActor", ^{
     
     beforeEach(^{
         actor = [[TestActor alloc] init];
+    });
+    
+    it (@"returns a sync proxy.", ^{
+        id proxy = actor.sync;
+        BOOL isClass = [proxy isMemberOfClass:[TBActorProxySync class]];
+        expect(isClass).to.beTruthy;
+    });
+    
+    it (@"returns an async proxy.", ^{
+        id proxy = actor.sync;
+        BOOL isClass = [proxy isMemberOfClass:[TBActorProxyAsync class]];
+        expect(isClass).to.beTruthy;
     });
     
     it (@"executes a method synchronuously.", ^{
