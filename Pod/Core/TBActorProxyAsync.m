@@ -16,15 +16,4 @@
     return [[TBActorProxyAsync alloc] initWithActor:actor];
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
-    if ([[NSOperationQueue currentQueue] isEqual:self.actor]) {
-        [invocation invokeWithTarget:self.actor];
-    } else {
-        [self.actor addOperationWithBlock:^{
-            [invocation invokeWithTarget:self.actor];
-        }];
-    }
-}
-
 @end

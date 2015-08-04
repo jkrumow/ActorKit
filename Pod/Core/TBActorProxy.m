@@ -33,4 +33,11 @@
     return [self.actor methodSignatureForSelector:selector];
 }
 
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    [self.actor addOperationWithBlock:^{
+        [invocation invokeWithTarget:self.actor];
+    }];
+}
+
 @end

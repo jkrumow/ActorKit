@@ -24,5 +24,15 @@
     }
 }
 
+- (void)handlerOne:(NSDictionary *)payload
+{
+    NSLog(@"nameOne: %@", payload.description);
+}
+
+- (void)handlerTwo:(NSDictionary *)payload
+{
+    NSLog(@"nameTwo: %@", payload.description);
+}
+
 @end
 

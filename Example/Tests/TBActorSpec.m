@@ -18,6 +18,11 @@ describe(@"TBActor", ^{
         actor = [[TestActor alloc] init];
     });
     
+    afterEach(^{
+        [actor shutDown];
+        actor = nil;
+    });
+
     it (@"returns a sync proxy.", ^{
         id proxy = actor.sync;
         BOOL isClass = [proxy isMemberOfClass:[TBActorProxySync class]];
@@ -45,6 +50,15 @@ describe(@"TBActor", ^{
             NSLog(@"string: %@", string);
         }];
         sleep(0.1);
+    });
+
+    it (@"handles subscriptions and publishing", ^{
+    
+        [actor subscribe:@"nameOne" selector:@selector(handlerOne:)];
+        [actor subscribeToPublisher:actor withMessageName:@"nameTwo" selector:@selector(handlerTwo:)];
+        
+        [actor publish:@"nameOne" payload:@{@"One":@5}];
+        [actor publish:@"nameTwo" payload:@{@"Two":@10}];
     });
 });
 

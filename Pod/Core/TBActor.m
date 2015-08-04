@@ -14,8 +14,7 @@
 static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 @interface TBActor ()
-@property (nonatomic, strong)TBActorProxy *proxySync;
-@property (nonatomic, strong)TBActorProxy *proxyAsync;
+@property (nonatomic, strong)NSMutableSet *subscriptions;
 @end
 
 @implementation TBActor
@@ -26,24 +25,64 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
     if (self) {
         self.name = TBAKActorQueue;
         self.maxConcurrentOperationCount = 1;
+        self.subscriptions = [NSMutableSet new];
     }
     return self;
 }
 
+- (void)dealloc
+{
+    [self shutDown];
+}
+
+- (void)startup
+{
+    
+}
+
+- (void)shutDown
+{
+    [self cancelAllOperations];
+    [self.subscriptions enumerateObjectsUsingBlock:^(NSString *messageName, BOOL *stop) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
+    }];
+}
+
 - (id)sync
 {
-    if (_proxySync == nil) {
-        _proxySync = [TBActorProxySync proxyWithActor:self];
-    }
-    return _proxySync;
+    return [TBActorProxySync proxyWithActor:self];
 }
 
 - (id)async
 {
-    if (_proxyAsync == nil) {
-        _proxyAsync = [TBActorProxyAsync proxyWithActor:self];
-    }
-    return _proxyAsync;
+    return [TBActorProxyAsync proxyWithActor:self];
+}
+
+- (void)subscribe:(NSString *)messageName selector:(SEL)selector
+{
+    [self subscribeToPublisher:nil withMessageName:messageName selector:selector];
+}
+
+- (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector;
+{
+    [self.subscriptions addObject:messageName];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:messageName
+                                                      object:publisher
+                                                       queue:self
+                                                  usingBlock:^(NSNotification *note) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                                                      [self performSelector:selector withObject:note.userInfo];
+#pragma clang diagnostic pop
+                                                  }];
+}
+
+- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:messageName
+                                                        object:self
+                                                      userInfo:payload.mutableCopy]; // Copy payload to prevent shared state.
 }
 
 @end
