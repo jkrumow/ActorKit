@@ -32,21 +32,13 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 - (void)dealloc
 {
-    [self shutDown];
-}
-
-- (void)startup
-{
-    
-}
-
-- (void)shutDown
-{
     [self cancelAllOperations];
     [self.subscriptions enumerateObjectsUsingBlock:^(NSString *messageName, BOOL *stop) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
     }];
 }
+
+#pragma mark - Invocatons
 
 - (id)sync
 {
@@ -57,6 +49,8 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 {
     return [TBActorProxyAsync proxyWithActor:self];
 }
+
+#pragma mark - Pubsub
 
 - (void)subscribe:(NSString *)messageName selector:(SEL)selector
 {

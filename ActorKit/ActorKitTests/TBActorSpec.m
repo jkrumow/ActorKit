@@ -11,16 +11,18 @@
 SpecBegin(TBActor)
 
 __block TestActor *actor;
+__block TestActor *otherActor;
 
 describe(@"TBActor", ^{
     
     beforeEach(^{
         actor = [[TestActor alloc] init];
+        otherActor = [[TestActor alloc] init];
     });
     
     afterEach(^{
-        [actor shutDown];
         actor = nil;
+        otherActor = nil;
     });
 
     it (@"returns a sync proxy.", ^{
@@ -53,12 +55,17 @@ describe(@"TBActor", ^{
     });
 
     it (@"handles subscriptions and publishing", ^{
-    
+        
         [actor subscribe:@"nameOne" selector:@selector(handlerOne:)];
         [actor subscribeToPublisher:actor withMessageName:@"nameTwo" selector:@selector(handlerTwo:)];
         
-        [actor publish:@"nameOne" payload:@{@"One":@5}];
-        [actor publish:@"nameTwo" payload:@{@"Two":@10}];
+        expect(^{
+            [actor publish:@"nameOne" payload:@{@"One":@5}];
+        }).to.notify(@"nameOne");
+        
+        expect(^{
+            [otherActor publish:@"nameTwo" payload:@{@"Two":@10}];
+        }).to.notify(@"nameTwo");
     });
 });
 

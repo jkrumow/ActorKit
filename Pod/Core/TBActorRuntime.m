@@ -8,11 +8,9 @@
 
 #import "TBActorRuntime.h"
 
-static NSString * const TBAKActorRuntimeQueue = @"com.tarbrain.ActorKit.TBActorRuntime";
 
 @interface TBActorRuntime ()
 @property (nonatomic, strong) NSMutableDictionary *priv_actors;
-@property (nonatomic, strong) NSOperationQueue *workerQueue;
 @end
 
 @implementation TBActorRuntime
@@ -43,16 +41,12 @@ static NSString * const TBAKActorRuntimeQueue = @"com.tarbrain.ActorKit.TBActorR
 
 - (void)startup
 {
-    [self.priv_actors enumerateKeysAndObjectsUsingBlock:^(id key, TBActor *actor, BOOL *stop) {
-        [actor startup];
-    }];
+    
 }
 
 - (void)shutDown
 {
-    [self.priv_actors enumerateKeysAndObjectsUsingBlock:^(id key, TBActor *actor, BOOL *stop) {
-        [actor shutDown];
-    }];
+    
 }
 
 @end

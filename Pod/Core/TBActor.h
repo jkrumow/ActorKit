@@ -10,9 +10,6 @@
 
 @interface TBActor : NSOperationQueue
 
-- (void)startup;
-- (void)shutDown;
-
 - (id)sync;
 - (id)async;
 
