@@ -10,10 +10,6 @@
 		1554EDE01B7161E8007D13B2 /* TBActorProxySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1554EDDB1B7161E8007D13B2 /* TBActorProxySpec.m */; };
 		1554EDE11B7161E8007D13B2 /* TBActorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1554EDDC1B7161E8007D13B2 /* TBActorSpec.m */; };
 		1554EDE21B7161E8007D13B2 /* TestActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1554EDDE1B7161E8007D13B2 /* TestActor.m */; };
-		1554EDE81B716753007D13B2 /* ActorKit.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 1554EDE41B716753007D13B2 /* ActorKit.podspec */; };
-		1554EDE91B716753007D13B2 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 1554EDE51B716753007D13B2 /* CHANGELOG.md */; };
-		1554EDEA1B716753007D13B2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 1554EDE61B716753007D13B2 /* LICENSE */; };
-		1554EDEB1B716753007D13B2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 1554EDE71B716753007D13B2 /* README.md */; };
 		C5300733ADB39861F09CAA4D /* libPods-ActorKitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 703923476EEE6B674A942AA0 /* libPods-ActorKitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -173,8 +169,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1554EDEA1B716753007D13B2 /* LICENSE in Resources */,
-				1554EDE81B716753007D13B2 /* ActorKit.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,9 +214,7 @@
 			files = (
 				1554EDE21B7161E8007D13B2 /* TestActor.m in Sources */,
 				1554EDE11B7161E8007D13B2 /* TBActorSpec.m in Sources */,
-				1554EDEB1B716753007D13B2 /* README.md in Sources */,
 				1554EDE01B7161E8007D13B2 /* TBActorProxySpec.m in Sources */,
-				1554EDE91B716753007D13B2 /* CHANGELOG.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
