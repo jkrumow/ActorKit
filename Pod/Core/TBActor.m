@@ -70,12 +70,12 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 - (id)sync
 {
-    return [TBActorProxySync proxyWithActor:self];
+    return [TBActorProxySync proxyWithActors:@[self]];
 }
 
 - (id)async
 {
-    return [TBActorProxyAsync proxyWithActor:self];
+    return [TBActorProxyAsync proxyWithActors:@[self]];
 }
 
 #pragma mark - Pubsub

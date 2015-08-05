@@ -11,11 +11,6 @@
 
 @implementation TBActorProxyAsync
 
-+ (TBActorProxyAsync *)proxyWithActor:(TBActor *)actor
-{
-    return [[TBActorProxyAsync alloc] initWithActor:actor];
-}
-
 + (TBActorProxyAsync *)proxyWithActors:(NSArray *)actors
 {
     return [[TBActorProxyAsync alloc] initWithActors:actors];

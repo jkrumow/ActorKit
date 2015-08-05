@@ -23,19 +23,11 @@ describe(@"TBActorProxy", ^{
     
     it (@"throws an exception when base class is created", ^{
         expect(^{
-            [TBActorProxy proxyWithActor:actor];
-        }).to.raise(TBAKException);
-        
-        expect(^{
             [TBActorProxy proxyWithActors:@[actor]];
         }).to.raise(TBAKException);
     });
     
     it (@"throws an exception when base class is initialized", ^{
-        expect(^{
-            proxy = [[TBActorProxy alloc] initWithActor:actor];
-        }).to.raise(TBAKException);
-        
         expect(^{
             proxy = [[TBActorProxy alloc] initWithActors:@[actor]];
         }).to.raise(TBAKException);

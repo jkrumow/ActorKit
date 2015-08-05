@@ -13,25 +13,10 @@
 
 @implementation TBActorProxy
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
-{
-    @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
-    return nil;
-}
-
 + (TBActorProxy *)proxyWithActors:(NSArray *)actors
 {
     @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     return nil;
-}
-
-- (instancetype)initWithActor:(TBActor *)actor
-{
-    if (self.class == TBActorProxy.class) {
-        @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
-    }
-    _actors = @[actor];
-    return self;
 }
 
 - (instancetype)initWithActors:(NSArray *)actors

@@ -11,11 +11,6 @@
 
 @implementation TBActorProxySync
 
-+ (TBActorProxySync *)proxyWithActor:(TBActor *)actor
-{
-    return [[TBActorProxySync alloc] initWithActor:actor];
-}
-
 + (TBActorProxySync *)proxyWithActors:(NSArray *)actors
 {
     return [[TBActorProxySync alloc] initWithActors:actors];

@@ -14,9 +14,6 @@
 
 @property (nonatomic, strong, readonly) NSArray *actors;
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor;
 + (TBActorProxy *)proxyWithActors:(NSArray *)actors;
-
-- (instancetype)initWithActor:(TBActor *)actor;
 - (instancetype)initWithActors:(NSArray *)actors;
 @end
