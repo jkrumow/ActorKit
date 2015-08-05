@@ -48,8 +48,4 @@
     return [self.actors.firstObject methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
-}
-
 @end
