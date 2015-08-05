@@ -26,6 +26,7 @@
 		1554EDE51B716753007D13B2 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		1554EDE61B716753007D13B2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1554EDE71B716753007D13B2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		3B0D1E9A1B7262A200276B2B /* TODOS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = TODOS.md; path = ../TODOS.md; sourceTree = "<group>"; };
 		703923476EEE6B674A942AA0 /* libPods-ActorKitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActorKitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A29602D8BEDDAEA1AAC18861 /* Pods-ActorKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKitTests/Pods-ActorKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +89,7 @@
 				1554EDE41B716753007D13B2 /* ActorKit.podspec */,
 				1554EDE71B716753007D13B2 /* README.md */,
 				1554EDE51B716753007D13B2 /* CHANGELOG.md */,
+				3B0D1E9A1B7262A200276B2B /* TODOS.md */,
 				1554EDE61B716753007D13B2 /* LICENSE */,
 			);
 			name = "Podspec Metadata";

@@ -10,6 +10,8 @@
 
 @interface TBActor : NSOperationQueue
 
+- (instancetype)initWithBlock:(void(^)(id actor))block;
+
 - (id)sync;
 - (id)async;
 

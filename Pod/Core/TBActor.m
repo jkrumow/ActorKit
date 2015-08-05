@@ -19,13 +19,24 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 @implementation TBActor
 
+- (instancetype)initWithBlock:(void (^)(id actor))block
+{
+    self = [super init];
+    if (self) {
+        [self _initialize];
+        
+        if (block) {
+            block(self);
+        }
+    }
+    return self;
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.name = TBAKActorQueue;
-        self.maxConcurrentOperationCount = 1;
-        self.subscriptions = [NSMutableSet new];
+        [self _initialize];
     }
     return self;
 }
@@ -36,6 +47,13 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
     [self.subscriptions enumerateObjectsUsingBlock:^(NSString *messageName, BOOL *stop) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
     }];
+}
+
+- (void)_initialize
+{
+    self.name = TBAKActorQueue;
+    self.maxConcurrentOperationCount = 1;
+    self.subscriptions = [NSMutableSet new];
 }
 
 #pragma mark - Invocatons
