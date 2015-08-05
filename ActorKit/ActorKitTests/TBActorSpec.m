@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
+
 #import "TestActor.h"
+
 
 SpecBegin(TBActor)
 
@@ -26,9 +28,9 @@ describe(@"TBActor", ^{
     });
     
     describe(@"initialization", ^{
-    
-        it(@"initializes itself with a given configuration block.", ^{
         
+        it(@"initializes itself with a given configuration block", ^{
+            
             TestActor *blockActor = [[TestActor alloc] initWithBlock:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @5;
@@ -39,36 +41,34 @@ describe(@"TBActor", ^{
     
     describe(@"proxies", ^{
         
-        it (@"returns a sync proxy.", ^{
+        it (@"returns a sync proxy", ^{
             
-            id proxy = actor.sync;
-            BOOL isClass = [proxy isMemberOfClass:[TBActorProxySync class]];
-            expect(isClass).to.beTruthy;
+            expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
+            // expect(proxy).to.beMemberOf([TBActorProxySync class]);
         });
         
-        it (@"returns an async proxy.", ^{
+        it (@"returns an async proxy", ^{
             
-            id proxy = actor.sync;
-            BOOL isClass = [proxy isMemberOfClass:[TBActorProxyAsync class]];
-            expect(isClass).to.beTruthy;
+            expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
+            // expect(proxy).to.beInstanceOf([TBActorProxyAsync class]);
         });
     });
     
     describe(@"method invocations", ^{
         
-        it (@"invokes a method synchronuously.", ^{
+        it (@"invokes a method synchronuously", ^{
             
             [actor.sync doStuff];
         });
         
-        it (@"invokes a parameterized method synchronuously.", ^{
+        it (@"invokes a parameterized method synchronuously", ^{
             
             [actor.sync doStuff:@"aaaaaah" withCompletion:^(NSString *string){
                 NSLog(@"string: %@", string);
             }];
         });
         
-        it (@"invokes a parameterized method asynchronuously.", ^{
+        it (@"invokes a parameterized method asynchronuously", ^{
             
             [actor.async doStuff:@"aaaaaah" withCompletion:^(NSString *string){
                 NSLog(@"string: %@", string);
@@ -100,6 +100,51 @@ describe(@"TBActor", ^{
             
             [otherActor post:@"two" payload:@10];
             expect(actor.uuid).to.equal(@10);
+        });
+    });
+    
+    describe(@"pools", ^{
+        
+        it(@"creates a pool of actors of its own class", ^{
+            
+            TBActorPool *pool = [TestActor poolWithSize:2 block:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @1;
+            }];
+            expect(pool.actors.count).to.equal(2);
+            expect(pool.actors[0]).to.beInstanceOf([TestActor class]);
+            expect(pool.actors[1]).to.beInstanceOf([TestActor class]);
+        });
+        
+        it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+            
+            TBActorPool *pool = [TestActor poolWithSize:2 block:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @1;
+            }];
+            
+            [pool.sync setUuid:@123];
+            
+            TestActor *actorOne = pool.actors[0];
+            TestActor *actorTwo = pool.actors[1];
+            
+            expect(actorOne.uuid).to.equal(@123);
+            expect(actorTwo.uuid).to.equal(@123);
+            
+            [pool.async setUuid:@456];
+            sleep(0.5);
+            
+            actorOne = pool.actors[0];
+            actorTwo = pool.actors[1];
+            
+            expect(actorOne.uuid).to.equal(@456);
+            expect(actorTwo.uuid).to.equal(@456);
+            
+            NSNumber *uuid = [pool.sync uuid];
+            expect(uuid).to.equal(@456);
+            
+            uuid = [pool.async uuid];
+            expect(uuid).to.beNil;
         });
     });
 });

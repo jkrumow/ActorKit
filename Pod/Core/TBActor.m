@@ -9,7 +9,7 @@
 #import "TBActor.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
-
+#import "TBActorPool.h"
 
 static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
@@ -18,6 +18,16 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 @end
 
 @implementation TBActor
+
++ (TBActorPool *)poolWithSize:(NSUInteger)size block:(TBActorConfigurationBlock)block
+{
+    NSMutableArray *actors = [NSMutableArray new];
+    for (NSUInteger i=0; i < size; i++) {
+        TBActor *actor = [[self alloc] initWithBlock:block];
+        [actors addObject:actor];
+    }
+    return [[TBActorPool alloc] initWithActors:actors];
+}
 
 - (instancetype)initWithBlock:(void(^)(TBActor *actor))block
 {

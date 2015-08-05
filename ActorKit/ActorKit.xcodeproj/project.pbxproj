@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		157BB7761B72AB30007D471C /* TBActorPoolSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BB7751B72AB30007D471C /* TBActorPoolSpec.m */; };
 		3B7BB3CE1B726E06008CD867 /* TBActorProxySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BB3C91B726E06008CD867 /* TBActorProxySpec.m */; };
 		3B7BB3CF1B726E06008CD867 /* TBActorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BB3CA1B726E06008CD867 /* TBActorSpec.m */; };
 		3B7BB3D01B726E06008CD867 /* TestActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7BB3CC1B726E06008CD867 /* TestActor.m */; };
@@ -19,7 +20,7 @@
 		1554EDE51B716753007D13B2 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		1554EDE61B716753007D13B2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1554EDE71B716753007D13B2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		3B0D1E9A1B7262A200276B2B /* TODOS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = TODOS.md; path = ../TODOS.md; sourceTree = "<group>"; };
+		157BB7751B72AB30007D471C /* TBActorPoolSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorPoolSpec.m; sourceTree = "<group>"; };
 		3B7BB3BF1B726DDF008CD867 /* ActorKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ActorKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B7BB3C31B726DDF008CD867 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B7BB3C71B726E06008CD867 /* ActorKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ActorKitTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -68,7 +69,6 @@
 				1554EDE41B716753007D13B2 /* ActorKit.podspec */,
 				1554EDE71B716753007D13B2 /* README.md */,
 				1554EDE51B716753007D13B2 /* CHANGELOG.md */,
-				3B0D1E9A1B7262A200276B2B /* TODOS.md */,
 				1554EDE61B716753007D13B2 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
@@ -89,6 +89,7 @@
 				3B7BB3CB1B726E06008CD867 /* TestActor.h */,
 				3B7BB3CC1B726E06008CD867 /* TestActor.m */,
 				3B7BB3CA1B726E06008CD867 /* TBActorSpec.m */,
+				157BB7751B72AB30007D471C /* TBActorPoolSpec.m */,
 				3B7BB3C91B726E06008CD867 /* TBActorProxySpec.m */,
 				3B2C3CB11B726FCF00DB94EA /* Supporting Files */,
 			);
@@ -214,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				157BB7761B72AB30007D471C /* TBActorPoolSpec.m in Sources */,
 				3B7BB3CF1B726E06008CD867 /* TBActorSpec.m in Sources */,
 				3B7BB3CE1B726E06008CD867 /* TBActorProxySpec.m in Sources */,
 				3B7BB3D01B726E06008CD867 /* TestActor.m in Sources */,

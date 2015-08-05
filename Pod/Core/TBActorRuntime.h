@@ -11,9 +11,11 @@
 @interface TBActorRuntime : NSObject
 
 @property(nonatomic, strong, readonly) NSDictionary *actors;
+@property(nonatomic, strong, readonly) NSDictionary *actorPools;
 
 - (void)registerActor:(TBActor *)actor withName:(NSString *)name;
 - (void)removeActorWithName:(NSString *)name;
+
 - (void)startup;
 - (void)shutDown;
 @end

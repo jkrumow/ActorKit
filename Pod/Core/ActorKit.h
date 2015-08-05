@@ -9,5 +9,6 @@
 #import "TBActor.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
+#import "TBActorPool.h"
 #import "TBActorRuntime.h"
 #import "NSException+ActorKit.h"

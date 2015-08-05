@@ -16,12 +16,19 @@
     return [[TBActorProxySync alloc] initWithActor:actor];
 }
 
++ (TBActorProxySync *)proxyWithActors:(NSArray *)actors
+{
+    return [[TBActorProxySync alloc] initWithActors:actors];
+}
+
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    [self.actor addOperationWithBlock:^{
-        [invocation invokeWithTarget:self.actor];
-    }];
-    [self.actor waitUntilAllOperationsAreFinished];
+    for (TBActor *actor in self.actors) {
+        [actor addOperationWithBlock:^{
+            [invocation invokeWithTarget:actor];
+        }];
+        [actor waitUntilAllOperationsAreFinished];
+    }
 }
 
 @end

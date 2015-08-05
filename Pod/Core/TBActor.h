@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class TBActor;
+@class TBActorPool;
+typedef void (^TBActorConfigurationBlock)(TBActor *actor);
+
 @interface TBActor : NSOperationQueue
 
-- (instancetype)initWithBlock:(void(^)(TBActor *actor))block;
++ (TBActorPool *)poolWithSize:(NSUInteger)size block:(TBActorConfigurationBlock)block;
+
+- (instancetype)initWithBlock:(TBActorConfigurationBlock)block;
 
 - (id)sync;
 - (id)async;
@@ -19,3 +25,4 @@
 - (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
 - (void)post:(NSString *)messageName payload:(id)payload;
 @end
+
