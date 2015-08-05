@@ -24,14 +24,16 @@
     }
 }
 
-- (void)handlerOne:(NSDictionary *)payload
+- (void)handlerOne:(id)payload
 {
-    NSLog(@"nameOne: %@", payload.description);
+    NSLog(@"handlerOne: %@", payload);
+    self.uuid = payload;
 }
 
-- (void)handlerTwo:(NSDictionary *)payload
+- (void)handlerTwo:(id)payload
 {
-    NSLog(@"nameTwo: %@", payload.description);
+    NSLog(@"handlerTwo: %@", payload);
+    self.uuid = payload;
 }
 
 @end

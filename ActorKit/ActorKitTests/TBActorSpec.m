@@ -29,7 +29,7 @@ describe(@"TBActor", ^{
     
         it(@"initializes itself with a given configuration block.", ^{
         
-            TestActor *blockActor = [[TestActor alloc] initWithBlock:^(id actor) {
+            TestActor *blockActor = [[TestActor alloc] initWithBlock:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @5;
             }];
@@ -40,12 +40,14 @@ describe(@"TBActor", ^{
     describe(@"proxies", ^{
         
         it (@"returns a sync proxy.", ^{
+            
             id proxy = actor.sync;
             BOOL isClass = [proxy isMemberOfClass:[TBActorProxySync class]];
             expect(isClass).to.beTruthy;
         });
         
         it (@"returns an async proxy.", ^{
+            
             id proxy = actor.sync;
             BOOL isClass = [proxy isMemberOfClass:[TBActorProxyAsync class]];
             expect(isClass).to.beTruthy;
@@ -55,16 +57,19 @@ describe(@"TBActor", ^{
     describe(@"method invocations", ^{
         
         it (@"invokes a method synchronuously.", ^{
+            
             [actor.sync doStuff];
         });
         
         it (@"invokes a parameterized method synchronuously.", ^{
+            
             [actor.sync doStuff:@"aaaaaah" withCompletion:^(NSString *string){
                 NSLog(@"string: %@", string);
             }];
         });
         
         it (@"invokes a parameterized method asynchronuously.", ^{
+            
             [actor.async doStuff:@"aaaaaah" withCompletion:^(NSString *string){
                 NSLog(@"string: %@", string);
             }];
@@ -74,18 +79,27 @@ describe(@"TBActor", ^{
     
     describe(@"pubsub", ^{
         
-        it (@"handles subscriptions and publishing", ^{
+        it (@"handles broadcasted subscriptions and publishing", ^{
             
-            [actor subscribe:@"nameOne" selector:@selector(handlerOne:)];
-            [actor subscribeToPublisher:actor withMessageName:@"nameTwo" selector:@selector(handlerTwo:)];
-            
-            expect(^{
-                [actor publish:@"nameOne" payload:@{@"One":@5}];
-            }).to.notify(@"nameOne");
+            [actor subscribe:@"one" selector:@selector(handlerOne:)];
             
             expect(^{
-                [otherActor publish:@"nameTwo" payload:@{@"Two":@10}];
-            }).to.notify(@"nameTwo");
+                [actor post:@"one" payload:@5];
+            }).to.notify(@"one");
+            expect(actor.uuid).to.equal(@5);
+            
+        });
+        
+        it(@"handles messages from a specified actor", ^{
+            
+            [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+            actor.uuid = @5;
+            
+            [actor post:@"two" payload:@10];
+            expect(actor.uuid).to.equal(@5);
+            
+            [otherActor post:@"two" payload:@10];
+            expect(actor.uuid).to.equal(@10);
         });
     });
 });

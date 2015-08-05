@@ -19,7 +19,7 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 @implementation TBActor
 
-- (instancetype)initWithBlock:(void (^)(id actor))block
+- (instancetype)initWithBlock:(void(^)(TBActor *actor))block
 {
     self = [super init];
     if (self) {
@@ -90,11 +90,11 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
                                                   }];
 }
 
-- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
+- (void)post:(NSString *)messageName payload:(NSDictionary *)payload
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName
                                                         object:self
-                                                      userInfo:payload.mutableCopy]; // Copy payload to prevent shared state.
+                                                      userInfo:payload.copy]; // Copy payload to prevent shared state.
 }
 
 @end

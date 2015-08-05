@@ -38,6 +38,11 @@ it, simply add the following line to your Podfile:
 #import <ActorKit/ActorKit.h>
 ```
 
+- initialization with configuration block
+- method invocations
+- subscribe to messages from other actors
+- posting messages to other actors
+
 ## Useful Theory on Actors
 
 - https://en.wikipedia.org/wiki/Actor_model
