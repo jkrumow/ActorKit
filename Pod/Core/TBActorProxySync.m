@@ -18,7 +18,9 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    [super forwardInvocation:invocation];
+    [self.actor addOperationWithBlock:^{
+        [invocation invokeWithTarget:self.actor];
+    }];
     [self.actor waitUntilAllOperationsAreFinished];
 }
 
