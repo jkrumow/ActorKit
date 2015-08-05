@@ -1,19 +1,19 @@
 //
-//  TBActorRuntime.m
+//  TBActorRegistry.m
 //  ActorKit
 //
 //  Created by Julian Krumow on 13.07.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActorRuntime.h"
+#import "TBActorRegistry.h"
 
 
-@interface TBActorRuntime ()
+@interface TBActorRegistry ()
 @property (nonatomic, strong) NSMutableDictionary *priv_actors;
 @end
 
-@implementation TBActorRuntime
+@implementation TBActorRegistry
 
 - (instancetype)init
 {

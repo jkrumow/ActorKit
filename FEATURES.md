@@ -1,11 +1,10 @@
 # Features:
 
-- limit actor queue ? operationCount
-- suspend actor queue
-- actor lifecycle concept
-- linking
-- evaluate useful actor runtime features
+### Actor Crashes
 
+- linking
+- supervision
+- actor lifecycle concept
 
 ### FutureProxy
 

@@ -1,5 +1,5 @@
 //
-//  TBActorRuntime.h
+//  TBActorRegistry.h
 //  ActorKit
 //
 //  Created by Julian Krumow on 13.07.15.
@@ -8,10 +8,9 @@
 
 #import "TBActor.h"
 
-@interface TBActorRuntime : NSObject
+@interface TBActorRegistry : NSObject
 
 @property(nonatomic, strong, readonly) NSDictionary *actors;
-@property(nonatomic, strong, readonly) NSDictionary *actorPools;
 
 - (void)registerActor:(TBActor *)actor withName:(NSString *)name;
 - (void)removeActorWithName:(NSString *)name;
