@@ -16,13 +16,6 @@ __block TBActorPool *pool;
 
 describe(@"TBActorPool", ^{
     
-    beforeEach(^{
-        pool = [TestActor poolWithSize:2 block:^(TBActor *actor) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @1;
-        }];
-    });
-    
     afterEach(^{
         pool = nil;
     });
@@ -31,58 +24,69 @@ describe(@"TBActorPool", ^{
         
         it(@"creates a pool of actors of its own class", ^{
             
-            TBActorPool *pool = [TestActor poolWithSize:2 block:^(TBActor *actor) {
+            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @1;
             }];
+            
             expect(pool.actors.count).to.equal(2);
             expect(pool.actors[0]).to.beInstanceOf([TestActor class]);
             expect(pool.actors[1]).to.beInstanceOf([TestActor class]);
         });
     });
     
-    describe(@"proxies", ^{
+    describe(@"usage", ^{
         
-        it (@"returns a sync proxy", ^{
-            
-            expect([pool.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
+        beforeEach(^{
+            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @1;
+            }];
         });
         
-        it (@"returns an async proxy", ^{
+        describe(@"proxies", ^{
             
-            expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-        });
-    });
-    
-    describe(@"method invocations", ^{
-        
-        it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+            it (@"returns a sync proxy", ^{
+                
+                expect([pool.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
+            });
             
-            [pool.sync setUuid:@123];
-            
-            TestActor *actorOne = pool.actors[0];
-            TestActor *actorTwo = pool.actors[1];
-            
-            expect(actorOne.uuid).to.equal(@123);
-            expect(actorTwo.uuid).to.equal(@123);
-            
-            NSNumber *uuid = [pool.sync uuid];
-            expect(uuid).to.equal(@123);
+            it (@"returns an async proxy", ^{
+                
+                expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
+            });
         });
         
-        it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+        describe(@"method invocations", ^{
             
-            [pool.async setUuid:@456];
-            sleep(0.5);
+            it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+                
+                [pool.sync setUuid:@123];
+                
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                expect(actorOne.uuid).to.equal(@123);
+                expect(actorTwo.uuid).to.equal(@123);
+                
+                NSNumber *uuid = [pool.sync uuid];
+                expect(uuid).to.equal(@123);
+            });
             
-            TestActor *actorOne = pool.actors[0];
-            TestActor *actorTwo = pool.actors[1];
-            
-            expect(actorOne.uuid).to.equal(@456);
-            expect(actorTwo.uuid).to.equal(@456);
-            
-            NSNumber *uuid = [pool.async uuid];
-            expect(uuid).to.beNil;
+            it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+                
+                [pool.async setUuid:@456];
+                sleep(0.5);
+                
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                expect(actorOne.uuid).to.equal(@456);
+                expect(actorTwo.uuid).to.equal(@456);
+                
+                NSNumber *uuid = [pool.async uuid];
+                expect(uuid).to.beNil;
+            });
         });
     });
 });

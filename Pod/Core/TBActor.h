@@ -14,9 +14,9 @@ typedef void (^TBActorConfigurationBlock)(TBActor *actor);
 
 @interface TBActor : NSOperationQueue
 
-+ (TBActorPool *)poolWithSize:(NSUInteger)size block:(TBActorConfigurationBlock)block;
++ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorConfigurationBlock)configuration;
 
-- (instancetype)initWithBlock:(TBActorConfigurationBlock)block;
+- (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;
 
 - (id)sync;
 - (id)async;

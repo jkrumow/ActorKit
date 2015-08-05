@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TBActor.h"
 
-
-@interface TBActorPool : TBActor
+@interface TBActorPool : NSObject
 
 @property (nonatomic, strong, readonly) NSArray *actors;
 
 - (instancetype)initWithActors:(NSArray *)actors;
+
+- (id)sync;
+- (id)async;
 @end
