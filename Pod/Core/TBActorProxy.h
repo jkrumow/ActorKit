@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class TBActor;
+#import "TBActor.h"
+
 @interface TBActorProxy : NSProxy
 
 @property (nonatomic, strong, readonly) TBActor *actor;

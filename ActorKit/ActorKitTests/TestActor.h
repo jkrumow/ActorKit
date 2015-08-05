@@ -10,6 +10,10 @@
 
 @interface TestActor : TBActor
 
+@property (nonatomic, strong) NSNumber *uuid;
+
 - (void)doStuff;
 - (void)doStuff:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
+- (void)handlerOne:(NSDictionary *)payload;
+- (void)handlerTwo:(NSDictionary *)payload;
 @end

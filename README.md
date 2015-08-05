@@ -14,7 +14,7 @@ A lightweight actor framework in Objective-C.
 
 ## Example Project
 
-To run the example project, clone the repo, and run `pod install` from the `Example` directory first.
+To run the example project, clone the repo, and run `pod install` from the `ActorKit` directory first.
 
 ## Requirements
 

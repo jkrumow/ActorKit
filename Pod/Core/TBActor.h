@@ -10,6 +10,12 @@
 
 @interface TBActor : NSOperationQueue
 
+- (instancetype)initWithBlock:(void(^)(id actor))block;
+
 - (id)sync;
 - (id)async;
+
+- (void)subscribe:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
+- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload;
 @end

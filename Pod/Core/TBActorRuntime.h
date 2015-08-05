@@ -6,8 +6,14 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "TBActor.h"
 
 @interface TBActorRuntime : NSObject
 
+@property(nonatomic, strong, readonly) NSDictionary *actors;
+
+- (void)registerActor:(TBActor *)actor withName:(NSString *)name;
+- (void)removeActorWithName:(NSString *)name;
+- (void)startup;
+- (void)shutDown;
 @end
