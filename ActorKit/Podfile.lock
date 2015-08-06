@@ -1,7 +1,7 @@
 PODS:
-  - ActorKit (0.1.0):
-    - ActorKit/Core (= 0.1.0)
-  - ActorKit/Core (0.1.0)
+  - ActorKit (0.2.0):
+    - ActorKit/Core (= 0.2.0)
+  - ActorKit/Core (0.2.0)
   - Expecta (1.0.2)
   - Specta (1.0.3)
 
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ActorKit: 02431271acb69b44a703fa0fb1a3920da5a61a86
+  ActorKit: d808daf1f4d6af19e2931cb613a6b2dedf7e4dcd
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
