@@ -3,6 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'ActorKitTests', :exclusive => true do
   pod "ActorKit", :path => "../"
 
-  pod 'Specta', '1.0.2'
-  pod 'Expecta', '1.0.0'
+  pod 'Specta'
+  pod 'Expecta'
 end
