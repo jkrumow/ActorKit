@@ -24,11 +24,14 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
     NSLog(@"initialize: %@", self);
 }
 
-+ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorConfigurationBlock)configuration
++ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration
 {
     NSMutableArray *actors = [NSMutableArray new];
     for (NSUInteger i=0; i < size; i++) {
-        TBActor *actor = [[self alloc] initWithConfiguration:configuration];
+        TBActor *actor = [[self alloc] init];
+        if (configuration) {
+            configuration(actor, i);
+        }
         [actors addObject:actor];
     }
     return [[TBActorPool alloc] initWithActors:actors];

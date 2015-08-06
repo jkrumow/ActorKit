@@ -11,12 +11,13 @@
 @class TBActor;
 @class TBActorPool;
 typedef void (^TBActorConfigurationBlock)(TBActor *actor);
+typedef void (^TBActorPoolConfigurationBlock)(TBActor *actor, NSUInteger index);
 
 @interface TBActor : NSOperationQueue
 
 @property (nonatomic, strong)NSMutableSet *subscriptions;
 
-+ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorConfigurationBlock)configuration;
++ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration;
 
 - (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;
 

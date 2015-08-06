@@ -25,25 +25,28 @@ describe(@"TBActorPool", ^{
     
     describe(@"initialization", ^{
         
-        it(@"creates a pool of actors of its own class.", ^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor) {
+        it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
+            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @1;
+                testActor.uuid = @(index);
             }];
             
             expect(pool.actors.count).to.equal(2);
-            expect(pool.actors[0]).to.beInstanceOf([TestActor class]);
-            expect(pool.actors[1]).to.beInstanceOf([TestActor class]);
+            
+            TestActor *actorOne = pool.actors[0];
+            TestActor *actorTwo = pool.actors[1];
+            
+            expect(actorOne).to.beInstanceOf([TestActor class]);
+            expect(actorTwo).to.beInstanceOf([TestActor class]);
+            expect(actorOne.uuid).to.equal(@0);
+            expect(actorTwo.uuid).to.equal(@1);
         });
     });
     
     describe(@"usage", ^{
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @1;
-            }];
+            pool = [TestActor poolWithSize:2 configuration:nil];
             otherActor = [[TestActor alloc] init];
         });
         
@@ -56,8 +59,6 @@ describe(@"TBActorPool", ^{
             it(@"dispatches invocations synchronuously to all pooled actors.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
-                actorOne.uuid = @1;
-                actorTwo.uuid = @2;
                 
                 [pool.sync setSymbol:@123];
                 expect(actorOne.symbol).to.equal(@123);
@@ -74,8 +75,6 @@ describe(@"TBActorPool", ^{
             it(@"dispatches invocations asynchronuously to all pooled actors.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
-                actorOne.uuid = @1;
-                actorTwo.uuid = @2;
                 
                 waitUntil(^(DoneCallback done) {
                     [pool.async setSymbol:@456 withCompletion:^(NSNumber *symbol){

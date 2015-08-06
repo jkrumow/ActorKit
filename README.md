@@ -14,6 +14,7 @@ A lightweight actor framework in Objective-C.
 * Actor Pools
 * Syncronous and asyncronous invocations
 * Message subscription and publication
+* Actor registry
 
 ## Example Project
 
@@ -48,13 +49,13 @@ pod "ActorKit"
 Create a subclass of `TBActor`:
 
 ```objc
-@interface TestActor : TBActor
+@interface WorkerActor : TBActor
 @property(nonatomic, strong) NSString *name;
 - (void)doSomething;
 - (void)handler:(id)payload;
 @end
 
-@implementation TestActor
+@implementation WorkerActor
 
 - (void)doSomething
 {
@@ -71,15 +72,15 @@ Create a subclass of `TBActor`:
 Create an actor instance:
 
 ```objc
-TestActor *actor = [[TestActor alloc] init];
+WorkerActor *actor = [[WorkerActor alloc] init];
 ```
 
 Create an actor instance using a configuration block:
 
 ```objc
-TestActor *actor = [[TestActor alloc] initWithConfiguration:^(TBActor *actor) {
-    TestActor *testActor = (TestActor *)actor;
-    testActor.name = @"foo";
+WorkerActor *actor = [[WorkerActor alloc] initWithConfiguration:^(TBActor *actor) {
+    WorkerActor *worker = (WorkerActor *)actor;
+    worker.name = @"foo";
 }];
 ```
 
@@ -128,9 +129,10 @@ The actor pool class `TBActorPool` is a subtype of actor so it is basically a pr
 Create an actor pool using your actor subclass which you like to pool:
 
 ```objc
-TBActorPool *pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor) {
-    TestActor *testActor = (TestActor *)actor;
-    testActor.name = @"worker";
+TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+    WorkerActor *worker = (WorkerActor *)actor;
+    worker.name = @"worker";
+    worker.id = @(index);
 }];
 ```
 
@@ -150,6 +152,28 @@ Same goes for subscriptions:
 ```
 
 The handler will be executed on each actor in the pool.
+
+### Holding actors in a registry
+
+Create an actor Registry:
+
+```objc
+TBActorRegistry registry = [[TBActorRegistry alloc] init];
+```
+
+Add actors and pools to the registry:
+
+```objc
+[registry registerActor:actor withName:@"actor"];
+[registry registerActor:pool withName:@"pool"];
+```
+
+Remove actors and pools from the registry:
+
+```objc
+[registry removeActorWithName:@"actor"];
+[registry removeActorWithName:@"pool"];
+```
 
 
 ## Useful Theory on Actors

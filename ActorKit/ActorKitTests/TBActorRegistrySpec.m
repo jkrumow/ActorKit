@@ -16,29 +16,29 @@ SpecBegin(TBActorRegistry)
 
 __block TBActorRegistry *registry;
 __block TestActor *actor;
-__block TestActor *otherActor;
+__block TBActorPool *pool;
 
 describe(@"TBActorRegistry", ^{
     
     beforeEach(^{
         registry = [[TBActorRegistry alloc] init];
         actor = [[TestActor alloc] init];
-        otherActor = [[TestActor alloc] init];
+        pool = [TestActor poolWithSize:1 configuration:nil];
     });
     
     afterEach(^{
         registry = nil;
         actor = nil;
-        otherActor = nil;
+        pool = nil;
     });
     
     describe(@"registerActor:withName:", ^{
         
         it(@"stores an actor under a specified name.", ^{
             [registry registerActor:actor withName:@"actor"];
-            [registry registerActor:otherActor withName:@"otherActor"];
+            [registry registerActor:pool withName:@"pool"];
             expect(registry.actors[@"actor"]).to.equal(actor);
-            expect(registry.actors[@"otherActor"]).to.equal(otherActor);
+            expect(registry.actors[@"pool"]).to.equal(pool);
         });
     });
     
@@ -46,15 +46,15 @@ describe(@"TBActorRegistry", ^{
         
         it(@"stores an actor under a specified name.", ^{
             [registry registerActor:actor withName:@"actor"];
-            [registry registerActor:otherActor withName:@"otherActor"];
+            [registry registerActor:pool withName:@"pool"];
             
             [registry removeActorWithName:@"foo"];
             expect(registry.actors[@"actor"]).to.equal(actor);
-            expect(registry.actors[@"otherActor"]).to.equal(otherActor);
+            expect(registry.actors[@"pool"]).to.equal(pool);
             
-            [registry removeActorWithName:@"otherActor"];
+            [registry removeActorWithName:@"pool"];
             expect(registry.actors[@"actor"]).to.equal(actor);
-            expect(registry.actors[@"otherActor"]).to.beNil;
+            expect(registry.actors[@"pool"]).to.beNil;
         });
     });
     
