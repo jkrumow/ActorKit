@@ -39,7 +39,7 @@
     [self.priv_actors removeObjectForKey:name];
 }
 
-- (void)startup
+- (void)startUp
 {
     
 }

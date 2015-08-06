@@ -15,6 +15,6 @@
 - (void)registerActor:(TBActor *)actor withName:(NSString *)name;
 - (void)removeActorWithName:(NSString *)name;
 
-- (void)startup;
+- (void)startUp;
 - (void)shutDown;
 @end
