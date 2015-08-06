@@ -19,6 +19,11 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 @implementation TBActor
 
++ (void)initialize
+{
+    NSLog(@"initialize: %@", self);
+}
+
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorConfigurationBlock)configuration
 {
     NSMutableArray *actors = [NSMutableArray new];

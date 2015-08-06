@@ -12,3 +12,4 @@
 #import "TBActorPool.h"
 #import "TBActorRegistry.h"
 #import "NSException+ActorKit.h"
+#import "NSInvocation+ActorKit.h"

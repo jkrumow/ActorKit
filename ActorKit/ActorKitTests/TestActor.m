@@ -10,6 +10,21 @@
 
 @implementation TestActor
 
+- (void)setSymbol:(NSNumber *)symbol
+{
+    NSLog(@"setting symbol on actor: %@", self.uuid);
+    _symbol = symbol;
+}
+
+- (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion
+{
+    [self setSymbol:symbol];
+    
+    if (completion) {
+        completion(symbol);
+    }
+}
+
 - (void)doStuff
 {
     NSLog(@"doStuff.");
@@ -27,25 +42,25 @@
 - (void)handlerOne:(id)payload
 {
     NSLog(@"handlerOne: %@", payload);
-    self.uuid = payload;
+    self.symbol = payload;
 }
 
 - (void)handlerTwo:(id)payload
 {
     NSLog(@"handlerTwo: %@", payload);
-    self.uuid = payload;
+    self.symbol = payload;
 }
 
 - (void)handlerThree:(id)payload
 {
     NSLog(@"handlerThree: %@", payload);
-    self.uuid = payload;
+    self.symbol = payload;
 }
 
 - (void)handlerFour:(id)payload
 {
     NSLog(@"handlerFour: %@", payload);
-    self.uuid = payload;
+    self.symbol = payload;
 }
 
 @end

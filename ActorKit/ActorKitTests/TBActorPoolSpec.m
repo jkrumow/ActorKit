@@ -9,7 +9,6 @@
 
 #import "TestActor.h"
 
-
 SpecBegin(TBActorPool)
 
 __block TBActorPool *pool;
@@ -64,31 +63,31 @@ describe(@"TBActorPool", ^{
             
             it(@"dispatches invocations synchronuously to all pooled actors.", ^{
                 
-                [pool.sync setUuid:@123];
-                
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
+                actorOne.uuid = @1;
+                actorTwo.uuid = @2;
                 
-                expect(actorOne.uuid).to.equal(@123);
-                expect(actorTwo.uuid).to.equal(@123);
-                
-                NSNumber *uuid = [pool.sync uuid];
-                expect(uuid).to.equal(@123);
+                [pool.sync setSymbol:@123];
+                expect(actorOne.symbol).to.equal(@123);
+                expect(actorTwo.symbol).to.equal(@123);
             });
             
-            it(@"dispatches invocations synchronuously to all pooled actors.", ^{
-                
-                [pool.async setUuid:@456];
-                sleep(0.5);
+            it(@"dispatches invocations asynchronuously to all pooled actors.", ^{
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
+                actorOne.uuid = @1;
+                actorTwo.uuid = @2;
                 
-                expect(actorOne.uuid).to.equal(@456);
-                expect(actorTwo.uuid).to.equal(@456);
+                waitUntil(^(DoneCallback done) {
+                    [pool.async setSymbol:@456 withCompletion:^(NSNumber *symbol){
+                        done();
+                    }];
+                });
                 
-                NSNumber *uuid = [pool.async uuid];
-                expect(uuid).to.beNil;
+                expect(actorOne.symbol).to.equal(@456);
+                expect(actorTwo.symbol).to.equal(@456);
             });
         });
         
@@ -105,37 +104,37 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                expect(actorOne.uuid).to.equal(@8);
-                expect(actorTwo.uuid).to.equal(@8);
+                expect(actorOne.symbol).to.equal(@8);
+                expect(actorTwo.symbol).to.equal(@8);
                 
             });
             
             it(@"handles messages from a specified actor", ^{
                 
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
-                [pool.sync setUuid:@0];
+                [pool.sync setSymbol:@0];
                 
                 [otherActor publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                expect(actorOne.uuid).to.equal(@10);
-                expect(actorTwo.uuid).to.equal(@10);
+                expect(actorOne.symbol).to.equal(@10);
+                expect(actorTwo.symbol).to.equal(@10);
             });
             
             it(@"ignores messages from an unspecified actor", ^{
                 
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
-                [pool.sync setUuid:@0];
+                [pool.sync setSymbol:@0];
                 
                 [pool publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                expect(actorOne.uuid).to.equal(@0);
-                expect(actorTwo.uuid).to.equal(@0);
+                expect(actorOne.symbol).to.equal(@0);
+                expect(actorTwo.symbol).to.equal(@0);
             });
         });
     });

@@ -46,13 +46,13 @@ describe(@"TBActor", ^{
             it (@"returns a sync proxy", ^{
                 
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
-                // expect(proxy).to.beInstanceOf([TBActorProxySync class]);
+//                 expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
             });
             
             it (@"returns an async proxy", ^{
                 
                 expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-                // expect(proxy).to.beInstanceOf([TBActorProxyAsync class]);
+//                 expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
             });
         });
         
@@ -72,10 +72,11 @@ describe(@"TBActor", ^{
             
             it (@"invokes a parameterized method asynchronuously", ^{
                 
-                [actor.async doStuff:@"foo" withCompletion:^(NSString *string){
-                    NSLog(@"string: %@", string);
-                }];
-                sleep(0.1);
+                waitUntil(^(DoneCallback done) {
+                    [actor.async doStuff:nil withCompletion:^(NSString *string){
+                        done();
+                    }];
+                });
             });
         });
         
@@ -88,26 +89,26 @@ describe(@"TBActor", ^{
                 expect(^{
                     [actor publish:@"one" payload:@5];
                 }).to.notify(@"one");
-                expect(actor.uuid).to.equal(@5);
+                expect(actor.symbol).to.equal(@5);
                 
             });
             
             it(@"handles messages from a specified actor", ^{
                 
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
-                actor.uuid = @5;
+                actor.symbol = @5;
                 
                 [otherActor publish:@"two" payload:@10];
-                expect(actor.uuid).to.equal(@10);
+                expect(actor.symbol).to.equal(@10);
             });
             
             it(@"ignores messages from an unspecified actor", ^{
                 
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
-                actor.uuid = @5;
+                actor.symbol = @5;
                 
                 [actor publish:@"two" payload:@10];
-                expect(actor.uuid).to.equal(@5);
+                expect(actor.symbol).to.equal(@5);
             });
         });
     });
