@@ -73,7 +73,7 @@ describe(@"TBActor", ^{
             it (@"invokes a parameterized method asynchronuously", ^{
                 
                 waitUntil(^(DoneCallback done) {
-                    [actor.async doStuff:nil withCompletion:^(NSString *string){
+                    [actor.async doStuff:@"foo" withCompletion:^(NSString *string){
                         done();
                     }];
                 });

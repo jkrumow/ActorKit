@@ -9,5 +9,5 @@
 
 @interface NSInvocation (ActorKit)
 
-- (id)copy;
+- (id)tbak_copy;
 @end

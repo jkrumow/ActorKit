@@ -21,7 +21,7 @@
 {
     for (TBActor *actor in self.actors) {
         
-        NSInvocation *actorInvocation = invocation.copy;
+        NSInvocation *actorInvocation = invocation.tbak_copy;
         [actorInvocation setTarget:actor];
         
         NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:actorInvocation];

@@ -11,7 +11,7 @@
 
 @implementation NSInvocation (ActorKit)
 
-- (id)copy
+- (id)tbak_copy
 {
 	NSInvocation *copy = [NSInvocation invocationWithMethodSignature:[self methodSignature]];
 	NSUInteger numberOfArguments = [[self methodSignature] numberOfArguments];
