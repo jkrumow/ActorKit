@@ -14,7 +14,4 @@
 @property (nonatomic, strong, readonly) NSArray *actors;
 
 - (instancetype)initWithActors:(NSArray *)actors;
-
-- (id)sync;
-- (id)async;
 @end

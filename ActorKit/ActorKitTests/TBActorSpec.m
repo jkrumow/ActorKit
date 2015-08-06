@@ -46,7 +46,7 @@ describe(@"TBActor", ^{
             it (@"returns a sync proxy", ^{
                 
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
-                // expect(proxy).to.beMemberOf([TBActorProxySync class]);
+                // expect(proxy).to.beInstanceOf([TBActorProxySync class]);
             });
             
             it (@"returns an async proxy", ^{
