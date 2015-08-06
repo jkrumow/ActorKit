@@ -40,4 +40,19 @@
     return [TBActorProxyAsync proxyWithActors:self.actors];
 }
 
+- (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
+{
+    [self.subscriptions addObject:messageName];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:messageName
+                                                      object:publisher
+                                                       queue:self
+                                                  usingBlock:^(NSNotification *note) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                                                      [self.sync performSelector:selector withObject:note.userInfo];
+#pragma clang diagnostic pop
+                                                  }];
+}
+
 @end

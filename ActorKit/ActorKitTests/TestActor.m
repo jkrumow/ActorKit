@@ -36,5 +36,17 @@
     self.uuid = payload;
 }
 
+- (void)handlerThree:(id)payload
+{
+    NSLog(@"handlerThree: %@", payload);
+    self.uuid = payload;
+}
+
+- (void)handlerFour:(id)payload
+{
+    NSLog(@"handlerFour: %@", payload);
+    self.uuid = payload;
+}
+
 @end
 

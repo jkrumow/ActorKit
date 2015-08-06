@@ -16,4 +16,6 @@
 - (void)doStuff:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
 - (void)handlerOne:(id)payload;
 - (void)handlerTwo:(id)payload;
+- (void)handlerThree:(id)payload;
+- (void)handlerFour:(id)payload;
 @end

@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TBActor.h"
 
-
-@interface TBActorPool : NSObject
+@interface TBActorPool : TBActor
 
 @property (nonatomic, strong, readonly) NSArray *actors;
 

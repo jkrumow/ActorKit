@@ -97,11 +97,17 @@ describe(@"TBActor", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
                 actor.uuid = @5;
                 
-                [actor post:@"two" payload:@10];
-                expect(actor.uuid).to.equal(@5);
-                
                 [otherActor post:@"two" payload:@10];
                 expect(actor.uuid).to.equal(@10);
+            });
+            
+            it(@"ignores messages from an unspecified actor", ^{
+                
+                [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+                actor.uuid = @5;
+                
+                [actor post:@"two" payload:@10];
+                expect(actor.uuid).to.equal(@5);
             });
         });
     });

@@ -14,6 +14,8 @@ typedef void (^TBActorConfigurationBlock)(TBActor *actor);
 
 @interface TBActor : NSOperationQueue
 
+@property (nonatomic, strong)NSMutableSet *subscriptions;
+
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorConfigurationBlock)configuration;
 
 - (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;

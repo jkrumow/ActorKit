@@ -13,11 +13,13 @@
 SpecBegin(TBActorPool)
 
 __block TBActorPool *pool;
+__block TestActor *otherActor;
 
 describe(@"TBActorPool", ^{
     
     afterEach(^{
         pool = nil;
+        otherActor = nil;
     });
     
     describe(@"initialization", ^{
@@ -42,6 +44,7 @@ describe(@"TBActorPool", ^{
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @1;
             }];
+            otherActor = [[TestActor alloc] init];
         });
         
         describe(@"proxies", ^{
@@ -86,6 +89,53 @@ describe(@"TBActorPool", ^{
                 
                 NSNumber *uuid = [pool.async uuid];
                 expect(uuid).to.beNil;
+            });
+        });
+        
+        describe(@"pubsub", ^{
+            
+            it (@"handles broadcasted subscriptions and publishing", ^{
+                
+                [pool subscribe:@"three" selector:@selector(handlerThree:)];
+                
+                expect(^{
+                    [pool post:@"three" payload:@8];
+                }).to.notify(@"three");
+                
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                expect(actorOne.uuid).to.equal(@8);
+                expect(actorTwo.uuid).to.equal(@8);
+                
+            });
+            
+            it(@"handles messages from a specified actor", ^{
+                
+                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                [pool.sync setUuid:@0];
+                
+                [otherActor post:@"four" payload:@10];
+                
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                expect(actorOne.uuid).to.equal(@10);
+                expect(actorTwo.uuid).to.equal(@10);
+            });
+            
+            it(@"ignores messages from an unspecified actor", ^{
+                
+                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                [pool.sync setUuid:@0];
+                
+                [pool post:@"four" payload:@10];
+                
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                expect(actorOne.uuid).to.equal(@0);
+                expect(actorTwo.uuid).to.equal(@0);
             });
         });
     });

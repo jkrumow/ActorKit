@@ -14,7 +14,7 @@
 static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
 
 @interface TBActor ()
-@property (nonatomic, strong)NSMutableSet *subscriptions;
+
 @end
 
 @implementation TBActor
