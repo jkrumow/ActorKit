@@ -10,6 +10,8 @@
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
 
+static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
+
 @interface TBActorPool ()
 @property (nonatomic, strong) NSArray *priv_actors;
 @end
@@ -21,6 +23,7 @@
     self = [super init];
     if (self) {
         _priv_actors = actors;
+        self.name = TBAKActorPoolQueue;
     }
     return self;
 }
