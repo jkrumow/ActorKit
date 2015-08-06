@@ -65,14 +65,14 @@ describe(@"TBActor", ^{
             
             it (@"invokes a parameterized method synchronuously", ^{
                 
-                [actor.sync doStuff:@"aaaaaah" withCompletion:^(NSString *string){
+                [actor.sync doStuff:@"foo" withCompletion:^(NSString *string){
                     NSLog(@"string: %@", string);
                 }];
             });
             
             it (@"invokes a parameterized method asynchronuously", ^{
                 
-                [actor.async doStuff:@"aaaaaah" withCompletion:^(NSString *string){
+                [actor.async doStuff:@"foo" withCompletion:^(NSString *string){
                     NSLog(@"string: %@", string);
                 }];
                 sleep(0.1);
@@ -86,7 +86,7 @@ describe(@"TBActor", ^{
                 [actor subscribe:@"one" selector:@selector(handlerOne:)];
                 
                 expect(^{
-                    [actor post:@"one" payload:@5];
+                    [actor publish:@"one" payload:@5];
                 }).to.notify(@"one");
                 expect(actor.uuid).to.equal(@5);
                 
@@ -97,7 +97,7 @@ describe(@"TBActor", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
                 actor.uuid = @5;
                 
-                [otherActor post:@"two" payload:@10];
+                [otherActor publish:@"two" payload:@10];
                 expect(actor.uuid).to.equal(@10);
             });
             
@@ -106,7 +106,7 @@ describe(@"TBActor", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
                 actor.uuid = @5;
                 
-                [actor post:@"two" payload:@10];
+                [actor publish:@"two" payload:@10];
                 expect(actor.uuid).to.equal(@5);
             });
         });

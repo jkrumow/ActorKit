@@ -100,7 +100,7 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
                                                   }];
 }
 
-- (void)post:(NSString *)messageName payload:(NSDictionary *)payload
+- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName
                                                         object:self

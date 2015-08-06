@@ -99,7 +99,7 @@ describe(@"TBActorPool", ^{
                 [pool subscribe:@"three" selector:@selector(handlerThree:)];
                 
                 expect(^{
-                    [pool post:@"three" payload:@8];
+                    [pool publish:@"three" payload:@8];
                 }).to.notify(@"three");
                 
                 TestActor *actorOne = pool.actors[0];
@@ -115,7 +115,7 @@ describe(@"TBActorPool", ^{
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
                 [pool.sync setUuid:@0];
                 
-                [otherActor post:@"four" payload:@10];
+                [otherActor publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
@@ -129,7 +129,7 @@ describe(@"TBActorPool", ^{
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
                 [pool.sync setUuid:@0];
                 
-                [pool post:@"four" payload:@10];
+                [pool publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];

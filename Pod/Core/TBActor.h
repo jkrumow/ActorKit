@@ -25,6 +25,6 @@ typedef void (^TBActorConfigurationBlock)(TBActor *actor);
 
 - (void)subscribe:(NSString *)messageName selector:(SEL)selector;
 - (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
-- (void)post:(NSString *)messageName payload:(id)payload;
+- (void)publish:(NSString *)messageName payload:(id)payload;
 @end
 
