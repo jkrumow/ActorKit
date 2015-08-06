@@ -62,7 +62,9 @@ Create a subclass of `TBActor`:
 }
 
 - (void)handler:(id)payload
-
+{
+    // ...
+}
 @end
 ```
 
