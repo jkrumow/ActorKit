@@ -21,8 +21,8 @@ __block TBActorPool *pool;
 describe(@"TBActorRegistry", ^{
     
     beforeEach(^{
-        registry = [[TBActorRegistry alloc] init];
-        actor = [[TestActor alloc] init];
+        registry = [TBActorRegistry new];
+        actor = [TestActor new];
         pool = [TestActor poolWithSize:1 configuration:nil];
     });
     

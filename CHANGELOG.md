@@ -1,5 +1,10 @@
 # ActorKit CHANGELOG
 
+## 0.3.0
+
+- ActorRegistry
+- class methods to create TBActor and TBActorPool
+
 ## 0.2.0
 
 - Actors

@@ -47,7 +47,7 @@ describe(@"TBActorPool", ^{
         
         beforeEach(^{
             pool = [TestActor poolWithSize:2 configuration:nil];
-            otherActor = [[TestActor alloc] init];
+            otherActor = [TestActor new];
         });
         
         describe(@"sync", ^{

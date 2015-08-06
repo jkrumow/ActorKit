@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
                        * Actor Pools
                        * Syncronous and asyncronous invocations
                        * Message subscription and publication
+                       * Actor registry
                        DESC
   s.homepage         = "https://github.com/tarbrain/ActorKit"
   s.license          = 'MIT'

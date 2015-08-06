@@ -17,6 +17,7 @@ typedef void (^TBActorPoolConfigurationBlock)(TBActor *actor, NSUInteger index);
 
 @property (nonatomic, strong)NSMutableSet *subscriptions;
 
++ (instancetype)actorWithConfiguration:(TBActorConfigurationBlock)configuration;
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration;
 
 - (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;

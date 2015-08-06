@@ -19,7 +19,7 @@ __block TBActor *actor;
 describe(@"TBActorProxy", ^{
     
     beforeEach(^{
-        actor = [[TBActor alloc] init];
+        actor = [TBActor new];
     });
     
     it (@"throws an exception when base class is created.", ^{
@@ -28,7 +28,7 @@ describe(@"TBActorProxy", ^{
         }).to.raise(TBAKException);
     });
     
-    it (@"throws an exception when base class is initialized.", ^{
+    it (@"throws an exception when base class is initialized with designated initializer.", ^{
         expect(^{
             proxy = [[TBActorProxy alloc] initWithActors:@[actor]];
         }).to.raise(TBAKException);

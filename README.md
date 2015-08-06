@@ -72,13 +72,13 @@ Create a subclass of `TBActor`:
 Create an actor instance:
 
 ```objc
-WorkerActor *actor = [[WorkerActor alloc] init];
+WorkerActor *actor = [WorkerActor new];
 ```
 
 Create an actor instance using a configuration block:
 
 ```objc
-WorkerActor *actor = [[WorkerActor alloc] initWithConfiguration:^(TBActor *actor) {
+WorkerActor *actor = [WorkerActor actorWithConfiguration:^(TBActor *actor) {
     WorkerActor *worker = (WorkerActor *)actor;
     worker.name = @"foo";
 }];
@@ -158,7 +158,7 @@ The handler will be executed on each actor in the pool.
 Create an actor Registry:
 
 ```objc
-TBActorRegistry registry = [[TBActorRegistry alloc] init];
+TBActorRegistry registry = [TBActorRegistry new];
 ```
 
 Add actors and pools to the registry:

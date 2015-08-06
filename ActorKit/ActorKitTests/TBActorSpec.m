@@ -26,6 +26,14 @@ describe(@"TBActor", ^{
     
     describe(@"initialization", ^{
         
+        it(@"creates an actor with a given configuration block.", ^{
+            actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @5;
+            }];
+            expect([actor.async isMemberOfClass:[TestActor class]]).to.beTruthy;
+        });
+        
         it(@"initializes itself with a given configuration block.", ^{
             actor = [[TestActor alloc] initWithConfiguration:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
@@ -38,8 +46,8 @@ describe(@"TBActor", ^{
     describe(@"usage", ^{
         
         beforeEach(^{
-            actor = [[TestActor alloc] init];
-            otherActor = [[TestActor alloc] init];
+            actor = [TestActor new];
+            otherActor = [TestActor new];
         });
         
         describe(@"sync", ^{
