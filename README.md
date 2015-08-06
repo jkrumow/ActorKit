@@ -10,7 +10,10 @@ A lightweight actor framework in Objective-C.
 
 ## Features
 
-* soon
+* Actors
+* Actor Pools
+* Syncronous and asyncronous invocations
+* Message subscription and publication
 
 ## Example Project
 
@@ -28,7 +31,9 @@ To run the example project, clone the repo, and run `pod install` from the `Acto
 ActorKit is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-	pod "ActorKit"
+```ruby
+pod "ActorKit"
+```
 
 ## Usage
 
@@ -38,10 +43,112 @@ it, simply add the following line to your Podfile:
 #import <ActorKit/ActorKit.h>
 ```
 
-- initialization with configuration block
-- method invocations
-- subscribe to messages from other actors
-- posting messages to other actors
+### Creating an actor
+
+Create a subclass of `TBActor`:
+
+```objc
+@interface TestActor : TBActor
+@property(nonatomic, strong) NSString *name;
+- (void)doSomething;
+- (void)handler:(id)payload;
+@end
+
+@implementation TestActor
+
+- (void)doSomething
+{
+    // ...
+}
+
+- (void)handler:(id)payload
+
+@end
+```
+
+Create an actor instance:
+
+```objc
+TestActor *actor = [[TestActor alloc] init];
+```
+
+Create an actor instance using a configuration block:
+
+```objc
+TestActor *actor = [[TestActor alloc] initWithConfiguration:^(TBActor *actor) {
+    TestActor *testActor = (TestActor *)actor;
+    testActor.name = @"foo";
+}];
+```
+
+### Sending messages to the actor
+
+Send a synchronous message to the actor:
+
+```objc
+[actor.sync doSomething];
+```
+
+Send a asynchronous message to the actor:
+
+```objc
+[actor.async doSomething];
+```
+
+### Subscribing to messages from other actors
+
+Subscribe to a broadcasted message and set a selector which takes the message's payload as an argument:
+
+```objc
+[actor subscribe:@"message" selector:@selector(handler:)];
+```
+
+Subscribe to a specified actor and set a selector which takes the message's payload as an argument:
+
+```objc
+[actor subscribeToPublisher:otherActor
+            withMessageName:@"otherMessage"
+                   selector:@selector(handler:)];
+```
+
+### Publishing messages to other actors
+
+Publish a message with a payload:
+
+```objc
+[actor publish:@"message" payload:@5];
+```
+
+### Actor Pools
+
+The actor pool class `TBActorPool` is a subtype of actor so it is basically a proxy actor which mananges multiple child actors. All messages will be invoked on all actors in the pool.
+
+Create an actor pool using your actor subclass which you like to pool:
+
+```objc
+TBActorPool *pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor) {
+    TestActor *testActor = (TestActor *)actor;
+    testActor.name = @"worker";
+}];
+```
+
+The configuration block will be executed for each created actor in the pool.
+
+You can send messages to the pool:
+
+```objc
+[pool.sync setName:@"worker"];
+[pool.async doSomething];
+```
+
+Same goes for subscriptions:
+
+```objc
+[pool subscribe:@"messageToWorkers" selector:@selector(handler:)];
+```
+
+The handler will be executed on each actor in the pool.
+
 
 ## Useful Theory on Actors
 
