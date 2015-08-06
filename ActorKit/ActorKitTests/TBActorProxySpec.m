@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
+
 #import <ActorKit/ActorKit.h>
 
 
@@ -21,13 +22,13 @@ describe(@"TBActorProxy", ^{
         actor = [[TBActor alloc] init];
     });
     
-    it (@"throws an exception when base class is created", ^{
+    it (@"throws an exception when base class is created.", ^{
         expect(^{
             [TBActorProxy proxyWithActors:@[actor]];
         }).to.raise(TBAKException);
     });
     
-    it (@"throws an exception when base class is initialized", ^{
+    it (@"throws an exception when base class is initialized.", ^{
         expect(^{
             proxy = [[TBActorProxy alloc] initWithActors:@[actor]];
         }).to.raise(TBAKException);

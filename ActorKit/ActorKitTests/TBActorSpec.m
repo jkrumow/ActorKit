@@ -7,6 +7,8 @@
 //
 
 
+#import <ActorKit/ActorKit.h>
+
 #import "TestActor.h"
 
 
@@ -24,8 +26,7 @@ describe(@"TBActor", ^{
     
     describe(@"initialization", ^{
         
-        it(@"initializes itself with a given configuration block", ^{
-            
+        it(@"initializes itself with a given configuration block.", ^{
             actor = [[TestActor alloc] initWithConfiguration:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @5;
@@ -41,37 +42,32 @@ describe(@"TBActor", ^{
             otherActor = [[TestActor alloc] init];
         });
         
-        describe(@"proxies", ^{
+        describe(@"sync", ^{
             
-            it (@"returns a sync proxy", ^{
-                
+            it (@"returns a sync proxy.", ^{
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
-//                 expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
+                //                 expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
             });
             
-            it (@"returns an async proxy", ^{
-                
-                expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-//                 expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
-            });
-        });
-        
-        describe(@"method invocations", ^{
-            
-            it (@"invokes a method synchronuously", ^{
-                
+            it (@"invokes a method synchronuously.", ^{
                 [actor.sync doStuff];
             });
             
-            it (@"invokes a parameterized method synchronuously", ^{
-                
+            it (@"invokes a parameterized method synchronuously.", ^{
                 [actor.sync doStuff:@"foo" withCompletion:^(NSString *string){
                     NSLog(@"string: %@", string);
                 }];
             });
+        });
+        
+        describe(@"async", ^{
             
-            it (@"invokes a parameterized method asynchronuously", ^{
-                
+            it (@"returns an async proxy.", ^{
+                expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
+                //                 expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
+            });
+            
+            it (@"invokes a parameterized method asynchronuously.", ^{
                 waitUntil(^(DoneCallback done) {
                     [actor.async doStuff:@"foo" withCompletion:^(NSString *string){
                         done();
@@ -82,8 +78,7 @@ describe(@"TBActor", ^{
         
         describe(@"pubsub", ^{
             
-            it (@"handles broadcasted subscriptions and publishing", ^{
-                
+            it (@"handles broadcasted subscriptions and publishing.", ^{
                 [actor subscribe:@"one" selector:@selector(handlerOne:)];
                 
                 expect(^{
@@ -93,8 +88,7 @@ describe(@"TBActor", ^{
                 
             });
             
-            it(@"handles messages from a specified actor", ^{
-                
+            it(@"handles messages from a specified actor.", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
                 actor.symbol = @5;
                 
@@ -102,8 +96,7 @@ describe(@"TBActor", ^{
                 expect(actor.symbol).to.equal(@10);
             });
             
-            it(@"ignores messages from an unspecified actor", ^{
-                
+            it(@"ignores messages from an unspecified actor.", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
                 actor.symbol = @5;
                 

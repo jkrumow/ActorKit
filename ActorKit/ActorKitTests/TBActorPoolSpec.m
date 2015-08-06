@@ -7,6 +7,8 @@
 //
 
 
+#import <ActorKit/ActorKit.h>
+
 #import "TestActor.h"
 
 SpecBegin(TBActorPool)
@@ -23,8 +25,7 @@ describe(@"TBActorPool", ^{
     
     describe(@"initialization", ^{
         
-        it(@"creates a pool of actors of its own class", ^{
-            
+        it(@"creates a pool of actors of its own class.", ^{
             pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @1;
@@ -46,23 +47,13 @@ describe(@"TBActorPool", ^{
             otherActor = [[TestActor alloc] init];
         });
         
-        describe(@"proxies", ^{
+        describe(@"sync", ^{
             
             it (@"returns a sync proxy", ^{
-                
                 expect([pool.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
             });
             
-            it (@"returns an async proxy", ^{
-                
-                expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-            });
-        });
-        
-        describe(@"method invocations", ^{
-            
             it(@"dispatches invocations synchronuously to all pooled actors.", ^{
-                
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 actorOne.uuid = @1;
@@ -72,9 +63,15 @@ describe(@"TBActorPool", ^{
                 expect(actorOne.symbol).to.equal(@123);
                 expect(actorTwo.symbol).to.equal(@123);
             });
+        });
+        
+        describe(@"async", ^{
+            
+            it (@"returns an async proxy", ^{
+                expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
+            });
             
             it(@"dispatches invocations asynchronuously to all pooled actors.", ^{
-                
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 actorOne.uuid = @1;
@@ -93,8 +90,7 @@ describe(@"TBActorPool", ^{
         
         describe(@"pubsub", ^{
             
-            it (@"handles broadcasted subscriptions and publishing", ^{
-                
+            it (@"handles broadcasted subscriptions and publishing.", ^{
                 [pool subscribe:@"three" selector:@selector(handlerThree:)];
                 
                 expect(^{
@@ -109,8 +105,7 @@ describe(@"TBActorPool", ^{
                 
             });
             
-            it(@"handles messages from a specified actor", ^{
-                
+            it(@"handles messages from a specified actor.", ^{
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
                 [pool.sync setSymbol:@0];
                 
@@ -123,8 +118,7 @@ describe(@"TBActorPool", ^{
                 expect(actorTwo.symbol).to.equal(@10);
             });
             
-            it(@"ignores messages from an unspecified actor", ^{
-                
+            it(@"ignores messages from an unspecified actor.", ^{
                 [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
                 [pool.sync setSymbol:@0];
                 
