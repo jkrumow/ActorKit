@@ -50,11 +50,11 @@ describe(@"TBActor", ^{
             });
             
             it (@"invokes a method synchronuously.", ^{
-                [actor.sync doStuff];
+                [actor.sync doSomething];
             });
             
             it (@"invokes a parameterized method synchronuously.", ^{
-                [actor.sync doStuff:@"foo" withCompletion:^(NSString *string){
+                [actor.sync doSomething:@"foo" withCompletion:^(NSString *string){
                     NSLog(@"string: %@", string);
                 }];
             });
@@ -69,7 +69,7 @@ describe(@"TBActor", ^{
             
             it (@"invokes a parameterized method asynchronuously.", ^{
                 waitUntil(^(DoneCallback done) {
-                    [actor.async doStuff:@"foo" withCompletion:^(NSString *string){
+                    [actor.async doSomething:@"foo" withCompletion:^(NSString *string){
                         done();
                     }];
                 });

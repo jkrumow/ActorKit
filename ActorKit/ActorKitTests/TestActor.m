@@ -25,14 +25,14 @@
     }
 }
 
-- (void)doStuff
+- (void)doSomething
 {
-    NSLog(@"doStuff.");
+    NSLog(@"doSomething.");
 }
 
-- (void)doStuff:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
+- (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
 {
-    NSLog(@"doStuff %@", stuff);
+    NSLog(@"doSomething %@", stuff);
     
     if (completion) {
         completion(stuff);
