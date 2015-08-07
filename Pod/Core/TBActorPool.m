@@ -68,7 +68,6 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
             idleActor = actor;
         }
     }
-    NSLog(@"found idle actor: %@", idleActor);
     return idleActor;
 }
 
