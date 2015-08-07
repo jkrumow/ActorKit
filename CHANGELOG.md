@@ -2,6 +2,7 @@
 
 ## 0.3.0
 
+- Load distribution in actor pools
 - ActorRegistry
 - class methods to create TBActor and TBActorPool
 
