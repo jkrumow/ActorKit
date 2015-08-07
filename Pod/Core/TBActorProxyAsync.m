@@ -19,10 +19,9 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    NSInvocation *actorInvocation = invocation.tbak_copy;
-    [actorInvocation setTarget:self.actor];
+    [invocation setTarget:self.actor];
     
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:actorInvocation];
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     [self.actor addOperation:operation];
 }
 

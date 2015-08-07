@@ -1,29 +1,29 @@
 //
-//  TBActorProxySync.m
+//  TBActorProxyFuture.m
 //  ActorKit
 //
-//  Created by Julian Krumow on 13.07.15.
+//  Created by Julian Krumow on 07.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActorProxySync.h"
+#import "TBActorProxyFuture.h"
 #import "TBActor.h"
 #import "NSInvocation+ActorKit.h"
 
-@implementation TBActorProxySync
+@implementation TBActorProxyFuture
 
-+ (TBActorProxySync *)proxyWithActor:(TBActor *)actor
++ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor
 {
-    return [[TBActorProxySync alloc] initWithActor:actor];
+    return [[TBActorProxyFuture alloc] initWithActor:actor];
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     [invocation setTarget:self.actor];
-    
+
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
+    [invocation setReturnValue:&operation];
     [self.actor addOperation:operation];
-    [self.actor waitUntilAllOperationsAreFinished];
 }
 
 @end

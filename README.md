@@ -98,6 +98,15 @@ Send a asynchronous message to the actor:
 [actor.async doSomething];
 ```
 
+Send a asynchronous message and receive a future back:
+
+```objc
+XYZ *future = [actor.future name];
+NSString *name = future.result;
+```
+
+**TODO: proper API without casts**
+
 ### Subscribing to messages from other actors
 
 Subscribe to a broadcasted message and set a selector which takes the message's payload as an argument:
@@ -124,7 +133,7 @@ Publish a message with a payload:
 
 ### Actor Pools
 
-The actor pool class `TBActorPool` is a subtype of actor so it is basically a proxy actor which mananges multiple child actors. All messages will be invoked on all actors in the pool.
+The actor pool class `TBActorPool` is a subtype of actor so it is basically a proxy actor which mananges multiple actors. A received message will be forwarded on an available actor in the pool.
 
 Create an actor pool using your actor subclass which you like to pool:
 
@@ -136,7 +145,7 @@ TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(TBActor *actor,
 }];
 ```
 
-The configuration block will be executed for each created actor in the pool.
+The configuration block will be executed on an available actor in the pool.
 
 You can send messages to the pool:
 
@@ -151,7 +160,7 @@ Same goes for subscriptions:
 [pool subscribe:@"messageToWorkers" selector:@selector(handler:)];
 ```
 
-The handler will be executed on each actor in the pool.
+The handler will be executed on an available actor in the pool.
 
 ### Holding actors in a registry
 

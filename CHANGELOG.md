@@ -2,9 +2,10 @@
 
 ## 0.3.0
 
+- Add future proxy
 - Load distribution in actor pools
 - ActorRegistry
-- class methods to create TBActor and TBActorPool
+- Class methods to create TBActor and TBActorPool
 
 ## 0.2.0
 

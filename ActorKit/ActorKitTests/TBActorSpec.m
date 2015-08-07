@@ -54,7 +54,7 @@ describe(@"TBActor", ^{
             
             it (@"returns a sync proxy.", ^{
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
-                //                 expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
+                // expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
             });
             
             it (@"invokes a method synchronuously.", ^{
@@ -72,7 +72,7 @@ describe(@"TBActor", ^{
             
             it (@"returns an async proxy.", ^{
                 expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-                //                 expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
+                // expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
             });
             
             it (@"invokes a parameterized method asynchronuously.", ^{
@@ -81,6 +81,22 @@ describe(@"TBActor", ^{
                         done();
                     }];
                 });
+            });
+        });
+        
+        describe(@"future", ^{
+            
+            it (@"returns a future proxy.", ^{
+                expect([actor.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+                // expect(actor.future).to.beInstanceOf([TBActorProxyFuture class]);
+            });
+            
+            it (@"invokes a parameterized method asynchronuously returning a value through a future.", ^{
+                actor.symbol = @100;
+                NSInvocationOperation *futureOperation = (NSInvocationOperation *)[actor.future symbol];
+                
+                sleep(0.5);
+                expect(futureOperation.result).to.equal(@100);
             });
         });
         
