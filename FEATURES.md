@@ -1,5 +1,10 @@
 # Features:
 
+### Pools
+
+- distribute work to one worker (which is not busy) only
+
+
 ### Actor Crashes
 
 - linking
