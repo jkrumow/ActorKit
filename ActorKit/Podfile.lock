@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ActorKit: d808daf1f4d6af19e2931cb613a6b2dedf7e4dcd
+  ActorKit: 8cf81c2568389eae5ffee28cab4e6a484780647c
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
