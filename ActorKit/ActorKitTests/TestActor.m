@@ -63,5 +63,20 @@
     self.symbol = payload;
 }
 
+- (void)blockSomething
+{
+    NSLog(@"%@ sleeping...", self.uuid);
+    sleep(0.2);
+    NSLog(@"%@ ...done sleeping.", self.uuid);
+}
+
+- (void)blockSomething:(void (^)(void))completion
+{
+    [self blockSomething];
+    if (completion) {
+        completion();
+    }
+}
+
 @end
 

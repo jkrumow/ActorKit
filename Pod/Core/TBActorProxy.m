@@ -13,24 +13,24 @@
 
 @implementation TBActorProxy
 
-+ (TBActorProxy *)proxyWithActors:(NSArray *)actors
++ (TBActorProxy *)proxyWithActor:(TBActor *)actor
 {
     @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     return nil;
 }
 
-- (instancetype)initWithActors:(NSArray *)actors
+- (instancetype)initWithActor:(TBActor *)actor
 {
     if (self.class == TBActorProxy.class) {
         @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     }
-    _actors = actors;
+    _actor = actor;
     return self;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    return [self.actors.firstObject methodSignatureForSelector:selector];
+    return [self.actor methodSignatureForSelector:selector];
 }
 
 @end

@@ -12,8 +12,8 @@
 
 @interface TBActorProxy : NSProxy
 
-@property (nonatomic, strong, readonly) NSArray *actors;
+@property (nonatomic, strong, readonly) TBActor *actor;
 
-+ (TBActorProxy *)proxyWithActors:(NSArray *)actors;
-- (instancetype)initWithActors:(NSArray *)actors;
++ (TBActorProxy *)proxyWithActor:(TBActor *)actor;
+- (instancetype)initWithActor:(TBActor *)actor;
 @end

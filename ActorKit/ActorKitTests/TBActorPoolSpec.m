@@ -46,7 +46,10 @@ describe(@"TBActorPool", ^{
     describe(@"usage", ^{
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:2 configuration:nil];
+            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @(index);
+            }];
             otherActor = [TestActor new];
         });
         
@@ -56,13 +59,14 @@ describe(@"TBActorPool", ^{
                 expect([pool.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
             });
             
-            it(@"dispatches invocations synchronuously to all pooled actors.", ^{
+            it(@"dispatches invocations synchronuously to an idle actor.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
+                [pool.sync blockSomething];
                 [pool.sync setSymbol:@123];
                 expect(actorOne.symbol).to.equal(@123);
-                expect(actorTwo.symbol).to.equal(@123);
+                expect(actorTwo.symbol).to.beNil;
             });
         });
         
@@ -72,17 +76,18 @@ describe(@"TBActorPool", ^{
                 expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
             });
             
-            it(@"dispatches invocations asynchronuously to all pooled actors.", ^{
+            it(@"dispatches invocations asynchronuously to an idle actor.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
                 waitUntil(^(DoneCallback done) {
-                    [pool.async setSymbol:@456 withCompletion:^(NSNumber *symbol){
+                    [pool.async blockSomething:^{
                         done();
                     }];
+                    [pool.async setSymbol:@456];
                 });
                 
-                expect(actorOne.symbol).to.equal(@456);
+                expect(actorOne.symbol).to.beNil;
                 expect(actorTwo.symbol).to.equal(@456);
             });
         });
@@ -100,7 +105,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 expect(actorOne.symbol).to.equal(@8);
-                expect(actorTwo.symbol).to.equal(@8);
+                expect(actorTwo.symbol).to.beNil;
                 
             });
             
@@ -114,7 +119,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 expect(actorOne.symbol).to.equal(@10);
-                expect(actorTwo.symbol).to.equal(@10);
+                expect(actorTwo.symbol).to.beNil;
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
@@ -127,7 +132,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 expect(actorOne.symbol).to.equal(@0);
-                expect(actorTwo.symbol).to.equal(@0);
+                expect(actorTwo.symbol).to.beNil;
             });
         });
     });

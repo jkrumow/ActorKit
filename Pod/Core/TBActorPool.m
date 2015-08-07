@@ -35,12 +35,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (id)sync
 {
-    return [TBActorProxySync proxyWithActors:self.actors];
+    return [TBActorProxySync proxyWithActor:self._idleActor];
 }
 
 - (id)async
 {
-    return [TBActorProxyAsync proxyWithActors:self.actors];
+    return [TBActorProxyAsync proxyWithActor:self._idleActor];
 }
 
 - (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
@@ -56,6 +56,20 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                       [self.sync performSelector:selector withObject:note.userInfo];
 #pragma clang diagnostic pop
                                                   }];
+}
+
+- (TBActor *)_idleActor
+{
+    TBActor *idleActor = nil;
+    NSUInteger lowest = NSUIntegerMax;
+    for (TBActor *actor in self.actors) {
+        if (actor.operationCount < lowest) {
+            lowest = actor.operationCount;
+            idleActor = actor;
+        }
+    }
+    NSLog(@"found idle actor: %@", idleActor);
+    return idleActor;
 }
 
 @end

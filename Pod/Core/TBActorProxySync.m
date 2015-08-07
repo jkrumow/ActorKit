@@ -12,22 +12,19 @@
 
 @implementation TBActorProxySync
 
-+ (TBActorProxySync *)proxyWithActors:(NSArray *)actors
++ (TBActorProxySync *)proxyWithActor:(TBActor *)actor
 {
-    return [[TBActorProxySync alloc] initWithActors:actors];
+    return [[TBActorProxySync alloc] initWithActor:actor];
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    for (TBActor *actor in self.actors) {
-        
-        NSInvocation *actorInvocation = invocation.tbak_copy;
-        [actorInvocation setTarget:actor];
-        
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:actorInvocation];
-        [actor addOperation:operation];
-        [actor waitUntilAllOperationsAreFinished];
-    }
+    NSInvocation *actorInvocation = invocation.tbak_copy;
+    [actorInvocation setTarget:self.actor];
+    
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:actorInvocation];
+    [self.actor addOperation:operation];
+    [self.actor waitUntilAllOperationsAreFinished];
 }
 
 @end
