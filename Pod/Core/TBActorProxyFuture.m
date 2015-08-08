@@ -8,6 +8,7 @@
 
 #import "TBActorProxyFuture.h"
 #import "TBActor.h"
+#import "TBActorFuture.h"
 #import "NSInvocation+ActorKit.h"
 
 @implementation TBActorProxyFuture
@@ -21,9 +22,9 @@
 {
     [invocation setTarget:self.actor];
 
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
-    [invocation setReturnValue:&operation];
-    [self.actor addOperation:operation];
+    TBActorFuture *future = [[TBActorFuture alloc] initWithInvocation:invocation];
+    [invocation setReturnValue:&future];
+    [self.actor addOperation:future];
 }
 
 @end

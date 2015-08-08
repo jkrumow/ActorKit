@@ -27,7 +27,7 @@
 
 - (void)doSomething
 {
-    NSLog(@"doSomething.");
+    NSLog(@"doSomething");
 }
 
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
@@ -65,9 +65,9 @@
 
 - (void)blockSomething
 {
-    NSLog(@"%@ sleeping...", self.uuid);
+    NSLog(@"%@ blockSomething", self.uuid);
     sleep(0.2);
-    NSLog(@"%@ ...done sleeping.", self.uuid);
+    NSLog(@"%@ blockSomething ...done", self.uuid);
 }
 
 - (void)blockSomething:(void (^)(void))completion

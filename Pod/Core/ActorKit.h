@@ -7,6 +7,7 @@
 //
 
 #import "TBActor.h"
+#import "TBActorFuture.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
 #import "TBActorProxyFuture.h"

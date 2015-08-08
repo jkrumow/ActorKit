@@ -93,10 +93,15 @@ describe(@"TBActor", ^{
             
             it (@"invokes a parameterized method asynchronuously returning a value through a future.", ^{
                 actor.symbol = @100;
-                NSInvocationOperation *futureOperation = (NSInvocationOperation *)[actor.future symbol];
                 
-                sleep(0.5);
-                expect(futureOperation.result).to.equal(@100);
+                __block TBActorFuture *future = nil;
+                waitUntil(^(DoneCallback done) {
+                    future = (TBActorFuture *)[actor.future symbol];
+                    future.completionBlock = ^{
+                        done();
+                    };
+                });
+                expect(future.result).to.equal(@100);
             });
         });
         
