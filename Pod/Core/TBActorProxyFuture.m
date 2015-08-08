@@ -11,6 +11,10 @@
 #import "TBActorFuture.h"
 #import "NSInvocation+ActorKit.h"
 
+@interface TBActorProxyFuture ()
+@property (nonatomic, strong) TBActorFuture *future;
+@end
+
 @implementation TBActorProxyFuture
 
 + (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor
@@ -20,11 +24,20 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    [invocation setTarget:self.actor];
+    NSInvocation *forwardedInvocation = invocation.tbak_copy;
+    [forwardedInvocation setTarget:self.actor];
+    self.future = [[TBActorFuture alloc] initWithInvocation:forwardedInvocation];
+    
+    [invocation setReturnValue:&_future];
+    [invocation setSelector:@selector(returnFuture)];
+    [invocation invoke];
+    
+    [self.actor addOperation:self.future];
+}
 
-    TBActorFuture *future = [[TBActorFuture alloc] initWithInvocation:invocation];
-    [invocation setReturnValue:&future];
-    [self.actor addOperation:future];
+- (id)returnFuture
+{
+    return self.future;
 }
 
 @end
