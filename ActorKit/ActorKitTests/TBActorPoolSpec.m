@@ -92,6 +92,29 @@ describe(@"TBActorPool", ^{
             });
         });
         
+        describe(@"future", ^{
+            
+            it (@"returns a future proxy.", ^{
+                expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+            });
+            
+            it (@"invokes a method asynchronuously returning a value through a future.", ^{
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                actorOne.symbol = @100;
+                actorTwo.symbol = @200;
+                
+                __block TBActorFuture *future = nil;
+                waitUntil(^(DoneCallback done) {
+                    [pool.async blockSomething:^{
+                        done();
+                    }];
+                    future = (TBActorFuture *)[pool.future symbol];
+                });
+                expect(future.result).to.equal(@200);
+            });
+        });
+        
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{

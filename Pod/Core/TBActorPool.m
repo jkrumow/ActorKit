@@ -9,6 +9,7 @@
 #import "TBActorPool.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
+#import "TBActorProxyFuture.h"
 
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
@@ -41,6 +42,11 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 - (id)async
 {
     return [TBActorProxyAsync proxyWithActor:self._idleActor];
+}
+
+- (id)future
+{
+    return [TBActorProxyFuture proxyWithActor:self._idleActor];
 }
 
 - (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector

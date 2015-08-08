@@ -54,14 +54,9 @@ describe(@"TBActor", ^{
             
             it (@"returns a sync proxy.", ^{
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
-                // expect(actor.sync).to.beInstanceOf([TBActorProxySync class]);
             });
             
             it (@"invokes a method synchronuously.", ^{
-                [actor.sync doSomething];
-            });
-            
-            it (@"invokes a parameterized method synchronuously.", ^{
                 [actor.sync doSomething:@"foo" withCompletion:^(NSString *string){
                     NSLog(@"string: %@", string);
                 }];
@@ -72,10 +67,9 @@ describe(@"TBActor", ^{
             
             it (@"returns an async proxy.", ^{
                 expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
-                // expect(actor.async).to.beInstanceOf([TBActorProxyAsync class]);
             });
             
-            it (@"invokes a parameterized method asynchronuously.", ^{
+            it (@"invokes a method asynchronuously.", ^{
                 waitUntil(^(DoneCallback done) {
                     [actor.async doSomething:@"foo" withCompletion:^(NSString *string){
                         done();
@@ -88,10 +82,9 @@ describe(@"TBActor", ^{
             
             it (@"returns a future proxy.", ^{
                 expect([actor.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
-                // expect(actor.future).to.beInstanceOf([TBActorProxyFuture class]);
             });
             
-            it (@"invokes a parameterized method asynchronuously returning a value through a future.", ^{
+            it (@"invokes a method asynchronuously returning a value through a future.", ^{
                 actor.symbol = @100;
                 
                 __block TBActorFuture *future = nil;
