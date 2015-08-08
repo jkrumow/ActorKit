@@ -98,7 +98,7 @@ describe(@"TBActorPool", ^{
                 expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
             });
             
-            it (@"invokes a method asynchronuously returning a value through a future.", ^{
+            it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 actorOne.symbol = @100;
