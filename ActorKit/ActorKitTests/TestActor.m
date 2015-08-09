@@ -9,11 +9,18 @@
 #import "TestActor.h"
 
 @implementation TestActor
+@synthesize symbol = _symbol;
 
 - (void)setSymbol:(NSNumber *)symbol
 {
     NSLog(@"setting symbol on actor: %@", self.uuid);
     _symbol = symbol;
+}
+
+- (NSNumber *)symbol
+{
+    NSLog(@"get symbol");
+    return _symbol;
 }
 
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion

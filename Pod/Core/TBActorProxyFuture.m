@@ -28,7 +28,6 @@
     [forwardedInvocation setTarget:self.actor];
     self.future = [[TBActorFuture alloc] initWithInvocation:forwardedInvocation];
     
-    [invocation setReturnValue:&_future];
     [invocation setSelector:@selector(returnFuture)];
     [invocation invoke];
     
@@ -37,6 +36,7 @@
 
 - (id)returnFuture
 {
+    NSLog(@"returnFuture");
     return self.future;
 }
 
