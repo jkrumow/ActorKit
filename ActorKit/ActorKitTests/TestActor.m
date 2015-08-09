@@ -39,6 +39,12 @@
     }
 }
 
+- (NSNumber *)returnSomething
+{
+    NSLog(@"returnSomething");
+    return _symbol;
+}
+
 - (void)handlerOne:(id)payload
 {
     NSLog(@"handlerOne: %@", payload);

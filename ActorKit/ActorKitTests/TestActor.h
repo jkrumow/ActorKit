@@ -16,6 +16,7 @@
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion;
 - (void)doSomething;
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
+- (NSNumber *)returnSomething;
 - (void)handlerOne:(id)payload;
 - (void)handlerTwo:(id)payload;
 - (void)handlerThree:(id)payload;

@@ -109,7 +109,7 @@ describe(@"TBActorPool", ^{
                     [pool.async blockSomething:^{
                         done();
                     }];
-                    future = (TBActorFuture *)[pool.future symbol];
+                    future = (TBActorFuture *)[pool.future returnSomething];
                 });
                 expect(future.result).to.equal(@200);
             });

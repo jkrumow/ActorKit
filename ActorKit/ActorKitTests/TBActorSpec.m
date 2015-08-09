@@ -89,7 +89,7 @@ describe(@"TBActor", ^{
                 
                 __block TBActorFuture *future;
                 waitUntil(^(DoneCallback done) {
-                    future = (TBActorFuture *)[actor.future symbol];
+                    future = (TBActorFuture *)[actor.future returnSomething];
                     future.completionBlock = ^{
                         done();
                     };
