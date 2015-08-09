@@ -13,6 +13,7 @@ A lightweight actor framework in Objective-C.
 * Actors
 * Actor Pools
 * Syncronous and asyncronous invocations
+* Futures
 * Message subscription and publication
 * Actor registry
 
