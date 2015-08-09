@@ -94,7 +94,6 @@ describe(@"TBActor", ^{
                         done();
                     };
                 });
-//                sleep(0.5);
                 expect(future.result).to.equal(@100);
             });
         });

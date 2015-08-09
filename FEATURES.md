@@ -1,9 +1,5 @@
 # Features:
 
-### Pools
-
-- evaluate better strategy to distribute work to available actor
-
 ### FutureProxy
 
 - check thread safety
