@@ -36,7 +36,6 @@
 
 - (id)returnFuture
 {
-    NSLog(@"returnFuture");
     return self.future;
 }
 
