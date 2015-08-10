@@ -170,36 +170,34 @@ describe(@"TBActorPool", ^{
         });
     });
     
-    /*
-     describe(@"thread safety", ^{
-     
-     beforeEach(^{
-     pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
-     TestActor *testActor = (TestActor *)actor;
-     testActor.uuid = @(index);
-     }];
-     otherActor = [TestActor new];
-     testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
-     });
-     
-     it(@"seeds work on multiple actors", ^{
-     size_t loadSize = 30;
-     dispatch_apply(loadSize, testQueue, ^(size_t index) {
-     [pool.async blockSomething];
-     });
-     sleep(20);
-     });
-     
-     it(@"seeds work on multiple subscribers", ^{
-     size_t loadSize = 30;
-     [pool subscribe:@"block" selector:@selector(blockSomething)];
-     dispatch_apply(loadSize, testQueue, ^(size_t index) {
-     [pool publish:@"block" payload:@500];
-     });
-     sleep(20);
-     });
-     });
-     */
+    describe(@"thread safety", ^{
+        
+        beforeEach(^{
+            pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @(index);
+            }];
+            otherActor = [TestActor new];
+            testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+        });
+        
+        it(@"seeds work on multiple actors", ^{
+            size_t loadSize = 30;
+            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                [pool.async blockSomething];
+            });
+            sleep(2);
+        });
+        
+        it(@"seeds work on multiple subscribers", ^{
+            size_t loadSize = 30;
+            [pool subscribe:@"block" selector:@selector(blockSomething)];
+            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                [pool publish:@"block" payload:@500];
+            });
+            sleep(2);
+        });
+    });
 });
 
 SpecEnd

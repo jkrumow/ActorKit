@@ -1,9 +1,13 @@
 #!/bin/sh
 
-a=0
+i=0
+max=$1
 
-until [ ! $a -lt 10 ]
+echo "Will perform $max iterations"
+
+until [ ! $i -lt $max ]
 do
-   a=`expr $a + 1`
+   i=`expr $i + 1`
+   echo "Running iteration $i"
    xctool run-tests -workspace ActorKit/ActorKit.xcworkspace -scheme ActorKitTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 done
