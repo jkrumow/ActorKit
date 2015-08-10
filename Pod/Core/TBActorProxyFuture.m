@@ -24,10 +24,12 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
+    // Create invocation for message to be sent to the actor - result will be stored in 'future.result'
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
     [forwardedInvocation setTarget:self.actor];
     self.future = [[TBActorFuture alloc] initWithInvocation:forwardedInvocation];
     
+    // Return future back to original sender - change invocation selector to helper method
     [invocation setSelector:@selector(returnFuture)];
     [invocation invoke];
     
