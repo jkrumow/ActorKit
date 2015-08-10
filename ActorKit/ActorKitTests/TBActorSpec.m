@@ -46,8 +46,14 @@ describe(@"TBActor", ^{
     describe(@"usage", ^{
         
         beforeEach(^{
-            actor = [TestActor new];
-            otherActor = [TestActor new];
+            actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @0;
+            }];
+            otherActor = [TestActor actorWithConfiguration:^(TBActor *actor) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @1;
+            }];
         });
         
         describe(@"sync", ^{

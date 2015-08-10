@@ -13,13 +13,13 @@
 
 - (void)setSymbol:(NSNumber *)symbol
 {
-    NSLog(@"setting symbol on actor: %@", self.uuid);
+    NSLog(@"%@ setSymbol: %@", self.uuid, symbol);
     _symbol = symbol;
 }
 
 - (NSNumber *)symbol
 {
-    NSLog(@"get symbol");
+    NSLog(@"%@ get symbol", self.uuid);
     return _symbol;
 }
 
@@ -34,12 +34,12 @@
 
 - (void)doSomething
 {
-    NSLog(@"doSomething");
+    NSLog(@"%@ doSomething", self.uuid);
 }
 
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
 {
-    NSLog(@"doSomething %@", stuff);
+    [self doSomething];
     
     if (completion) {
         completion(stuff);
@@ -48,31 +48,31 @@
 
 - (NSNumber *)returnSomething
 {
-    NSLog(@"returnSomething");
+    NSLog(@"%@ returnSomething", self.uuid);
     return _symbol;
 }
 
 - (void)handlerOne:(id)payload
 {
-    NSLog(@"handlerOne: %@", payload);
+    NSLog(@"%@ handlerOne: %@", self.uuid, payload);
     self.symbol = payload;
 }
 
 - (void)handlerTwo:(id)payload
 {
-    NSLog(@"handlerTwo: %@", payload);
+    NSLog(@"%@ handlerTwo: %@", self.uuid, payload);
     self.symbol = payload;
 }
 
 - (void)handlerThree:(id)payload
 {
-    NSLog(@"handlerThree: %@", payload);
+    NSLog(@"%@ handlerThree: %@", self.uuid, payload);
     self.symbol = payload;
 }
 
 - (void)handlerFour:(id)payload
 {
-    NSLog(@"handlerFour: %@", payload);
+    NSLog(@"%@ handlerFour: %@", self.uuid, payload);
     self.symbol = payload;
 }
 
