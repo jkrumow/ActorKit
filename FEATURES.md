@@ -2,7 +2,6 @@
 
 ### FutureProxy
 
-- check thread safety
 - casting to Future instead of real return value?
 - find better solution - is  `-forwardinvocation:` pattern really necessary?
 

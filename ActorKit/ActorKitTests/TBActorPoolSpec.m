@@ -101,11 +101,6 @@ describe(@"TBActorPool", ^{
             });
             
             it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
-                actorOne.symbol = @100;
-                actorTwo.symbol = @200;
-                
                 __block TBActorFuture *future = nil;
                 waitUntil(^(DoneCallback done) {
                     [pool.async blockSomething:^{
@@ -113,7 +108,7 @@ describe(@"TBActorPool", ^{
                     }];
                     future = (TBActorFuture *)[pool.future returnSomething];
                 });
-                expect(future.result).to.equal(@200);
+                expect(future.result).to.equal(@1);
             });
         });
         
@@ -172,6 +167,8 @@ describe(@"TBActorPool", ^{
     
     describe(@"thread safety", ^{
         
+        __block size_t loadSize = 30;
+        
         beforeEach(^{
             pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
@@ -181,21 +178,38 @@ describe(@"TBActorPool", ^{
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
         });
         
-        it(@"seeds work on multiple actors", ^{
-            size_t loadSize = 30;
+        it(@"seeds sync work on multiple actors", ^{
+            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                NSNumber *uuid = [pool.sync uuid];
+                NSLog(@"uuid: %@", uuid);
+            });
+            sleep(1);
+        });
+        
+        it(@"seeds async work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 [pool.async blockSomething];
             });
-            sleep(2);
+            sleep(1);
+        });
+        
+        it(@"seeds future work on multiple actors", ^{
+            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                TBActorFuture *future = (TBActorFuture *)[pool.future returnSomething];
+                __block TBActorFuture *blockFuture = future;
+                future.completionBlock = ^{
+                    NSLog(@"future: uuid %@", blockFuture.result);
+                };
+            });
+            sleep(1);
         });
         
         it(@"seeds work on multiple subscribers", ^{
-            size_t loadSize = 30;
             [pool subscribe:@"block" selector:@selector(blockSomething)];
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 [pool publish:@"block" payload:@500];
             });
-            sleep(2);
+            sleep(1);
         });
     });
 });

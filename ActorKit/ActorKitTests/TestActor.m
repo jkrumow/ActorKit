@@ -52,8 +52,8 @@
 
 - (NSNumber *)returnSomething
 {
-    NSLog(@"%@ returnSomething", self.uuid);
-    return _symbol;
+    NSLog(@"%@ returnSomething %@", self.uuid, self.uuid);
+    return self.uuid;
 }
 
 - (void)handlerOne:(id)payload

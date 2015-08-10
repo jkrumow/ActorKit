@@ -91,14 +91,12 @@ describe(@"TBActor", ^{
             });
             
             it (@"invokes a method asynchronuously returning a value through a future.", ^{
-                actor.symbol = @100;
-                
                 __block TBActorFuture *future;
                 waitUntil(^(DoneCallback done) {
                     future = (TBActorFuture *)[actor.future returnSomething];
                     done();
                 });
-                expect(future.result).to.equal(@100);
+                expect(future.result).to.equal(@0);
             });
         });
         
