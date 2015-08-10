@@ -15,12 +15,14 @@ SpecBegin(TBActorPool)
 
 __block TBActorPool *pool;
 __block TestActor *otherActor;
+__block dispatch_queue_t testQueue;
 
 describe(@"TBActorPool", ^{
     
     afterEach(^{
         pool = nil;
         otherActor = nil;
+        testQueue = nil;
     });
     
     describe(@"initialization", ^{
@@ -118,47 +120,86 @@ describe(@"TBActorPool", ^{
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{
-                [pool subscribe:@"three" selector:@selector(handlerThree:)];
-                
-                expect(^{
-                    [pool publish:@"three" payload:@8];
-                }).to.notify(@"three");
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
+                
+                [pool subscribe:@"three" selector:@selector(handlerThree:)];
+                
+                waitUntil(^(DoneCallback done) {
+                    actorOne.monitorBlock = ^{
+                        done();
+                    };
+                    [pool publish:@"three" payload:@8];
+                });
                 
                 expect(actorOne.symbol).to.equal(@8);
                 expect(actorTwo.symbol).to.beNil;
-                
             });
             
             it(@"handles messages from a specified actor.", ^{
-                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
-                [pool.sync setSymbol:@0];
-                
-                [otherActor publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
+                
+                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                
+                waitUntil(^(DoneCallback done) {
+                    actorOne.monitorBlock = ^{
+                        done();
+                    };
+                    [otherActor publish:@"four" payload:@10];
+                });
                 
                 expect(actorOne.symbol).to.equal(@10);
                 expect(actorTwo.symbol).to.beNil;
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
-                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
-                [pool.sync setSymbol:@0];
-                
-                [pool publish:@"four" payload:@10];
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                expect(actorOne.symbol).to.equal(@0);
+                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                
+                [pool publish:@"four" payload:@10];
+                
+                expect(actorOne.symbol).to.beNil;
                 expect(actorTwo.symbol).to.beNil;
             });
         });
     });
+    
+    /*
+     describe(@"thread safety", ^{
+     
+     beforeEach(^{
+     pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+     TestActor *testActor = (TestActor *)actor;
+     testActor.uuid = @(index);
+     }];
+     otherActor = [TestActor new];
+     testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+     });
+     
+     it(@"seeds work on multiple actors", ^{
+     size_t loadSize = 30;
+     dispatch_apply(loadSize, testQueue, ^(size_t index) {
+     [pool.async blockSomething];
+     });
+     sleep(20);
+     });
+     
+     it(@"seeds work on multiple subscribers", ^{
+     size_t loadSize = 30;
+     [pool subscribe:@"block" selector:@selector(blockSomething)];
+     dispatch_apply(loadSize, testQueue, ^(size_t index) {
+     [pool publish:@"block" payload:@500];
+     });
+     sleep(20);
+     });
+     });
+     */
 });
 
 SpecEnd

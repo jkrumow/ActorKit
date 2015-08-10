@@ -15,11 +15,15 @@
 {
     NSLog(@"%@ setSymbol: %@", self.uuid, symbol);
     _symbol = symbol;
+    
+    if (self.monitorBlock) {
+        self.monitorBlock();
+    }
 }
 
 - (NSNumber *)symbol
 {
-    NSLog(@"%@ get symbol", self.uuid);
+    NSLog(@"%@ get symbol: %@", self.uuid, _symbol);
     return _symbol;
 }
 
@@ -92,4 +96,3 @@
 }
 
 @end
-

@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSNumber *uuid;
 @property (nonatomic, strong) NSNumber *symbol;
+@property (nonatomic, copy) void (^monitorBlock)(void);
 
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion;
 - (void)doSomething;

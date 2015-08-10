@@ -59,7 +59,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [self.sync performSelector:selector withObject:note.userInfo];
+                                                      [self.async performSelector:selector withObject:note.userInfo];
 #pragma clang diagnostic pop
                                                   }];
 }
@@ -68,7 +68,9 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 {
     TBActor *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;
-    for (TBActor *actor in self.actors) {
+    
+    for (NSUInteger i=0; i < self.actors.count; i++) {
+        TBActor *actor = [self.actors objectAtIndex:i];
         if (actor.operationCount == 0) {
             idleActor = actor;
             break;
