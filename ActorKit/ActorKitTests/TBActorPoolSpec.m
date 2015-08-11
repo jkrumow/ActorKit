@@ -89,8 +89,12 @@ describe(@"TBActorPool", ^{
                     [pool.async setSymbol:@456];
                 });
                 
-                expect(actorOne.symbol).to.beNil;
-                expect(actorTwo.symbol).to.equal(@456);
+                if (actorOne.symbol == nil && actorTwo.symbol == nil) {
+                    XCTFail(@"One actor must set symbol.");
+                }
+                if (actorOne.symbol != nil && actorTwo.symbol != nil) {
+                    XCTFail(@"Only one actor can set symbol.");
+                }
             });
         });
         
