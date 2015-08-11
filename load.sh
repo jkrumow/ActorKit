@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 i=0
 max=$1
 
