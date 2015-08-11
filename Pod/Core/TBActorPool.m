@@ -59,7 +59,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [self.sync performSelector:selector withObject:note.userInfo];
+                                                      [self.async performSelector:selector withObject:note.userInfo];
 #pragma clang diagnostic pop
                                                   }];
 }

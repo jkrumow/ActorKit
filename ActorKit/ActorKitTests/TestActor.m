@@ -15,11 +15,15 @@
 {
     NSLog(@"%@ setSymbol: %@", self.uuid, symbol);
     _symbol = symbol;
+    
+    if (self.monitorBlock) {
+        self.monitorBlock();
+    }
 }
 
 - (NSNumber *)symbol
 {
-    NSLog(@"%@ get symbol", self.uuid);
+    NSLog(@"%@ get symbol: %@", self.uuid, _symbol);
     return _symbol;
 }
 
@@ -48,8 +52,8 @@
 
 - (NSNumber *)returnSomething
 {
-    NSLog(@"%@ returnSomething", self.uuid);
-    return _symbol;
+    NSLog(@"%@ returnSomething %@", self.uuid, self.uuid);
+    return self.uuid;
 }
 
 - (void)handlerOne:(id)payload
@@ -92,4 +96,3 @@
 }
 
 @end
-

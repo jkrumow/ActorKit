@@ -6,6 +6,7 @@ install:
 
 script:
   - xctool test -workspace ActorKit/ActorKit.xcworkspace -scheme ActorKitTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
+  - sh load.sh 20
 
 after_success:
   - bundle exec slather
