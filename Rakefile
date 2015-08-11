@@ -14,11 +14,11 @@ end
 
 desc "Run stress test"
 task :stress_test do
-	puts "Will perform #{STRESS_TEST_ITERATIONS} iterations"
+  puts "Will perform #{STRESS_TEST_ITERATIONS} iterations"
   
   for i in 1..STRESS_TEST_ITERATIONS
-  	puts "Running iteration #{i}"
-  	run_tests
+    puts "Running iteration #{i}"
+    run_tests
   end
 end
 
