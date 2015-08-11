@@ -102,7 +102,7 @@ Send a asynchronous message to the actor:
 Send a asynchronous message and receive a future back:
 
 ```objc
-XYZ *future = [actor.future name];
+TBActorFuture *future = (TBActorFuture *)[actor.future name];
 NSString *name = future.result;
 ```
 
@@ -153,6 +153,8 @@ You can send messages to the pool:
 ```objc
 [pool.sync setName:@"worker"];
 [pool.async doSomething];
+TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
+
 ```
 
 Same goes for subscriptions:
