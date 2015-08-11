@@ -26,7 +26,6 @@
 		15A281191B73E60D0069A18B /* TestActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestActor.h; sourceTree = "<group>"; };
 		15A2811A1B73E60D0069A18B /* TestActor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestActor.m; sourceTree = "<group>"; };
 		15A281201B73E76C0069A18B /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
-		15A281211B73E76C0069A18B /* FEATURES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = FEATURES.md; path = ../FEATURES.md; sourceTree = "<group>"; };
 		15A281221B73E76C0069A18B /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		15A281231B73E76C0069A18B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		15C724731B73FB00003117AF /* TBActorRegistrySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorRegistrySpec.m; sourceTree = "<group>"; };
@@ -95,7 +94,6 @@
 				3B5175FA1B74D03700C7E67B /* ActorKit.podspec */,
 				15A281201B73E76C0069A18B /* CHANGELOG.md */,
 				15A281231B73E76C0069A18B /* README.md */,
-				15A281211B73E76C0069A18B /* FEATURES.md */,
 				15A281221B73E76C0069A18B /* LICENSE */,
 			);
 			name = "Podspec Metadata";
