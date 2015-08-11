@@ -111,7 +111,7 @@ describe(@"TBActorPool", ^{
                     }];
                     future = (TBActorFuture *)[pool.future returnSomething];
                 });
-                expect(future.result).to.equal(@200);
+                expect(future.result).to.beInTheRangeOf(@100, @200);
             });
         });
         

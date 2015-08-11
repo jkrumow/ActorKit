@@ -96,7 +96,9 @@ describe(@"TBActor", ^{
                 __block TBActorFuture *future;
                 waitUntil(^(DoneCallback done) {
                     future = (TBActorFuture *)[actor.future returnSomething];
-                    done();
+                    future.completionBlock = ^{
+                        done();
+                    };
                 });
                 expect(future.result).to.equal(@100);
             });
