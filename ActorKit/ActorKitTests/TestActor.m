@@ -56,6 +56,12 @@
     return self.uuid;
 }
 
+- (NSNumber *)returnSomethingBlocking
+{
+    sleep(0.2);
+    return [self returnSomething];
+}
+
 - (void)handlerOne:(id)payload
 {
     NSLog(@"%@ handlerOne: %@", self.uuid, payload);

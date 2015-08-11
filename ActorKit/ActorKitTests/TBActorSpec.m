@@ -93,7 +93,7 @@ describe(@"TBActor", ^{
             it (@"invokes a method asynchronuously returning a value through a future.", ^{
                 __block TBActorFuture *future;
                 waitUntil(^(DoneCallback done) {
-                    future = (TBActorFuture *)[actor.future returnSomething];
+                    future = (TBActorFuture *)[actor.future returnSomethingBlocking];
                     future.completionBlock = ^{
                         done();
                     };
