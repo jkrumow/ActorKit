@@ -45,7 +45,7 @@ describe(@"TBActorPool", ^{
         });
     });
     
-    describe(@"usage", ^{
+    describe(@"invocations", ^{
         
         beforeEach(^{
             pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {

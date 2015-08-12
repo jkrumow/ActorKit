@@ -43,7 +43,7 @@ describe(@"TBActor", ^{
         });
     });
     
-    describe(@"usage", ^{
+    describe(@"invocations", ^{
         
         beforeEach(^{
             actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
