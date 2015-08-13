@@ -98,24 +98,6 @@ describe(@"TBActorPool", ^{
             });
         });
         
-        describe(@"future", ^{
-            
-            it (@"returns a future proxy.", ^{
-                expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
-            });
-            
-            it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
-                __block TBActorFuture *future = nil;
-                waitUntil(^(DoneCallback done) {
-                    [pool.async blockSomething:^{
-                        done();
-                    }];
-                    future = (TBActorFuture *)[pool.future returnSomething];
-                });
-                expect(future.result).to.beInTheRangeOf(@0, @1);
-            });
-        });
-        
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{
@@ -193,17 +175,6 @@ describe(@"TBActorPool", ^{
         it(@"seeds async work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 [pool.async blockSomething];
-            });
-            sleep(1);
-        });
-        
-        it(@"seeds future work on multiple actors", ^{
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                TBActorFuture *future = (TBActorFuture *)[pool.future returnSomething];
-                __block TBActorFuture *blockFuture = future;
-                future.completionBlock = ^{
-                    NSLog(@"future: uuid %@", blockFuture.result);
-                };
             });
             sleep(1);
         });

@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.4.0
+
+- Moved futures into separate (experimental) sub-dependency 'Futures'
+
 ## 0.3.0
 
 - Add future proxy

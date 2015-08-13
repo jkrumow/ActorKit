@@ -84,24 +84,6 @@ describe(@"TBActor", ^{
             });
         });
         
-        describe(@"future", ^{
-            
-            it (@"returns a future proxy.", ^{
-                expect([actor.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
-            });
-            
-            it (@"invokes a method asynchronuously returning a value through a future.", ^{
-                __block TBActorFuture *future;
-                waitUntil(^(DoneCallback done) {
-                    future = (TBActorFuture *)[actor.future returnSomethingBlocking];
-                    future.completionBlock = ^{
-                        done();
-                    };
-                });
-                expect(future.result).to.equal(@0);
-            });
-        });
-        
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{

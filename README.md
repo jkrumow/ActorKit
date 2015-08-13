@@ -13,7 +13,6 @@ A lightweight actor framework in Objective-C.
 * Actors
 * Actor Pools
 * Syncronous and asyncronous invocations
-* Futures
 * Message subscription and publication
 * Actor registry
 
@@ -99,15 +98,6 @@ Send a asynchronous message to the actor:
 [actor.async doSomething];
 ```
 
-Send a asynchronous message and receive a future back:
-
-```objc
-TBActorFuture *future = (TBActorFuture *)[actor.future name];
-NSString *name = future.result;
-```
-
-**TODO: proper API without casts**
-
 ### Subscribing to messages from other actors
 
 Subscribe to a broadcasted message and set a selector which takes the message's payload as an argument:
@@ -153,8 +143,6 @@ You can send messages to the pool:
 ```objc
 [pool.sync setName:@"worker"];
 [pool.async doSomething];
-TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
-
 ```
 
 Same goes for subscriptions:
@@ -186,6 +174,26 @@ Remove actors and pools from the registry:
 [registry removeActorWithName:@"actor"];
 [registry removeActorWithName:@"pool"];
 ```
+
+### (experimental) Futures
+
+Actors and pool can return a future for an asynchronous task.
+
+```objc
+#import <ActorKit/Futures.h>
+```
+
+Send a asynchronous message and receive a future back:
+
+```objc
+TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
+NSString *value = future.result;
+
+TBActorFuture *future = (TBActorFuture *)[pool.future returnSomething];
+NSString *value = future.result;
+```
+
+**TODO: proper API without casts**
 
 
 ## Useful Theory on Actors

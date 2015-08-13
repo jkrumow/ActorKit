@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
-  s.version          = "0.3.0"
+  s.version          = "0.4.0"
   s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
                        Brings the actor model to Objective-C.
@@ -8,7 +8,6 @@ Pod::Spec.new do |s|
                        * Actors
                        * Actor Pools
                        * Syncronous and asyncronous invocations
-                       * Futures
                        * Message subscription and publication
                        * Actor registry
                        DESC
@@ -26,5 +25,10 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
   s.subspec 'Core' do |core|
     core.source_files = 'Pod/Core'
+  end
+
+  s.subspec 'Futures' do |futures|
+    futures.source_files = 'Pod/Futures'
+    futures.dependency 'ActorKit/Core'
   end
 end
