@@ -24,7 +24,6 @@ typedef void (^TBActorPoolConfigurationBlock)(TBActor *actor, NSUInteger index);
 
 - (id)sync;
 - (id)async;
-- (id)future;
 
 - (void)subscribe:(NSString *)messageName selector:(SEL)selector;
 - (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;

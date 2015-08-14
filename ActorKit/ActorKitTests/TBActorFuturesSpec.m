@@ -43,26 +43,24 @@ describe(@"TBActorFutures", ^{
     describe(@"future", ^{
         
         it (@"returns a future proxy.", ^{
-            expect([actor.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+            expect([[actor future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
         
-        /*
         it (@"invokes a method asynchronuously returning a value through a future.", ^{
             __block TBActorFuture *future;
             waitUntil(^(DoneCallback done) {
-                future = (TBActorFuture *)[actor.future returnSomethingBlocking];
-                future.completionBlock = ^{
+                future = (TBActorFuture *)[[actor future:^(id value){
                     done();
-                };
+                }] returnSomethingBlocking];
+                
             });
             expect(future.result).to.equal(@0);
         });
-         */
     });
 });
 
 describe(@"TBActorPool", ^{
-    
+    /*
     beforeEach(^{
         pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
             TestActor *testActor = (TestActor *)actor;
@@ -79,11 +77,11 @@ describe(@"TBActorPool", ^{
     });
 
     describe(@"future", ^{
-        
+
         it (@"returns a future proxy.", ^{
-            expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+            expect([[pool future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
-        /*
+
         it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
             __block TBActorFuture *future = nil;
             waitUntil(^(DoneCallback done) {
@@ -94,12 +92,10 @@ describe(@"TBActorPool", ^{
             });
             expect(future.result).to.beInTheRangeOf(@0, @1);
         });
-         */
     });
 
     describe(@"thread safety", ^{
         
-        /*
         __block size_t loadSize = 30;
         it(@"seeds future work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
@@ -111,8 +107,8 @@ describe(@"TBActorPool", ^{
             });
             sleep(1);
         });
-         */
     });
+     */
 });
 
 SpecEnd

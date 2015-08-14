@@ -1,6 +1,6 @@
 //
 //  TBActorProxyFuture.m
-//  ActorKit
+//  ActorKitFutures
 //
 //  Created by Julian Krumow on 07.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
@@ -13,13 +13,21 @@
 
 @interface TBActorProxyFuture ()
 @property (nonatomic, strong) TBActorFuture *future;
+@property (nonatomic, copy) void(^completion)(id value);
 @end
 
 @implementation TBActorProxyFuture
 
-+ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor
++ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor completion:(void (^)(id))completion
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor];
+}
+
+- (instancetype)initWithActor:(TBActor *)actor completion:(void (^)(id))completion
+{
+    self = [super initWithActor:actor];
+    self.completion = completion;
+    return self;
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation

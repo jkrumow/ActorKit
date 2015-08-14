@@ -87,11 +87,6 @@ static NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.TBActor";
     return [TBActorProxyAsync proxyWithActor:self];
 }
 
-- (id)future
-{
-	return [TBActorProxyFuture proxyWithActor:self];
-}
-
 #pragma mark - Pubsub
 
 - (void)subscribe:(NSString *)messageName selector:(SEL)selector
