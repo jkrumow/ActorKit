@@ -11,3 +11,4 @@
 #import "TBActorFuture.h"
 #import "TBActorProxyFuture.h"
 #import "TBActor+Futures.h"
+#import "TBActorPool+Futures.h"

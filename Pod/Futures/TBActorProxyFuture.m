@@ -13,20 +13,28 @@
 
 @interface TBActorProxyFuture ()
 @property (nonatomic, strong) TBActorFuture *future;
-@property (nonatomic, copy) void(^completion)(id value);
+@property (nonatomic, copy) void (^completion)(id);
+
 @end
 
 @implementation TBActorProxyFuture
 
-+ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor completion:(void (^)(id))completion
++ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor];
+}
+
++ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor completion:(void (^)(id))completion
+{
+    return [[TBActorProxyFuture alloc] initWithActor:actor completion:completion];
 }
 
 - (instancetype)initWithActor:(TBActor *)actor completion:(void (^)(id))completion
 {
     self = [super initWithActor:actor];
-    self.completion = completion;
+    if (self) {
+        self.completion = completion;
+    }
     return self;
 }
 
@@ -36,6 +44,14 @@
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
     [forwardedInvocation setTarget:self.actor];
     self.future = [[TBActorFuture alloc] initWithInvocation:forwardedInvocation];
+    
+    // Hook up completion block.
+    __block TBActorProxyFuture *blockSelf = self;
+    [self.future setCompletionBlock:^{
+        if (blockSelf.completion) {
+            blockSelf.completion(blockSelf.future.result);
+        }
+    }];
     
     // Return future back to original sender - change invocation selector to helper method
     [invocation setSelector:@selector(returnFuture)];

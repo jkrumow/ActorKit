@@ -11,6 +11,11 @@
 
 @implementation TBActor (Futures)
 
+- (id)future
+{
+    return [TBActorProxyFuture proxyWithActor:self];
+}
+
 - (id)future:(void (^)(id))completion
 {
     return [TBActorProxyFuture proxyWithActor:self completion:completion];

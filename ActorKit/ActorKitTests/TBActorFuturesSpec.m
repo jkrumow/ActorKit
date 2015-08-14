@@ -50,6 +50,7 @@ describe(@"TBActorFutures", ^{
             __block TBActorFuture *future;
             waitUntil(^(DoneCallback done) {
                 future = (TBActorFuture *)[[actor future:^(id value){
+                    NSLog(@"FUTURE: result: %@", value);
                     done();
                 }] returnSomethingBlocking];
                 
@@ -60,7 +61,7 @@ describe(@"TBActorFutures", ^{
 });
 
 describe(@"TBActorPool", ^{
-    /*
+
     beforeEach(^{
         pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
             TestActor *testActor = (TestActor *)actor;
@@ -99,16 +100,13 @@ describe(@"TBActorPool", ^{
         __block size_t loadSize = 30;
         it(@"seeds future work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                TBActorFuture *future = (TBActorFuture *)[pool.future returnSomething];
-                __block TBActorFuture *blockFuture = future;
-                future.completionBlock = ^{
-                    NSLog(@"future: uuid %@", blockFuture.result);
-                };
+                [[pool future:^(id result){
+                    NSLog(@"FUTURE: result: %@", result);
+                }] returnSomething];
             });
             sleep(1);
         });
     });
-     */
 });
 
 SpecEnd
