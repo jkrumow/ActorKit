@@ -186,15 +186,22 @@ Actors and pool can return a future for an asynchronous task.
 Send a asynchronous message and receive a future back:
 
 ```objc
-TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
-NSString *value = future.result;
+TBActorFuture *future = (TBActorFuture *)[actor.future:^(id result) {
 
-TBActorFuture *future = (TBActorFuture *)[pool.future returnSomething];
+    // ...
+} returnSomething];
+
 NSString *value = future.result;
 ```
 
-**TODO: proper API without casts**
+```objc
+TBActorFuture *future = (TBActorFuture *)[pool.future:^(id result) {
+    
+    // ...
+} returnSomething];
 
+NSString *value = future.result;
+```
 
 ## Useful Theory on Actors
 
