@@ -10,6 +10,19 @@
 
 @interface TBActorPool (Futures)
 
+/**
+ *  Creates a TBActorProxyFuture instance to handle the message sent to the actor.
+ *
+ *  @return The TBActorProxyFuture instance.
+ */
 - (id)future;
+
+/**
+ *  Creates a TBActorProxyFuture instance to handle the message sent to the actor.
+ *
+ *  @param completion The completion block of the future.
+ *
+ *  @return The TBActorProxyFuture instance.
+ */
 - (id)future:(void (^)(id result))completion;
 @end

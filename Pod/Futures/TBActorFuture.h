@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  This class represents a future.
+ */
 @interface TBActorFuture : NSInvocationOperation
 
 @end
