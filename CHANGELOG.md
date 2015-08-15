@@ -14,7 +14,7 @@
 
 - Actors
 - Actor Pools
-- Syncronous and asyncronous invocations
+- synchronous and asynchronous invocations
 - Message subscription and publication
 
 ## 0.1.0
