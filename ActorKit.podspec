@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
                        * Actors
                        * Actor Pools
                        * Synchronous and asynchronous invocations
+                       * Futures
                        * Message subscription and publication
                        * Actor registry
                        DESC

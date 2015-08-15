@@ -13,6 +13,7 @@ A lightweight actor framework in Objective-C.
 * Actors
 * Actor Pools
 * synchronous and asynchronous invocations
+* Futures
 * Message subscription and publication
 * Actor registry
 
@@ -152,6 +153,30 @@ Same goes for subscriptions:
 ```
 
 The handler will be executed on an available actor in the pool.
+
+### (experimental) Futures
+
+Actors and pool can return a future for an asynchronous task.
+
+```objc
+#import <ActorKit/Futures.h>
+```
+
+Send a asynchronous message and receive a future back:
+
+```objc
+TBActorFuture *future = (TBActorFuture *)[[actor future:^(id result) {
+
+    // ...
+}] returnSomething];
+```
+
+```objc
+TBActorFuture *future = (TBActorFuture *)[[pool future:^(id result) {
+    
+    // ...
+}] returnSomething];
+```
 
 ### Holding actors in a registry
 
