@@ -12,7 +12,7 @@ A lightweight actor framework in Objective-C.
 
 * Actors
 * Actor Pools
-* synchronous and asynchronous invocations
+* Synchronous and asynchronous invocations
 * Futures
 * Message subscription and publication
 * Actor registry
@@ -165,14 +165,12 @@ Actors and pool can return a future for an asynchronous task.
 Send a asynchronous message and receive a future back:
 
 ```objc
-TBActorFuture *future = (TBActorFuture *)[[actor future:^(id result) {
-
-    // ...
-}] returnSomething];
+TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
+id result = future.result;
 ```
 
 ```objc
-TBActorFuture *future = (TBActorFuture *)[[pool future:^(id result) {
+[[pool future:^(id result) {
     
     // ...
 }] returnSomething];
