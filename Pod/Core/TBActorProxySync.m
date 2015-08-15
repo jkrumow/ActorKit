@@ -12,7 +12,7 @@
 
 @implementation TBActorProxySync
 
-+ (TBActorProxySync *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(TBActor *)actor
 {
     return [[TBActorProxySync alloc] initWithActor:actor];
 }

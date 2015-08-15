@@ -19,7 +19,7 @@
 
 @implementation TBActorProxyFuture
 
-+ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(TBActor *)actor
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor];
 }

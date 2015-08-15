@@ -11,5 +11,6 @@
 #import "TBActorProxyAsync.h"
 #import "TBActorPool.h"
 #import "TBActorRegistry.h"
+#import "TBActor+Pools.h"
 #import "NSException+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
