@@ -105,9 +105,14 @@ Subscribe to a broadcasted message and set a selector which takes the message's 
 
 ```objc
 [actor subscribe:@"message" selector:@selector(handler:)];
+
+- (void)handler:(NSNumber *)number
+{
+    // ...
+}
 ```
 
-Subscribe to a specified actor and set a selector which takes the message's payload as an argument:
+Subscribe to a specified actor:
 
 ```objc
 [actor subscribeToPublisher:otherActor
