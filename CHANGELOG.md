@@ -3,6 +3,7 @@
 ## 0.4.0
 
 - Moved futures into separate (experimental) sub-dependency 'Futures'
+- Remove TBActorRegistry
 
 ## 0.3.0
 

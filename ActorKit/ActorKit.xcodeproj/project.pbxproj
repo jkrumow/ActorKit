@@ -12,7 +12,6 @@
 		15A2811C1B73E60D0069A18B /* TBActorProxySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A281171B73E60D0069A18B /* TBActorProxySpec.m */; };
 		15A2811D1B73E60D0069A18B /* TBActorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A281181B73E60D0069A18B /* TBActorSpec.m */; };
 		15A2811E1B73E60D0069A18B /* TestActor.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A2811A1B73E60D0069A18B /* TestActor.m */; };
-		15C724741B73FB00003117AF /* TBActorRegistrySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C724731B73FB00003117AF /* TBActorRegistrySpec.m */; };
 		9FFB062A011B63522F2906F3 /* libPods-ActorKitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02DB8EDA8C66E0311BA85BC2 /* libPods-ActorKitTests.a */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +29,6 @@
 		15A281201B73E76C0069A18B /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		15A281221B73E76C0069A18B /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		15A281231B73E76C0069A18B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		15C724731B73FB00003117AF /* TBActorRegistrySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorRegistrySpec.m; sourceTree = "<group>"; };
 		3B5175FA1B74D03700C7E67B /* ActorKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ActorKit.podspec; path = ../ActorKit.podspec; sourceTree = "<group>"; };
 		D9DF5FC9ABDBF034F8609FD7 /* Pods-ActorKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKitTests/Pods-ActorKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		DB3A3E28BFC2580A7DBE911D /* Pods-ActorKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKitTests/Pods-ActorKitTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 				15A281161B73E60D0069A18B /* TBActorPoolSpec.m */,
 				15A281171B73E60D0069A18B /* TBActorProxySpec.m */,
 				155B93441B7D3AE600ED05E4 /* TBActorFuturesSpec.m */,
-				15C724731B73FB00003117AF /* TBActorRegistrySpec.m */,
 				15A281091B73E5D40069A18B /* Supporting Files */,
 			);
 			path = ActorKitTests;
@@ -225,7 +222,6 @@
 				155B93451B7D3AE600ED05E4 /* TBActorFuturesSpec.m in Sources */,
 				15A2811D1B73E60D0069A18B /* TBActorSpec.m in Sources */,
 				15A2811C1B73E60D0069A18B /* TBActorProxySpec.m in Sources */,
-				15C724741B73FB00003117AF /* TBActorRegistrySpec.m in Sources */,
 				15A2811E1B73E60D0069A18B /* TestActor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

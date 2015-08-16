@@ -15,7 +15,6 @@ A lightweight actor framework in Objective-C.
 * Synchronous and asynchronous invocations
 * Futures
 * Message subscription and publication
-* Actor registry
 
 ## Example Project
 
@@ -161,6 +160,14 @@ The handler will be executed on an available actor in the pool.
 
 ### (experimental) Futures
 
+Future support is contained in the subspec `Futures`:
+
+```
+target 'MyApp', :exclusive => true do
+  pod 'pod 'ActorKit/Futures'
+end
+```
+
 Actors and pool can return a future for an asynchronous task.
 
 ```objc
@@ -179,28 +186,6 @@ id result = future.result;
     
     // ...
 }] returnSomething];
-```
-
-### Holding actors in a registry
-
-Create an actor Registry:
-
-```objc
-TBActorRegistry registry = [TBActorRegistry new];
-```
-
-Add actors and pools to the registry:
-
-```objc
-[registry registerActor:actor withName:@"actor"];
-[registry registerActor:pool withName:@"pool"];
-```
-
-Remove actors and pools from the registry:
-
-```objc
-[registry removeActorWithName:@"actor"];
-[registry removeActorWithName:@"pool"];
 ```
 
 ## Useful Theory on Actors
