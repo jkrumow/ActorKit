@@ -1,10 +1,10 @@
 PODS:
-  - ActorKit (0.4.0):
-    - ActorKit/Core (= 0.4.0)
-  - ActorKit/Core (0.4.0)
-  - ActorKit/Futures (0.4.0):
+  - ActorKit (0.5.0):
+    - ActorKit/Core (= 0.5.0)
+  - ActorKit/Core (0.5.0)
+  - ActorKit/Futures (0.5.0):
     - ActorKit/Core
-  - ActorKit/Promises (0.4.0):
+  - ActorKit/Promises (0.5.0):
     - ActorKit/Core
     - PromiseKit
   - Expecta (1.0.2)
@@ -63,7 +63,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ActorKit: 3a3ebd22816c0dd45f0c53607a2afd00ada04348
+  ActorKit: f575ee4fe7aeae1dfc3bf38519268b15ee4e6afe
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   OMGHTTPURLRQ: c4268dea4295b585d711055dbcd87bfa82badd5f
   PromiseKit: 6be651503d4af22830b5313be993c5a0ef77bf77
