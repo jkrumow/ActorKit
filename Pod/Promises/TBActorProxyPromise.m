@@ -14,7 +14,6 @@
 
 @interface TBActorProxyPromise ()
 @property (nonatomic, strong) PMKPromise *promise;
-@property (nonatomic, copy) void (^completion)(id);
 @end
 
 @implementation TBActorProxyPromise

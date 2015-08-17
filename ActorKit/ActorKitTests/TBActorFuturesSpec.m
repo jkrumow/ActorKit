@@ -43,7 +43,11 @@ describe(@"TBActorFutures", ^{
     describe(@"future", ^{
         
         it (@"returns a future proxy.", ^{
-            expect([[actor future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+            expect([actor.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+        });
+        
+        it (@"returns a future proxy with a completion block.", ^{
+            expect([[actor future:^(id result) {}] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
         
         it (@"invokes a method asynchronuously returning a value through a future.", ^{
@@ -80,6 +84,10 @@ describe(@"TBActorPool", ^{
     describe(@"future", ^{
 
         it (@"returns a future proxy.", ^{
+            expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
+        });
+        
+        it (@"returns a future proxy with a completion block.", ^{
             expect([[pool future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
 
