@@ -46,16 +46,16 @@ describe(@"TBActorPromises", ^{
         });
         
         it (@"invokes a method asynchronuously returning a value through a promise.", ^{
-            __block id blokResult;
+            __block id blockResult;
             __block PMKPromise *promise;
             waitUntil(^(DoneCallback done) {
                 promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
                 promise.then(^(id result) {
-                    blokResult = result;
+                    blockResult = result;
                     done();
                 });
             });
-            expect(blokResult).to.equal(@0);
+            expect(blockResult).to.equal(@0);
         });
     });
 });
