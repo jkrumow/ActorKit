@@ -14,6 +14,7 @@ A lightweight actor framework in Objective-C.
 * Actor Pools
 * Synchronous and asynchronous invocations
 * Futures
+* Promises
 * Message subscription and publication
 
 ## Example Project
@@ -162,7 +163,7 @@ The handler will be executed on an available actor in the pool.
 
 Future support is contained in the subspec `Futures`:
 
-```
+```ruby
 target 'MyApp', :exclusive => true do
   pod 'pod 'ActorKit/Futures'
 end
@@ -174,7 +175,7 @@ Actors and pool can return a future for an asynchronous task.
 #import <ActorKit/Futures.h>
 ```
 
-Send a asynchronous message and receive a future back:
+Send an asynchronous message and receive a future back:
 
 ```objc
 TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
@@ -189,6 +190,32 @@ id result = future.result;
 ```
 
 Calling `result` on the future will not block the current thread. Use the completion block to receive the result when it is available. The completion block will be executed on the calling thread.
+
+### (experimental) Promises
+
+Promise support is contained in the subspec `Promises`:
+
+```ruby
+target 'MyApp', :exclusive => true do
+  pod 'pod 'ActorKit/Promises'
+end
+```
+
+Actors and pool can return a promise for an asynchronous task.
+
+```objc
+#import <ActorKit/Promises.h>
+```
+
+Send a asynchronous message and receive a promise back:
+
+```objc
+PMKPromise *promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+promise.then(^(id result) {
+    
+    // ...
+});
+```
 
 ## Useful Theory on Actors
 

@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
                        * Actor Pools
                        * Synchronous and asynchronous invocations
                        * Futures
+                       * Promises
                        * Message subscription and publication
                        DESC
   s.homepage         = "https://github.com/tarbrain/ActorKit"

@@ -1,7 +1,8 @@
 # ActorKit CHANGELOG
 
-## 0.4.0
+## 0.5.0
 
+- Add subspec Promises (experimental) which uses the pod 'PromiseKit'
 - Moved futures into separate (experimental) sub-dependency 'Futures'
 - Remove TBActorRegistry
 
