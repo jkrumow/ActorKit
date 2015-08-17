@@ -14,7 +14,6 @@
 @interface TBActorProxyFuture ()
 @property (nonatomic, strong) TBActorFuture *future;
 @property (nonatomic, copy) void (^completion)(id);
-
 @end
 
 @implementation TBActorProxyFuture
@@ -40,6 +39,8 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
+    NSOperationQueue *currentQueue = [NSOperationQueue currentQueue] ? : [NSOperationQueue mainQueue];
+    
     // Create invocation for message to be sent to the actor - result will be stored in 'future.result'
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
     [forwardedInvocation setTarget:self.actor];
@@ -48,9 +49,12 @@
     // Hook up completion block.
     __block TBActorProxyFuture *blockSelf = self;
     [self.future setCompletionBlock:^{
-        if (blockSelf.completion) {
-            blockSelf.completion(blockSelf.future.result);
-        }
+        
+        [currentQueue addOperationWithBlock:^{
+            if (blockSelf.completion) {
+                blockSelf.completion(blockSelf.future.result);
+            }
+        }];
     }];
     
     // Return future back to original sender - change invocation selector to helper method

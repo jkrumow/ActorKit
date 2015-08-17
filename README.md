@@ -188,6 +188,8 @@ id result = future.result;
 }] returnSomething];
 ```
 
+Calling `result` on the future will not block the current thread. Use the completion block to receive the result when it is available. The completion block will be executed on the calling thread.
+
 ## Useful Theory on Actors
 
 - https://en.wikipedia.org/wiki/Actor_model
