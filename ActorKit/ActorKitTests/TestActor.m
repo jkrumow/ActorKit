@@ -58,7 +58,7 @@
 
 - (NSNumber *)returnSomethingBlocking
 {
-    sleep(0.2);
+    sleep([self _randomSleepInterval]);
     return [self returnSomething];
 }
 
@@ -89,7 +89,7 @@
 - (void)blockSomething
 {
     NSLog(@"%@ blockSomething", self.uuid);
-    sleep(0.2);
+    sleep([self _randomSleepInterval]);
     NSLog(@"%@ blockSomething ...done", self.uuid);
 }
 
@@ -99,6 +99,11 @@
     if (completion) {
         completion();
     }
+}
+
+- (double)_randomSleepInterval
+{
+    return (rand() % 1000) / 1000.0;
 }
 
 @end

@@ -29,6 +29,8 @@
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
     [forwardedInvocation setTarget:self.actor];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:forwardedInvocation];
+    
+    // Create promise wrapping the invocation operation.
     self.promise = [PMKPromise promiseWithResolver:^(PMKResolver resolve) {
         __block NSInvocationOperation *blockOperation = operation;
         operation.completionBlock = ^{
@@ -37,13 +39,13 @@
     }];
     
     // Return promise back to original sender - change invocation selector to helper method
-    [invocation setSelector:@selector(returnPromise)];
+    [invocation setSelector:@selector(_returnPromise)];
     [invocation invoke];
     
     [self.actor addOperation:operation];
 }
 
-- (id)returnPromise
+- (id)_returnPromise
 {
     return self.promise;
 }

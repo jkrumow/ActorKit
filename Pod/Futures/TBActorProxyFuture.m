@@ -58,13 +58,13 @@
     }];
     
     // Return future back to original sender - change invocation selector to helper method
-    [invocation setSelector:@selector(returnFuture)];
+    [invocation setSelector:@selector(_returnFuture)];
     [invocation invoke];
     
     [self.actor addOperation:self.future];
 }
 
-- (id)returnFuture
+- (id)_returnFuture
 {
     return self.future;
 }
