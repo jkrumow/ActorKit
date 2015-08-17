@@ -31,4 +31,10 @@ Pod::Spec.new do |s|
     futures.source_files = 'Pod/Futures'
     futures.dependency 'ActorKit/Core'
   end
+
+  s.subspec 'Promises' do |promises|
+    promises.source_files = 'Pod/Promises'
+    promises.dependency 'ActorKit/Core'
+    promises.dependency 'PromiseKit'
+  end
 end

@@ -27,4 +27,6 @@
  *  @return The initialized TBActorPool instance.
  */
 - (instancetype)initWithActors:(NSArray *)actors;
+
+- (TBActor *)idleActor;
 @end

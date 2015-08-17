@@ -13,31 +13,12 @@
 
 - (id)future
 {
-    return [TBActorProxyFuture proxyWithActor:[self _poolIdleActor]];
+    return [TBActorProxyFuture proxyWithActor:self.idleActor];
 }
 
 - (id)future:(void (^)(id))completion
 {
-    return [TBActorProxyFuture proxyWithActor:[self _poolIdleActor] completion:completion];
-}
-
-- (TBActor *)_poolIdleActor
-{
-    TBActor *idleActor = nil;
-    NSUInteger lowest = NSUIntegerMax;
-    @synchronized(self) {
-        for (TBActor *actor in self.actors) {
-            if (actor.operationCount == 0) {
-                idleActor = actor;
-                break;
-            }
-            if (actor.operationCount < lowest) {
-                lowest = actor.operationCount;
-                idleActor = actor;
-            }
-        }
-    }
-    return idleActor;
+    return [TBActorProxyFuture proxyWithActor:self.idleActor completion:completion];
 }
 
 @end

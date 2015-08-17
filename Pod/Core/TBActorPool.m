@@ -35,12 +35,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (id)sync
 {
-    return [TBActorProxySync proxyWithActor:self._idleActor];
+    return [TBActorProxySync proxyWithActor:self.idleActor];
 }
 
 - (id)async
 {
-    return [TBActorProxyAsync proxyWithActor:self._idleActor];
+    return [TBActorProxyAsync proxyWithActor:self.idleActor];
 }
 
 - (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
@@ -58,7 +58,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
-- (TBActor *)_idleActor
+- (TBActor *)idleActor
 {
     TBActor *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;

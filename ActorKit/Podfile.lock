@@ -4,12 +4,57 @@ PODS:
   - ActorKit/Core (0.4.0)
   - ActorKit/Futures (0.4.0):
     - ActorKit/Core
+  - ActorKit/Promises (0.4.0):
+    - ActorKit/Core
+    - PromiseKit
   - Expecta (1.0.2)
+  - OMGHTTPURLRQ (2.1.3):
+    - OMGHTTPURLRQ/RQ (= 2.1.3)
+  - OMGHTTPURLRQ/FormURLEncode (2.1.3)
+  - OMGHTTPURLRQ/RQ (2.1.3):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (2.1.3)
+  - PromiseKit (1.6.0):
+    - PromiseKit/CALayer (= 1.6.0)
+    - PromiseKit/NSNotificationCenter (= 1.6.0)
+    - PromiseKit/NSURLConnection (= 1.6.0)
+    - PromiseKit/Pause (= 1.6.0)
+    - PromiseKit/UIActionSheet (= 1.6.0)
+    - PromiseKit/UIAlertView (= 1.6.0)
+    - PromiseKit/UIView (= 1.6.0)
+    - PromiseKit/UIViewController (= 1.6.0)
+    - PromiseKit/Until (= 1.6.0)
+    - PromiseKit/When (= 1.6.0)
+  - PromiseKit/CALayer (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/NSNotificationCenter (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/NSURLConnection (1.6.0):
+    - OMGHTTPURLRQ (~> 2.1)
+    - PromiseKit/Promise
+  - PromiseKit/Pause (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/Promise (1.6.0)
+  - PromiseKit/UIActionSheet (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIAlertView (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIView (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/UIViewController (1.6.0):
+    - PromiseKit/Promise
+  - PromiseKit/Until (1.6.0):
+    - PromiseKit/Promise
+    - PromiseKit/When
+  - PromiseKit/When (1.6.0):
+    - PromiseKit/Promise
   - Specta (1.0.3)
 
 DEPENDENCIES:
   - ActorKit (from `../`)
   - ActorKit/Futures (from `../`)
+  - ActorKit/Promises (from `../`)
   - Expecta
   - Specta
 
@@ -18,8 +63,10 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ActorKit: f9d84ebff51eec2ace05b63500a5a367cc1a8f1f
+  ActorKit: 3a3ebd22816c0dd45f0c53607a2afd00ada04348
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
+  OMGHTTPURLRQ: c4268dea4295b585d711055dbcd87bfa82badd5f
+  PromiseKit: 6be651503d4af22830b5313be993c5a0ef77bf77
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
 COCOAPODS: 0.38.2
