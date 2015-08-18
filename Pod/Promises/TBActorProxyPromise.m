@@ -36,13 +36,12 @@
         operation.completionBlock = ^{
             resolve(blockOperation.result);
         };
+        [self.actor addOperation:operation];
     }];
     
     // Return promise back to original sender - change invocation selector to helper method
     [invocation setSelector:@selector(_returnPromise)];
     [invocation invoke];
-    
-    [self.actor addOperation:operation];
 }
 
 - (id)_returnPromise
