@@ -34,8 +34,10 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Promises' do |promises|
+    s.platform = :ios
+    s.ios.deployment_target = '7.0'
     promises.source_files = 'Pod/Promises'
     promises.dependency 'ActorKit/Core'
-    promises.dependency 'PromiseKit'
+    promises.dependency 'PromiseKit/Promise'
   end
 end
