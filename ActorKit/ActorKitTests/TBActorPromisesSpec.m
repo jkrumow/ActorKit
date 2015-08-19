@@ -59,7 +59,7 @@ describe(@"TBActorPromises", ^{
 describe(@"TBActorPool", ^{
     
     beforeEach(^{
-        pool = [TestActor poolWithSize:2 configuration:^(NSObject<TBActor> *actor, NSUInteger index) {
+        pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
             TestActor *testActor = (TestActor *)actor;
             testActor.uuid = @(index);
         }];

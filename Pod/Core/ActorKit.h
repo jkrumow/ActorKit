@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor.h"
+
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
 #import "TBActorPool.h"

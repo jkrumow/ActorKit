@@ -7,9 +7,9 @@
 //
 
 #import "TBActorProxyFuture.h"
-#import "TBActor.h"
 #import "TBActorFuture.h"
 #import "NSInvocation+ActorKit.h"
+#import "NSObject+ActorKit.h"
 
 @interface TBActorProxyFuture ()
 @property (nonatomic, strong) TBActorFuture *future;
@@ -18,17 +18,17 @@
 
 @implementation TBActorProxyFuture
 
-+ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject *)actor
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor];
 }
 
-+ (TBActorProxyFuture *)proxyWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion
++ (TBActorProxyFuture *)proxyWithActor:(NSObject *)actor completion:(void (^)(id))completion
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor completion:completion];
 }
 
-- (instancetype)initWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion
+- (instancetype)initWithActor:(NSObject *)actor completion:(void (^)(id))completion
 {
     self = [super initWithActor:actor];
     if (self) {

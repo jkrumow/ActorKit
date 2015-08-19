@@ -29,5 +29,5 @@
  */
 - (instancetype)initWithActors:(NSArray *)actors;
 
-- (NSObject<TBActor> *)idleActor;
+- (NSObject *)idleActor;
 @end

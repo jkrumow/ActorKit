@@ -43,11 +43,6 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return [TBActorProxyAsync proxyWithActor:self.idleActor];
 }
 
-- (void)subscribe:(NSString *)messageName selector:(SEL)selector
-{
-    [self subscribeToPublisher:nil withMessageName:messageName selector:selector];
-}
-
 - (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
@@ -61,24 +56,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
-- (void)unsubscribe:(NSString *)messageName
+- (NSObject *)idleActor
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
-}
-
-- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:messageName
-                                                        object:self
-                                                      userInfo:@{TBAKActorPayload:payload.copy}]; // Copy payload to prevent shared state.
-}
-
-- (NSObject<TBActor> *)idleActor
-{
-    NSObject<TBActor> *idleActor = nil;
+    NSObject *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;
     @synchronized(self) {
-        for (NSObject<TBActor> *actor in self.actors) {
+        for (NSObject *actor in self.actors) {
             if (actor.actorQueue.operationCount == 0) {
                 idleActor = actor;
                 break;

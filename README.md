@@ -109,7 +109,7 @@ The actor pool class `TBActorPool` is a subtype of actor so it is basically a pr
 Create an actor pool using your actor subclass which you like to pool:
 
 ```objc
-TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(NSObject<TBActor> *actor, NSUInteger index) {
+TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(NSObject *actor, NSUInteger index) {
     WorkerActor *worker = (WorkerActor *)actor;
     worker.name = @"worker";
     worker.id = @(index);

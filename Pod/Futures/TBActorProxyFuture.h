@@ -18,7 +18,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxyFuture *)proxyWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion;
++ (TBActorProxyFuture *)proxyWithActor:(NSObject *)actor completion:(void (^)(id))completion;
 
 /**
  *  Initializes a proxy instance with a given actor and a completion block.
@@ -28,5 +28,5 @@
  *
  *  @return The initialized proxy instance.
  */
-- (instancetype)initWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion;
+- (instancetype)initWithActor:(NSObject *)actor completion:(void (^)(id))completion;
 @end

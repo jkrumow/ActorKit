@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor.h"
+
 #import "TBActorProxy.h"
 #import "TBActorFuture.h"
 #import "TBActorProxyFuture.h"

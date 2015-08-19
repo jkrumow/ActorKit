@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBActor.h"
+
 
 FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
@@ -17,13 +17,65 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  *  @param actor The actor instance to configure.
  *  @param index The index of the actor in the pool.
  */
-typedef void (^TBActorPoolConfigurationBlock)(NSObject<TBActor> *actor, NSUInteger index);
+typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
 
-@protocol TBActor;
 @class TBActorPool;
-@interface NSObject (ActorKit) <TBActor>
+@interface NSObject (ActorKit)
 
 @property (nonatomic, strong) NSOperationQueue *actorQueue;
+
+/**
+ *  Returns the actor's operation queue.
+ *
+ *  @return The operation queue.
+ */
+- (NSOperationQueue *)actorQueue;
+
+/**
+ *  Creates a TBActorProxySync instance to handle the message sent to the actor.
+ *
+ *  @return The TBActorProxySync instance.
+ */
+- (id)sync;
+
+/**
+ *  Creates a TBActorProxyAsync instance to handle the message sent to the actor.
+ *
+ *  @return The TBActorProxyAsync instance.
+ */
+- (id)async;
+
+/**
+ *  Subscribes to an NSNotification sent from other actors.
+ *
+ *  @param messageName The name of the notification.
+ *  @param selector    The selector of the method to be called when receiving the notification.
+ */
+- (void)subscribe:(NSString *)messageName selector:(SEL)selector;
+
+/**
+ *  Subscribes to an NSNotification sent from a specified actor.
+ *
+ *  @param actor       The actor to subscribe to.
+ *  @param messageName The name of the notification.
+ *  @param selector    The selector of the method to be called when receiving the notification.
+ */
+- (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
+
+/**
+ *  Unsubscribes an NSNotification from other actors.
+ *
+ *  @param messageName The name of the notification.
+ */
+- (void)unsubscribe:(NSString *)messageName;
+
+/**
+ *  Send a notification to other actors.
+ *
+ *  @param messageName The name of the notification.
+ *  @param payload     The payload of the notification.
+ */
+- (void)publish:(NSString *)messageName payload:(id)payload;
 
 /**
  *  Creates a pool of actors of the current class using a specified configuration block.

@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBActor.h"
 
 /**
  *  This class represents an "abstract" base class for actor proxies.
@@ -19,7 +18,7 @@
 /**
  *  The actor associated with this proxy instance.
  */
-@property (nonatomic, strong, readonly) NSObject<TBActor> *actor;
+@property (nonatomic, strong, readonly) NSObject *actor;
 
 /**
  *  Creates a proxy instance with a given actor. Must be overidden by a subtype.
@@ -30,7 +29,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor;
++ (TBActorProxy *)proxyWithActor:(NSObject *)actor;
 
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
@@ -41,5 +40,5 @@
  *
  *  @return The initialized proxy instance.
  */
-- (instancetype)initWithActor:(NSObject<TBActor> *)actor;
+- (instancetype)initWithActor:(NSObject *)actor;
 @end
