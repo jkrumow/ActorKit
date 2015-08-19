@@ -7,8 +7,6 @@
 //
 
 
-#import <ActorKit/ActorKit.h>
-
 #import "TestActor.h"
 
 SpecBegin(TBActorPool)
@@ -20,6 +18,8 @@ __block dispatch_queue_t testQueue;
 describe(@"TBActorPool", ^{
     
     afterEach(^{
+        [pool unsubscribe:@"three"];
+        [pool unsubscribe:@"four"];
         pool = nil;
         otherActor = nil;
         testQueue = nil;
@@ -28,7 +28,7 @@ describe(@"TBActorPool", ^{
     describe(@"initialization", ^{
         
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
@@ -48,7 +48,7 @@ describe(@"TBActorPool", ^{
     describe(@"invocations", ^{
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
@@ -156,7 +156,7 @@ describe(@"TBActorPool", ^{
         __block size_t loadSize = 30;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:10 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];

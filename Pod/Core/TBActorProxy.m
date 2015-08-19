@@ -7,19 +7,19 @@
 //
 
 #import "TBActorProxy.h"
-#import "TBActor.h"
+#import "NSObject+ActorKit.h"
 #import "NSException+ActorKit.h"
 
 
 @implementation TBActorProxy
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor
 {
     @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     return nil;
 }
 
-- (instancetype)initWithActor:(TBActor *)actor
+- (instancetype)initWithActor:(NSObject<TBActor> *)actor
 {
     if (self.class == TBActorProxy.class) {
         @throw [NSException tbak_abstractClassException:[TBActorProxy class]];

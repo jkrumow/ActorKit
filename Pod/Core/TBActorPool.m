@@ -23,7 +23,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     self = [super init];
     if (self) {
         _priv_actors = actors;
-        self.name = TBAKActorPoolQueue;
+        self.actorQueue.name = TBAKActorPoolQueue;
     }
     return self;
 }
@@ -43,33 +43,48 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return [TBActorProxyAsync proxyWithActor:self.idleActor];
 }
 
+- (void)subscribe:(NSString *)messageName selector:(SEL)selector
+{
+    [self subscribeToPublisher:nil withMessageName:messageName selector:selector];
+}
+
 - (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
 {
-    [self.subscriptions addObject:messageName];
-    
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:publisher
-                                                       queue:self
+                                                       queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [self.async performSelector:selector withObject:note.userInfo];
+                                                      [self.async performSelector:selector withObject:note.userInfo[TBAKActorPayload]];
 #pragma clang diagnostic pop
                                                   }];
 }
 
-- (TBActor *)idleActor
+- (void)unsubscribe:(NSString *)messageName
 {
-    TBActor *idleActor = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
+}
+
+- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:messageName
+                                                        object:self
+                                                      userInfo:@{TBAKActorPayload:payload.copy}]; // Copy payload to prevent shared state.
+}
+
+- (NSObject<TBActor> *)idleActor
+{
+    NSObject<TBActor> *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;
     @synchronized(self) {
-        for (TBActor *actor in self.actors) {
-            if (actor.operationCount == 0) {
+        for (NSObject<TBActor> *actor in self.actors) {
+            if (actor.actorQueue.operationCount == 0) {
                 idleActor = actor;
                 break;
             }
-            if (actor.operationCount < lowest) {
-                lowest = actor.operationCount;
+            if (actor.actorQueue.operationCount < lowest) {
+                lowest = actor.actorQueue.operationCount;
                 idleActor = actor;
             }
         }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import <ActorKit/ActorKit.h>
+
 #import <ActorKit/Promises.h>
 
 #import "TestActor.h"
@@ -24,14 +24,10 @@ __block dispatch_queue_t testQueue;
 describe(@"TBActorPromises", ^{
     
     beforeEach(^{
-        actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @0;
-        }];
-        otherActor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @1;
-        }];
+        actor = [TestActor new];
+        actor.uuid = @0;
+        otherActor = [TestActor new];
+        otherActor.uuid = @1;
     });
     
     afterEach(^{
@@ -63,7 +59,7 @@ describe(@"TBActorPromises", ^{
 describe(@"TBActorPool", ^{
     
     beforeEach(^{
-        pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+        pool = [TestActor poolWithSize:2 configuration:^(NSObject<TBActor> *actor, NSUInteger index) {
             TestActor *testActor = (TestActor *)actor;
             testActor.uuid = @(index);
         }];

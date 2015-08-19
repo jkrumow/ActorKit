@@ -18,7 +18,7 @@
 
 @implementation TBActorProxyPromise
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor
 {
     return [[TBActorProxyPromise alloc] initWithActor:actor];
 }
@@ -36,7 +36,7 @@
         operation.completionBlock = ^{
             resolve(blockOperation.result);
         };
-        [self.actor addOperation:operation];
+        [self.actor.actorQueue addOperation:operation];
     }];
     
     // Return promise back to original sender - change invocation selector to helper method

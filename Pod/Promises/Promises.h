@@ -11,5 +11,5 @@
 #import "TBActor.h"
 #import "TBActorProxy.h"
 #import "TBActorProxyPromise.h"
-#import "TBActor+Promises.h"
+#import "NSObject+ActorKitPromises.h"
 #import "TBActorPool+Promises.h"

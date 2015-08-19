@@ -2,50 +2,21 @@
 //  TBActor.h
 //  ActorKit
 //
-//  Created by Julian Krumow on 13.07.15.
+//  Created by Julian Krumow on 19.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@class TBActor;
+@protocol TBActor <NSObject>
+@optional
 
 /**
- *  A block to configure an actor.
+ *  Returns the actor's operation queue.
  *
- *  @param actor The actor instance to configure.
+ *  @return The operation queue.
  */
-typedef void (^TBActorConfigurationBlock)(TBActor *actor);
-
-/**
- This class represents an actor.
- 
- It is based on an NSOperationQueue which manages the actor's underlying thread.
- */
-@interface TBActor : NSOperationQueue
-
-/**
- *  Lists all messages the actor subscribes to.
- */
-@property (nonatomic, strong) NSMutableSet *subscriptions;
-
-/**
- *  Creates an actor using a specified configuration block.
- *
- *  @param configuration The configuration block.
- *
- *  @return The created actor instance.
- */
-+ (instancetype)actorWithConfiguration:(TBActorConfigurationBlock)configuration;
-
-/**
- *  Initializes an actor using a specified configuration block.
- *
- *  @param configuration The configuration block.
- *
- *  @return The initialized actor instance.
- */
-- (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;
+- (NSOperationQueue *)actorQueue;
 
 /**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
@@ -79,11 +50,18 @@ typedef void (^TBActorConfigurationBlock)(TBActor *actor);
 - (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
+ *  Unsubscribes an NSNotification from other actors.
+ *
+ *  @param messageName The name of the notification.
+ */
+- (void)unsubscribe:(NSString *)messageName;
+
+/**
  *  Send a notification to other actors.
  *
  *  @param messageName The name of the notification.
  *  @param payload     The payload of the notification.
  */
 - (void)publish:(NSString *)messageName payload:(id)payload;
-@end
 
+@end

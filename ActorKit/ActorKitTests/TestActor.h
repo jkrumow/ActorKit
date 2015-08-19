@@ -8,7 +8,7 @@
 
 #import <ActorKit/ActorKit.h>
 
-@interface TestActor : TBActor
+@interface TestActor : NSObject
 
 @property (nonatomic, strong) NSNumber *uuid;
 @property (nonatomic, strong) NSNumber *symbol;

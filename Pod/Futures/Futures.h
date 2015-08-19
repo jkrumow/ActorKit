@@ -10,5 +10,5 @@
 #import "TBActorProxy.h"
 #import "TBActorFuture.h"
 #import "TBActorProxyFuture.h"
-#import "TBActor+Futures.h"
+#import "NSObject+ActorKitFutures.h"
 #import "TBActorPool+Futures.h"

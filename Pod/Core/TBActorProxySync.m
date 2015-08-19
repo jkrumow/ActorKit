@@ -7,12 +7,12 @@
 //
 
 #import "TBActorProxySync.h"
-#import "TBActor.h"
+#import "NSObject+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
 
 @implementation TBActorProxySync
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor
 {
     return [[TBActorProxySync alloc] initWithActor:actor];
 }
@@ -22,8 +22,8 @@
     [invocation setTarget:self.actor];
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
-    [self.actor addOperation:operation];
-    [self.actor waitUntilAllOperationsAreFinished];
+    [self.actor.actorQueue addOperation:operation];
+    [self.actor.actorQueue waitUntilAllOperationsAreFinished];
 }
 
 @end

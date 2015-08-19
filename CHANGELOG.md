@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.6.0
+
+- Major refactoring to make every NSObject an actor
+
 ## 0.5.0
 
 - Add subspec Promises (experimental) which uses the pod 'PromiseKit'

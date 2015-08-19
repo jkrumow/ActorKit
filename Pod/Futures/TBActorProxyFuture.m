@@ -18,17 +18,17 @@
 
 @implementation TBActorProxyFuture
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject<TBActor> *)actor
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor];
 }
 
-+ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor completion:(void (^)(id))completion
++ (TBActorProxyFuture *)proxyWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion
 {
     return [[TBActorProxyFuture alloc] initWithActor:actor completion:completion];
 }
 
-- (instancetype)initWithActor:(TBActor *)actor completion:(void (^)(id))completion
+- (instancetype)initWithActor:(NSObject<TBActor> *)actor completion:(void (^)(id))completion
 {
     self = [super initWithActor:actor];
     if (self) {
@@ -61,7 +61,7 @@
     [invocation setSelector:@selector(_returnFuture)];
     [invocation invoke];
     
-    [self.actor addOperation:self.future];
+    [self.actor.actorQueue addOperation:self.future];
 }
 
 - (id)_returnFuture
