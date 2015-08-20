@@ -5,9 +5,13 @@ SCHEME = 'ActorKitTests'
 SDK = 'iphonesimulator'
 COVERAGE_ARGS = 'GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES'
 
+desc "Build the tests"
+task :build do
+  build_tests
+end
+
 desc "Run the tests"
 task :test do
-  build_tests
   run_tests
 end
 
@@ -16,7 +20,7 @@ task :coverage do
   run_coverage
 end
 
-task :default => [:test, :coverage]
+task :default => [:build, :test, :coverage]
 
 private
 

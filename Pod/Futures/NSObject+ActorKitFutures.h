@@ -1,17 +1,16 @@
 //
-//  TBActor+Futures.h
+//  NSObject+ActorKitFutures.h
 //  ActorKitFutures
 //
 //  Created by Julian Krumow on 14.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor.h"
 
 /**
- *  This category extends TBActor with methods to use futues in async calls.
+ *  This category extends NSObject with methods to use futures in async calls.
  */
-@interface TBActor (Futures)
+@interface NSObject (ActorKitFutures)
 
 /**
  *  Creates a TBActorProxyFuture instance to handle the message sent to the actor.

@@ -13,13 +13,13 @@
 SpecBegin(TBActorProxy)
 
 __block TBActorProxy *proxy;
-__block TBActor *actor;
+__block NSNumber *actor;
 
 
 describe(@"TBActorProxy", ^{
     
     beforeEach(^{
-        actor = [TBActor new];
+        actor = @(0);
     });
     
     it (@"throws an exception when base class is created.", ^{

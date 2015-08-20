@@ -7,55 +7,30 @@
 //
 
 
-#import <ActorKit/ActorKit.h>
-
 #import "TestActor.h"
 
 
 SpecBegin(TBActor)
 
 __block TestActor *actor;
-__block TestActor *otherActor;
+__block NSMutableArray *otherActor;
 
 describe(@"TBActor", ^{
     
     afterEach(^{
+        [actor unsubscribe:@"message"];
         actor = nil;
         otherActor = nil;
-    });
-    
-    describe(@"initialization", ^{
-        
-        it(@"creates an actor with a given configuration block.", ^{
-            actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @5;
-            }];
-            expect([actor.async isMemberOfClass:[TestActor class]]).to.beTruthy;
-        });
-        
-        it(@"initializes itself with a given configuration block.", ^{
-            actor = [[TestActor alloc] initWithConfiguration:^(TBActor *actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @5;
-            }];
-            expect(actor.uuid).to.equal(@5);
-        });
     });
     
     describe(@"invocations", ^{
         
         beforeEach(^{
-            actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @0;
-            }];
-            otherActor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @1;
-            }];
+            actor = [TestActor new];
+            actor.uuid = @0;
+            otherActor = [NSMutableArray new];
         });
-        
+
         describe(@"sync", ^{
             
             it (@"returns a sync proxy.", ^{
@@ -63,12 +38,14 @@ describe(@"TBActor", ^{
             });
             
             it (@"invokes a method synchronuously.", ^{
+                __block NSString *result;
                 [actor.sync doSomething:@"foo" withCompletion:^(NSString *string){
-                    NSLog(@"string: %@", string);
+                    result = string;
                 }];
+                expect(result).to.equal(@"foo");
             });
         });
-        
+
         describe(@"async", ^{
             
             it (@"returns an async proxy.", ^{
@@ -76,42 +53,45 @@ describe(@"TBActor", ^{
             });
             
             it (@"invokes a method asynchronuously.", ^{
+                __block NSString *result;
                 waitUntil(^(DoneCallback done) {
                     [actor.async doSomething:@"foo" withCompletion:^(NSString *string){
+                        result = string;
                         done();
                     }];
                 });
+                expect(result).to.equal(@"foo");
             });
         });
-        
+
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{
-                [actor subscribe:@"one" selector:@selector(handlerOne:)];
+                [actor subscribe:@"message" selector:@selector(handler:)];
                 
                 expect(^{
-                    [actor publish:@"one" payload:@5];
-                }).to.notify(@"one");
+                    [actor publish:@"message" payload:@5];
+                }).to.notify(@"message");
                 expect(actor.symbol).to.equal(@5);
-                
             });
             
             it(@"handles messages from a specified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
-                [otherActor publish:@"two" payload:@10];
+                [otherActor publish:@"message" payload:@10];
                 expect(actor.symbol).to.equal(@10);
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
-                [actor publish:@"two" payload:@10];
+                [actor publish:@"message" payload:@10];
                 expect(actor.symbol).to.equal(@5);
             });
         });
+
     });
 });
 

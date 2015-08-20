@@ -62,27 +62,9 @@
     return [self returnSomething];
 }
 
-- (void)handlerOne:(id)payload
+- (void)handler:(id)payload
 {
-    NSLog(@"%@ handlerOne: %@", self.uuid, payload);
-    self.symbol = payload;
-}
-
-- (void)handlerTwo:(id)payload
-{
-    NSLog(@"%@ handlerTwo: %@", self.uuid, payload);
-    self.symbol = payload;
-}
-
-- (void)handlerThree:(id)payload
-{
-    NSLog(@"%@ handlerThree: %@", self.uuid, payload);
-    self.symbol = payload;
-}
-
-- (void)handlerFour:(id)payload
-{
-    NSLog(@"%@ handlerFour: %@", self.uuid, payload);
+    NSLog(@"%@ handler: %@", self.uuid, payload);
     self.symbol = payload;
 }
 

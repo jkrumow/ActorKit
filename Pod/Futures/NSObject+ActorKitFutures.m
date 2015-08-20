@@ -1,15 +1,16 @@
 //
-//  TBActor+Futures.m
+//  NSObject+ActorKitFutures.m
 //  ActorKitFutures
 //
 //  Created by Julian Krumow on 14.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor+Futures.h"
+
+#import "NSObject+ActorKitFutures.h"
 #import "TBActorProxyFuture.h"
 
-@implementation TBActor (Futures)
+@implementation NSObject (ActorKitFutures)
 
 - (id)future
 {

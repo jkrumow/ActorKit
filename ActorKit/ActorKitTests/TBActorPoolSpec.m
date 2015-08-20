@@ -7,8 +7,6 @@
 //
 
 
-#import <ActorKit/ActorKit.h>
-
 #import "TestActor.h"
 
 SpecBegin(TBActorPool)
@@ -20,6 +18,7 @@ __block dispatch_queue_t testQueue;
 describe(@"TBActorPool", ^{
     
     afterEach(^{
+        [pool unsubscribe:@"message"];
         pool = nil;
         otherActor = nil;
         testQueue = nil;
@@ -28,7 +27,7 @@ describe(@"TBActorPool", ^{
     describe(@"initialization", ^{
         
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
@@ -48,7 +47,7 @@ describe(@"TBActorPool", ^{
     describe(@"invocations", ^{
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
@@ -105,13 +104,13 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribe:@"three" selector:@selector(handlerThree:)];
+                [pool subscribe:@"message" selector:@selector(handler:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{
                         done();
                     };
-                    [pool publish:@"three" payload:@8];
+                    [pool publish:@"message" payload:@8];
                 });
                 
                 expect(actorOne.symbol).to.equal(@8);
@@ -123,13 +122,13 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                [pool subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{
                         done();
                     };
-                    [otherActor publish:@"four" payload:@10];
+                    [otherActor publish:@"message" payload:@10];
                 });
                 
                 expect(actorOne.symbol).to.equal(@10);
@@ -141,11 +140,10 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToPublisher:otherActor withMessageName:@"four" selector:@selector(handlerFour:)];
+                [pool subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 
-                [pool publish:@"four" payload:@10];
+                [pool publish:@"message" payload:@10];
                 expect(actorOne.symbol).to.beNil;
-                
                 expect(actorTwo.symbol).to.beNil;
             });
         });
@@ -156,7 +154,7 @@ describe(@"TBActorPool", ^{
         __block size_t loadSize = 30;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:10 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
@@ -180,9 +178,9 @@ describe(@"TBActorPool", ^{
         });
         
         it(@"seeds work on multiple subscribers", ^{
-            [pool subscribe:@"block" selector:@selector(blockSomething)];
+            [pool subscribe:@"message" selector:@selector(blockSomething)];
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                [pool publish:@"block" payload:@500];
+                [pool publish:@"message" payload:@500];
             });
             sleep(1);
         });

@@ -39,50 +39,14 @@ pod "ActorKit"
 
 ## Usage
 
-### Configuration
-
-```objc
-#import <ActorKit/ActorKit.h>
-```
 
 ### Creating an actor
 
-Create a subclass of `TBActor`:
+By importing `<ActorKit/ActorKit.h>` each class derived from NSObject can be used as an actor.
 
 ```objc
-@interface WorkerActor : TBActor
-@property(nonatomic, strong) NSString *name;
-- (void)doSomething;
-- (void)handler:(id)payload;
-@end
-
-@implementation WorkerActor
-
-- (void)doSomething
-{
-    // ...
-}
-
-- (void)handler:(id)payload
-{
-    // ...
-}
-@end
-```
-
-Create an actor instance:
-
-```objc
-WorkerActor *actor = [WorkerActor new];
-```
-
-Create an actor instance using a configuration block:
-
-```objc
-WorkerActor *actor = [WorkerActor actorWithConfiguration:^(TBActor *actor) {
-    WorkerActor *worker = (WorkerActor *)actor;
-    worker.name = @"foo";
-}];
+Worker *worker = [[Worker alloc] initWithName:@"Bee"];
+NSMutableArray *array = [NSMutableArray new];
 ```
 
 ### Sending messages to the actor
@@ -90,13 +54,13 @@ WorkerActor *actor = [WorkerActor actorWithConfiguration:^(TBActor *actor) {
 Send a synchronous message to the actor:
 
 ```objc
-[actor.sync doSomething];
+[worker.sync doSomething];
 ```
 
 Send a asynchronous message to the actor:
 
 ```objc
-[actor.async doSomething];
+[array.async removeAllObjects];
 ```
 
 ### Subscribing to messages from other actors
@@ -104,7 +68,7 @@ Send a asynchronous message to the actor:
 Subscribe to a broadcasted message and set a selector which takes the message's payload as an argument:
 
 ```objc
-[actor subscribe:@"message" selector:@selector(handler:)];
+[worker subscribe:@"message" selector:@selector(handler:)];
 
 - (void)handler:(NSNumber *)number
 {
@@ -115,9 +79,9 @@ Subscribe to a broadcasted message and set a selector which takes the message's 
 Subscribe to a specified actor:
 
 ```objc
-[actor subscribeToPublisher:otherActor
-            withMessageName:@"otherMessage"
-                   selector:@selector(handler:)];
+[worker subscribeToPublisher:anotherActor
+             withMessageName:@"anotherMessage"
+                    selector:@selector(handler:)];
 ```
 
 ### Publishing messages to other actors
@@ -125,8 +89,18 @@ Subscribe to a specified actor:
 Publish a message with a payload:
 
 ```objc
-[actor publish:@"message" payload:@5];
+[array publish:@"message" payload:@5];
 ```
+
+### Unsubscribing
+
+To unsibscribe form a message:
+
+```objc
+[worker unsubscribe:@"message"];
+```
+
+Before destroying an actor you should unsubscribe from all messages.
 
 ### Actor Pools
 
@@ -135,7 +109,7 @@ The actor pool class `TBActorPool` is a subtype of actor so it is basically a pr
 Create an actor pool using your actor subclass which you like to pool:
 
 ```objc
-TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(TBActor *actor, NSUInteger index) {
+TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(NSObject *actor, NSUInteger index) {
     WorkerActor *worker = (WorkerActor *)actor;
     worker.name = @"worker";
     worker.id = @(index);
@@ -157,9 +131,14 @@ Same goes for subscriptions:
 [pool subscribe:@"messageToWorkers" selector:@selector(handler:)];
 ```
 
+And unsubscriptions:
+```objc
+[pool unsubscribe:@"messageToWorkers"];
+```
+
 The handler will be executed on an available actor in the pool.
 
-### (experimental) Futures
+### (work in progress) Futures
 
 Future support is contained in the subspec `Futures`:
 
@@ -178,7 +157,7 @@ Actors and pool can return a future for an asynchronous task.
 Send an asynchronous message and receive a future back:
 
 ```objc
-TBActorFuture *future = (TBActorFuture *)[actor.future returnSomething];
+TBActorFuture *future = (TBActorFuture *)[worker.future returnSomething];
 id result = future.result;
 ```
 
@@ -191,7 +170,7 @@ id result = future.result;
 
 Calling `result` on the future will not block the current thread. Use the completion block to receive the result when it is available. The completion block will be executed on the calling thread.
 
-### (experimental) Promises
+### (work in progress) Promises
 
 Promise support is contained in the subspec `Promises`:
 
@@ -210,7 +189,7 @@ Actors and pool can return a promise for an asynchronous task.
 Send a asynchronous message and receive a promise back:
 
 ```objc
-PMKPromise *promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+TBActorPromise *promise = (TBActorPromise *)[worker.promise returnSomethingBlocking];
 promise.then(^(id result) {
     
     // ...

@@ -7,7 +7,6 @@
 //
 
 
-#import <ActorKit/ActorKit.h>
 #import <ActorKit/Futures.h>
 
 #import "TestActor.h"
@@ -24,14 +23,10 @@ __block dispatch_queue_t testQueue;
 describe(@"TBActorFutures", ^{
     
     beforeEach(^{
-        actor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @0;
-        }];
-        otherActor = [TestActor actorWithConfiguration:^(TBActor *actor) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @1;
-        }];
+        actor = [TestActor new];
+        actor.uuid = @0;
+        otherActor = [TestActor new];
+        otherActor.uuid = @1;
     });
     
     afterEach(^{
@@ -54,7 +49,7 @@ describe(@"TBActorFutures", ^{
             __block TBActorFuture *future;
             waitUntil(^(DoneCallback done) {
                 future = (TBActorFuture *)[[actor future:^(id value){
-                    NSLog(@"FUTURE: result: %@", value);
+                    NSLog(@"result: %@", value);
                     done();
                 }] returnSomethingBlocking];
                 
@@ -65,9 +60,9 @@ describe(@"TBActorFutures", ^{
 });
 
 describe(@"TBActorPool", ^{
-
+    
     beforeEach(^{
-        pool = [TestActor poolWithSize:2 configuration:^(TBActor *actor, NSUInteger index) {
+        pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
             TestActor *testActor = (TestActor *)actor;
             testActor.uuid = @(index);
         }];
@@ -80,9 +75,9 @@ describe(@"TBActorPool", ^{
         otherActor = nil;
         testQueue = nil;
     });
-
+    
     describe(@"future", ^{
-
+        
         it (@"returns a future proxy.", ^{
             expect([pool.future isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
@@ -90,26 +85,25 @@ describe(@"TBActorPool", ^{
         it (@"returns a future proxy with a completion block.", ^{
             expect([[pool future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
-
+        
         it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
             __block TBActorFuture *future = nil;
             waitUntil(^(DoneCallback done) {
-                [pool.async blockSomething:^{
+                future = (TBActorFuture *)[[pool future:^(id result) {
                     done();
-                }];
-                future = (TBActorFuture *)[pool.future returnSomething];
+                }] returnSomething];
             });
-            expect(future.result).to.beInTheRangeOf(@0, @1);
+            expect(future.result).to.equal(@0);
         });
     });
-
+    
     describe(@"thread safety", ^{
         
         __block size_t loadSize = 30;
         it(@"seeds future work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 [[pool future:^(id result){
-                    NSLog(@"FUTURE: result: %@", result);
+                    NSLog(@"result: %@", result);
                 }] returnSomething];
             });
             sleep(1);

@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBActor.h"
+
+#import "NSObject+ActorKit.h"
 
 /**
- *  This class represents a pool of TBActor instances.
+ *  This class represents a pool of actor instances.
  */
-@interface TBActorPool : TBActor
+@interface TBActorPool : NSObject
 
 /**
  *  The actors in the pool.
@@ -28,5 +29,10 @@
  */
 - (instancetype)initWithActors:(NSArray *)actors;
 
-- (TBActor *)idleActor;
+/**
+ *  Returns an available actor from the pool.
+ *
+ *  @return The actor.
+ */
+- (NSObject *)idleActor;
 @end

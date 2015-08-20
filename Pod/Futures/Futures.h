@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor.h"
-#import "TBActorProxy.h"
+
 #import "TBActorFuture.h"
+#import "TBActorProxy.h"
 #import "TBActorProxyFuture.h"
-#import "TBActor+Futures.h"
+#import "NSObject+ActorKitFutures.h"
 #import "TBActorPool+Futures.h"

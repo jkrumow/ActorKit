@@ -8,6 +8,9 @@
 
 #import "TBActorProxy.h"
 
+/**
+ *  This class represents a proxy which invokes message asynchronously on its associated actor and returns a future.
+ */
 @interface TBActorProxyFuture : TBActorProxy
 
 /**
@@ -18,7 +21,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxyFuture *)proxyWithActor:(TBActor *)actor completion:(void (^)(id))completion;
++ (TBActorProxyFuture *)proxyWithActor:(NSObject *)actor completion:(void (^)(id))completion;
 
 /**
  *  Initializes a proxy instance with a given actor and a completion block.
@@ -28,5 +31,5 @@
  *
  *  @return The initialized proxy instance.
  */
-- (instancetype)initWithActor:(TBActor *)actor completion:(void (^)(id))completion;
+- (instancetype)initWithActor:(NSObject *)actor completion:(void (^)(id))completion;
 @end

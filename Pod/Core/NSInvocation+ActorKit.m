@@ -1,5 +1,5 @@
 //
-//  TBActor.m
+//  NSInvocation+ActorKit.m
 //  ActorKit
 //
 //  Created by Julian Krumow on 06.08.15.

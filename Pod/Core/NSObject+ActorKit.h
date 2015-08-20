@@ -1,51 +1,44 @@
 //
-//  TBActor.h
+//  NSObject+ActorKit.h
 //  ActorKit
 //
-//  Created by Julian Krumow on 13.07.15.
+//  Created by Julian Krumow on 19.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@class TBActor;
+/**
+ *  The payload of a notification sent between actors.
+ */
+FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
 /**
- *  A block to configure an actor.
+ *  A block to configure a pool of actors.
  *
  *  @param actor The actor instance to configure.
+ *  @param index The index of the actor in the pool.
  */
-typedef void (^TBActorConfigurationBlock)(TBActor *actor);
+typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
+
+@class TBActorPool;
 
 /**
- This class represents an actor.
- 
- It is based on an NSOperationQueue which manages the actor's underlying thread.
+ *  This category extends NSObject with actor model functionality.
  */
-@interface TBActor : NSOperationQueue
+@interface NSObject (ActorKit)
 
 /**
- *  Lists all messages the actor subscribes to.
+ *  The actor's operation queue.
  */
-@property (nonatomic, strong) NSMutableSet *subscriptions;
+@property (nonatomic, strong) NSOperationQueue *actorQueue;
 
 /**
- *  Creates an actor using a specified configuration block.
+ *  Returns the actor's operation queue.
  *
- *  @param configuration The configuration block.
- *
- *  @return The created actor instance.
+ *  @return The operation queue.
  */
-+ (instancetype)actorWithConfiguration:(TBActorConfigurationBlock)configuration;
-
-/**
- *  Initializes an actor using a specified configuration block.
- *
- *  @param configuration The configuration block.
- *
- *  @return The initialized actor instance.
- */
-- (instancetype)initWithConfiguration:(TBActorConfigurationBlock)configuration;
+- (NSOperationQueue *)actorQueue;
 
 /**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
@@ -79,11 +72,26 @@ typedef void (^TBActorConfigurationBlock)(TBActor *actor);
 - (void)subscribeToPublisher:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
+ *  Unsubscribes an NSNotification from other actors.
+ *
+ *  @param messageName The name of the notification.
+ */
+- (void)unsubscribe:(NSString *)messageName;
+
+/**
  *  Send a notification to other actors.
  *
  *  @param messageName The name of the notification.
  *  @param payload     The payload of the notification.
  */
 - (void)publish:(NSString *)messageName payload:(id)payload;
-@end
 
+/**
+ *  Creates a pool of actors of the current class using a specified configuration block.
+ *
+ *  @param configuration The configuration block.
+ *
+ *  @return The created actor pool instance.
+ */
++ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration;
+@end

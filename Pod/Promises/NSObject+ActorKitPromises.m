@@ -1,15 +1,15 @@
 //
-//  TBActor+Promises.m
+//  NSObject+ActorKitPromises.m
 //  ActorKitPromises
 //
 //  Created by Julian Krumow on 14.08.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "TBActor+Promises.h"
+#import "NSObject+ActorKitPromises.h"
 #import "TBActorProxyPromise.h"
 
-@implementation TBActor (Promises)
+@implementation NSObject (ActorKitPromises)
 
 - (id)promise
 {

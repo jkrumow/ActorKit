@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  This class represents a future.
+ * This class represents a future returned by TBActorProxyFuture.
  */
 @interface TBActorFuture : NSInvocationOperation
 

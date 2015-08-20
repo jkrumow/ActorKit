@@ -9,8 +9,8 @@
 #import <PromiseKit/PromiseKit.h>
 
 #import "TBActorProxyPromise.h"
-#import "TBActor.h"
 #import "NSInvocation+ActorKit.h"
+#import "NSObject+ActorKit.h"
 
 @interface TBActorProxyPromise ()
 @property (nonatomic, strong) PMKPromise *promise;
@@ -18,7 +18,7 @@
 
 @implementation TBActorProxyPromise
 
-+ (TBActorProxy *)proxyWithActor:(TBActor *)actor
++ (TBActorProxy *)proxyWithActor:(NSObject *)actor
 {
     return [[TBActorProxyPromise alloc] initWithActor:actor];
 }
@@ -36,7 +36,7 @@
         operation.completionBlock = ^{
             resolve(blockOperation.result);
         };
-        [self.actor addOperation:operation];
+        [self.actor.actorQueue addOperation:operation];
     }];
     
     // Return promise back to original sender - change invocation selector to helper method

@@ -8,6 +8,9 @@
 
 #import "TBActorProxy.h"
 
+/**
+ *  This class represents a proxy which invokes message asynchronously on its associated actor and returns a promise.
+ */
 @interface TBActorProxyPromise : TBActorProxy
 
 @end

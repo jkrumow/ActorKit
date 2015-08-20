@@ -8,7 +8,7 @@
 
 #import <ActorKit/ActorKit.h>
 
-@interface TestActor : TBActor
+@interface TestActor : NSObject
 
 @property (nonatomic, strong) NSNumber *uuid;
 @property (nonatomic, strong) NSNumber *symbol;
@@ -19,10 +19,7 @@
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
 - (NSNumber *)returnSomething;
 - (NSNumber *)returnSomethingBlocking;
-- (void)handlerOne:(id)payload;
-- (void)handlerTwo:(id)payload;
-- (void)handlerThree:(id)payload;
-- (void)handlerFour:(id)payload;
+- (void)handler:(id)payload;
 - (void)blockSomething;
 - (void)blockSomething:(void (^)(void))completion;
 @end
