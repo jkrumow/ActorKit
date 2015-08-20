@@ -18,8 +18,7 @@ __block NSMutableArray *otherActor;
 describe(@"TBActor", ^{
     
     afterEach(^{
-        [actor unsubscribe:@"one"];
-        [actor unsubscribe:@"two"];
+        [actor unsubscribe:@"message"];
         actor = nil;
         otherActor = nil;
     });
@@ -68,27 +67,27 @@ describe(@"TBActor", ^{
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{
-                [actor subscribe:@"one" selector:@selector(handlerOne:)];
+                [actor subscribe:@"message" selector:@selector(handler:)];
                 
                 expect(^{
-                    [actor publish:@"one" payload:@5];
-                }).to.notify(@"one");
+                    [actor publish:@"message" payload:@5];
+                }).to.notify(@"message");
                 expect(actor.symbol).to.equal(@5);
             });
             
             it(@"handles messages from a specified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
-                [otherActor publish:@"two" payload:@10];
+                [otherActor publish:@"message" payload:@10];
                 expect(actor.symbol).to.equal(@10);
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"two" selector:@selector(handlerTwo:)];
+                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
-                [actor publish:@"two" payload:@10];
+                [actor publish:@"message" payload:@10];
                 expect(actor.symbol).to.equal(@5);
             });
         });

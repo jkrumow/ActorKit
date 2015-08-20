@@ -90,7 +90,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     NSMutableArray *actors = [NSMutableArray new];
     for (NSUInteger i=0; i < size; i++) {
         id actor = [self new];
-        
         if (configuration) {
             configuration(actor, i);
         }
