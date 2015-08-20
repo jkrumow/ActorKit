@@ -8,6 +8,9 @@
 
 #import "TBActorProxy.h"
 
+/**
+ *  
+ */
 @interface TBActorProxyPromise : TBActorProxy
 
 @end

@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-
+/**
+ *  The payload of a notification sent between actors.
+ */
 FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
 /**
@@ -20,8 +22,15 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
 
 @class TBActorPool;
+
+/**
+ *  This extends NSObject with actor model functionality.
+ */
 @interface NSObject (ActorKit)
 
+/**
+ *  The actor's operation queue.
+ */
 @property (nonatomic, strong) NSOperationQueue *actorQueue;
 
 /**

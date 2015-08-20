@@ -8,6 +8,9 @@
 
 #import "TBActorPool.h"
 
+/**
+ *  
+ */
 @interface TBActorPool (Promises)
 
 /**

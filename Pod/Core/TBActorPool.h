@@ -29,5 +29,10 @@
  */
 - (instancetype)initWithActors:(NSArray *)actors;
 
+/**
+ *  Returns an available actor from the pool.
+ *
+ *  @return The actor.
+ */
 - (NSObject *)idleActor;
 @end
