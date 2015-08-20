@@ -77,7 +77,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
 }
 
-// TODO: send address from sending actor
 - (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName

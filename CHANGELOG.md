@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.7.0
+
+- Fixes platform support. All subspecs support iOS, watchOS and OS X except 'ActorKit/Promises'
+
 ## 0.6.0
 
 - Major refactoring to make every NSObject an actor
