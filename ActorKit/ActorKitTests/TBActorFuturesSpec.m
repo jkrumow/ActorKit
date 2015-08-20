@@ -89,12 +89,11 @@ describe(@"TBActorPool", ^{
         it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
             __block TBActorFuture *future = nil;
             waitUntil(^(DoneCallback done) {
-                [pool.async blockSomething:^{
+                future = (TBActorFuture *)[[pool future:^(id result) {
                     done();
-                }];
-                future = (TBActorFuture *)[pool.future returnSomething];
+                }] returnSomething];
             });
-            expect(future.result).to.beInTheRangeOf(@0, @1);
+            expect(future.result).to.equal(@0);
         });
     });
     

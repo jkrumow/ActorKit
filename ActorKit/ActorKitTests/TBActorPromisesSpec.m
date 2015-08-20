@@ -83,15 +83,13 @@ describe(@"TBActorPool", ^{
             __block PMKPromise *promise;
             __block id blockResult;
             waitUntil(^(DoneCallback done) {
-                [pool.async blockSomething:^{
-                    done();
-                }];
                 promise = (PMKPromise *)[pool.promise returnSomething];
                 promise.then(^(id result) {
                     blockResult = result;
+                    done();
                 });
             });
-            expect(blockResult).to.beInTheRangeOf(@0, @1);
+            expect(blockResult).to.equal(@0);
         });
     });
     
