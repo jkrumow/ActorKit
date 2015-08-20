@@ -24,7 +24,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 @class TBActorPool;
 
 /**
- *  This extends NSObject with actor model functionality.
+ *  This category extends NSObject with actor model functionality.
  */
 @interface NSObject (ActorKit)
 

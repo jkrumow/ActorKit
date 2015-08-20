@@ -7,8 +7,8 @@
 //
 
 
-#import "TBActorProxy.h"
 #import "TBActorFuture.h"
+#import "TBActorProxy.h"
 #import "TBActorProxyFuture.h"
 #import "NSObject+ActorKitFutures.h"
 #import "TBActorPool+Futures.h"

@@ -9,7 +9,7 @@
 #import "TBActorPool.h"
 
 /**
- *  
+ *  This category adds support for futures to TBActorPool.
  */
 @interface TBActorPool (Futures)
 

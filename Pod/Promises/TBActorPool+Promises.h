@@ -9,7 +9,7 @@
 #import "TBActorPool.h"
 
 /**
- *  
+ *  This category adds support for promises to TBActorPool.
  */
 @interface TBActorPool (Promises)
 
@@ -19,5 +19,4 @@
  *  @return The TBActorProxyPromise instance.
  */
 - (id)promise;
-
 @end

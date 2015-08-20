@@ -8,6 +8,7 @@
 
 #import <PromiseKit/PromiseKit.h>
 
+#import "TBActorPromise.h"
 #import "TBActorProxy.h"
 #import "TBActorProxyPromise.h"
 #import "NSObject+ActorKitPromises.h"
