@@ -46,7 +46,7 @@ By importing `<ActorKit/ActorKit.h>` each class derived from NSObject can be use
 
 ```objc
 Worker *worker = [[Worker alloc] initWithName:@"Bee"];
-NSArray *array = [NSArray new];
+NSMutableArray *array = [NSMutableArray new];
 ```
 
 ### Sending messages to the actor
@@ -100,7 +100,7 @@ To unsibscribe form a message:
 [worker unsubscribe:@"message"];
 ```
 
-Before destroying an actor you should unsubscribe from a message.
+Before destroying an actor you should unsubscribe from all messages.
 
 ### Actor Pools
 

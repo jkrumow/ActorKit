@@ -8,7 +8,7 @@
 
 
 /**
- *  This category extends NSObject with methods to use futues in async calls.
+ *  This category extends NSObject with methods to use futures in async calls.
  */
 @interface NSObject (ActorKitFutures)
 

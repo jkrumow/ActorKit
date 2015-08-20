@@ -14,6 +14,7 @@
 #import "TBActorPool.h"
 
 
+NSUInteger const TBAKActorQueueMaxOperationCount = 1;
 NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
@@ -27,7 +28,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     if (queue == nil) {
         queue = [NSOperationQueue new];
         queue.name = TBAKActorQueue;
-        queue.maxConcurrentOperationCount = 1;
+        queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
         [self setActorQueue:queue];
     }
     

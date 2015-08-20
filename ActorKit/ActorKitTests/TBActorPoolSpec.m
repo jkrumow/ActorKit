@@ -145,7 +145,6 @@ describe(@"TBActorPool", ^{
                 
                 [pool publish:@"four" payload:@10];
                 expect(actorOne.symbol).to.beNil;
-                
                 expect(actorTwo.symbol).to.beNil;
             });
         });

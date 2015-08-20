@@ -49,7 +49,7 @@ describe(@"TBActorFutures", ^{
             __block TBActorFuture *future;
             waitUntil(^(DoneCallback done) {
                 future = (TBActorFuture *)[[actor future:^(id value){
-                    NSLog(@"FUTURE: result: %@", value);
+                    NSLog(@"result: %@", value);
                     done();
                 }] returnSomethingBlocking];
                 
@@ -104,7 +104,7 @@ describe(@"TBActorPool", ^{
         it(@"seeds future work on multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 [[pool future:^(id result){
-                    NSLog(@"FUTURE: result: %@", result);
+                    NSLog(@"result: %@", result);
                 }] returnSomething];
             });
             sleep(1);

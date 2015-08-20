@@ -102,7 +102,7 @@ describe(@"TBActorPool", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
                 PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
                 promise.then(^(id result) {
-                    NSLog(@"FUTURE: result: %@", result);
+                    NSLog(@"result: %@", result);
                 });
             });
             sleep(1);

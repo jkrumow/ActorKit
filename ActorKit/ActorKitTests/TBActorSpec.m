@@ -74,7 +74,6 @@ describe(@"TBActor", ^{
                     [actor publish:@"one" payload:@5];
                 }).to.notify(@"one");
                 expect(actor.symbol).to.equal(@5);
-                
             });
             
             it(@"handles messages from a specified actor.", ^{
