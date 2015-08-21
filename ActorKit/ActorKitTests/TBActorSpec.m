@@ -79,8 +79,8 @@ describe(@"TBActor", ^{
                 [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
-                [otherActor publish:@"message" payload:@10];
-                expect(actor.symbol).to.equal(@10);
+                [otherActor publish:@"message" payload:nil];
+                expect(actor.symbol).to.beNil;
             });
             
             it(@"ignores messages from an unspecified actor.", ^{

@@ -77,11 +77,15 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
 }
 
-- (void)publish:(NSString *)messageName payload:(NSDictionary *)payload
+- (void)publish:(NSString *)messageName payload:(id)payload
 {
+    NSDictionary *dictionary = nil;
+    if (payload) {
+        dictionary = @{TBAKActorPayload:[payload copy]};
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName
                                                         object:self
-                                                      userInfo:@{TBAKActorPayload:payload.copy}]; // Copy payload to prevent shared state.
+                                                      userInfo:dictionary]; // Copy payload to prevent shared state.
 }
 
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration

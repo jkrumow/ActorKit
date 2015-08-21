@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.7.1
+
+- Fixes bug which caused crash when posting message with payload being nil
+
 ## 0.7.0
 
 - Fixes platform support. All subspecs support iOS, watchOS and OS X except 'ActorKit/Promises'
