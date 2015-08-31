@@ -20,6 +20,7 @@
 - (NSNumber *)returnSomething;
 - (NSNumber *)returnSomethingBlocking;
 - (void)handler:(id)payload;
+- (void)handlerRaw:(NSDictionary *)payload;
 - (void)blockSomething;
 - (void)blockSomething:(void (^)(void))completion;
 @end

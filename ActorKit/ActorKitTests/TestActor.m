@@ -68,6 +68,12 @@
     self.symbol = payload;
 }
 
+- (void)handlerRaw:(NSDictionary *)payload
+{
+    NSLog(@"%@ handler: %@", self.uuid, payload);
+    self.symbol = payload[@"symbol"];
+}
+
 - (void)blockSomething
 {
     NSLog(@"%@ blockSomething", self.uuid);

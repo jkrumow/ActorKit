@@ -76,7 +76,7 @@ describe(@"TBActor", ^{
             });
             
             it(@"handles messages from a specified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [actor subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
                 [otherActor publish:@"message" payload:nil];
@@ -84,10 +84,18 @@ describe(@"TBActor", ^{
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
-                [actor subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [actor subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 actor.symbol = @5;
                 
                 [actor publish:@"message" payload:@10];
+                expect(actor.symbol).to.equal(@5);
+            });
+            
+            it(@"handles generic NSNotifications", ^{
+                NSObject *sender = [NSObject new];
+                [actor subscribeToSender:sender withMessageName:@"message" selector:@selector(handlerRaw:)];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
                 expect(actor.symbol).to.equal(@5);
             });
         });

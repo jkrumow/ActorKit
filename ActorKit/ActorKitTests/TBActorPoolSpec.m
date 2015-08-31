@@ -122,7 +122,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [pool subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{
@@ -140,10 +140,28 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToPublisher:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [pool subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
                 
                 [pool publish:@"message" payload:@10];
                 expect(actorOne.symbol).to.beNil;
+                expect(actorTwo.symbol).to.beNil;
+            });
+            
+            it(@"handles generic NSNotifications", ^{
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                NSObject *sender = [NSObject new];
+                [pool subscribeToSender:sender withMessageName:@"message" selector:@selector(handlerRaw:)];
+                
+                waitUntil(^(DoneCallback done) {
+                    actorOne.monitorBlock = ^{
+                        done();
+                    };
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
+                });
+                
+                expect(actorOne.symbol).to.equal(@5);
                 expect(actorTwo.symbol).to.beNil;
             });
         });

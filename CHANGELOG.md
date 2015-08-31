@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.7.2
+
+- Add instance method `subscribeToSender:withMessageName:selector:` to subscribe to NSNotification of generic senders with aw payload.
+
 ## 0.7.1
 
 - Fixes bug which caused crash when posting message with payload being nil

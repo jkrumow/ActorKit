@@ -43,15 +43,28 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return [TBActorProxyAsync proxyWithActor:self.idleActor];
 }
 
-- (void)subscribeToPublisher:(id)publisher withMessageName:(NSString *)messageName selector:(SEL)selector
+- (void)subscribeToActor:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
-                                                      object:publisher
+                                                      object:actor
                                                        queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                                                       [self.async performSelector:selector withObject:note.userInfo[TBAKActorPayload]];
+#pragma clang diagnostic pop
+                                                  }];
+}
+
+- (void)subscribeToSender:(id)sender withMessageName:(NSString *)messageName selector:(SEL)selector
+{
+    [[NSNotificationCenter defaultCenter] addObserverForName:messageName
+                                                      object:sender
+                                                       queue:self.actorQueue
+                                                  usingBlock:^(NSNotification *note) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                                                      [self.async performSelector:selector withObject:note.userInfo];
 #pragma clang diagnostic pop
                                                   }];
 }
