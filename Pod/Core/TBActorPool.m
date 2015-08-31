@@ -60,7 +60,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 {
     NSObject *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;
-    @synchronized(self) {
+    @synchronized(_priv_actors) {
         for (NSObject *actor in self.actors) {
             NSUInteger operationCount = actor.actorQueue.operationCount;
             if (operationCount == 0) {
