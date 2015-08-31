@@ -144,7 +144,7 @@ Future support is contained in the subspec `Futures`:
 
 ```ruby
 target 'MyApp', :exclusive => true do
-  pod 'pod 'ActorKit/Futures'
+  pod 'ActorKit/Futures'
 end
 ```
 
@@ -176,7 +176,7 @@ Promise support is contained in the subspec `Promises`:
 
 ```ruby
 target 'MyApp', :exclusive => true do
-  pod 'pod 'ActorKit/Promises'
+  pod 'ActorKit/Promises'
 end
 ```
 
