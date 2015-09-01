@@ -14,6 +14,8 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 @interface TBActorPool ()
 @property (nonatomic, strong) NSArray *priv_actors;
+@property (nonatomic, strong) NSMutableSet *idleActors;
+@property (nonatomic, strong) NSMutableSet *busyActors;
 @end
 
 @implementation TBActorPool
@@ -23,6 +25,10 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     self = [super init];
     if (self) {
         _priv_actors = actors;
+        [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
+        
+        _idleActors = [[NSMutableSet alloc] initWithArray:self.priv_actors];
+        _busyActors = [NSMutableSet new];
         self.actorQueue.name = TBAKActorPoolQueue;
     }
     return self;
@@ -74,19 +80,31 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     NSObject *idleActor = nil;
     NSUInteger lowest = NSUIntegerMax;
     @synchronized(_priv_actors) {
-        for (NSObject *actor in self.actors) {
-            NSUInteger operationCount = actor.actorQueue.operationCount;
-            if (operationCount == 0) {
-                idleActor = actor;
-                break;
-            }
-            if (operationCount < lowest) {
-                lowest = operationCount;
-                idleActor = actor;
+        idleActor = [self.idleActors anyObject];
+        if (idleActor) {
+            [self.busyActors addObject:idleActor];
+            [self.idleActors removeObject:idleActor];
+        } else {
+            for (NSObject *actor in self.busyActors) {
+                NSUInteger operationCount = actor.actorQueue.operationCount;
+                if (operationCount < lowest) {
+                    lowest = operationCount;
+                    idleActor = actor;
+                }
             }
         }
     }
     return idleActor;
+}
+
+- (void)freeActor:(NSObject *)actor
+{
+    @synchronized(_priv_actors) {
+        if (actor.actorQueue.operationCount == 0) {
+            [self.busyActors removeObject:actor];
+            [self.idleActors addObject:actor];
+        }
+    }
 }
 
 @end

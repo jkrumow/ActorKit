@@ -20,6 +20,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;
+@dynamic pool;
 
 - (NSOperationQueue *)actorQueue
 {
@@ -38,6 +39,16 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 - (void)setActorQueue:(NSOperationQueue *)actorQueue
 {
     objc_setAssociatedObject(self, @selector(actorQueue), actorQueue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (TBActorPool *)pool
+{
+    return objc_getAssociatedObject(self, @selector(pool));
+}
+
+- (void)setPool:(TBActorPool *)pool
+{
+    objc_setAssociatedObject(self, @selector(pool), pool, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Invocatons

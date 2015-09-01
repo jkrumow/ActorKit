@@ -7,6 +7,7 @@
 //
 
 #import "TBActorProxyFuture.h"
+#import "TBActorPool.h"
 #import "TBActorFuture.h"
 #import "NSInvocation+ActorKit.h"
 #import "NSObject+ActorKit.h"
@@ -55,6 +56,10 @@
                 blockSelf.completion(blockSelf.future.result);
             }
         }];
+        
+        if (blockSelf.actor.pool) {
+            [blockSelf.actor.pool freeActor:blockSelf.actor];
+        }
     }];
     
     // Return future back to original sender - change invocation selector to helper method

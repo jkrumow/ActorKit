@@ -7,6 +7,7 @@
 //
 
 #import "TBActorProxyAsync.h"
+#import "TBActorPool.h"
 #import "NSObject+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
 
@@ -22,6 +23,11 @@
     [invocation setTarget:self.actor];
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
+    operation.completionBlock = ^{
+        if (self.actor.pool) {
+            [self.actor.pool freeActor:self.actor];
+        }
+    };
     [self.actor.actorQueue addOperation:operation];
 }
 

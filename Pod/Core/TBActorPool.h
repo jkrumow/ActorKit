@@ -35,4 +35,11 @@
  *  @return The actor.
  */
 - (NSObject *)idleActor;
+
+/**
+ *  Returns an actor to `idleActors` set when it not busy anymore.
+ *
+ *  @param actor The actor to check.
+ */
+- (void)freeActor:(NSObject *)actor;
 @end

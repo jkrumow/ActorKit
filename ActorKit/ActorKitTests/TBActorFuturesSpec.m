@@ -93,7 +93,7 @@ describe(@"TBActorPool", ^{
                     done();
                 }] returnSomething];
             });
-            expect(future.result).to.equal(@0);
+            expect(future.result).to.beInTheRangeOf(@0, @1);
         });
     });
     

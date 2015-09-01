@@ -66,8 +66,14 @@ describe(@"TBActorPool", ^{
                 
                 [pool.sync blockSomething];
                 [pool.sync setSymbol:@123];
-                expect(actorOne.symbol).to.equal(@123);
-                expect(actorTwo.symbol).to.beNil;
+                
+                if (actorOne.symbol) {
+                    expect(actorOne.symbol).to.equal(@123);
+                    expect(actorTwo.symbol).to.beNil;
+                } else {
+                    expect(actorOne.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.equal(@123);
+                }
             });
         });
         
@@ -88,11 +94,12 @@ describe(@"TBActorPool", ^{
                     [pool.async setSymbol:@456];
                 });
                 
-                if (actorOne.symbol == nil && actorTwo.symbol == nil) {
-                    XCTFail(@"One actor must set symbol.");
-                }
-                if (actorOne.symbol != nil && actorTwo.symbol != nil) {
-                    XCTFail(@"Only one actor can set symbol.");
+                if (actorOne.symbol) {
+                    expect(actorOne.symbol).to.equal(456);
+                    expect(actorTwo.symbol).to.beNil;
+                } else {
+                    expect(actorOne.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.equal(@456);
                 }
             });
         });
@@ -110,11 +117,19 @@ describe(@"TBActorPool", ^{
                     actorOne.monitorBlock = ^{
                         done();
                     };
+                    actorTwo.monitorBlock = ^{
+                        done();
+                    };
                     [pool publish:@"message" payload:@8];
                 });
                 
-                expect(actorOne.symbol).to.equal(@8);
-                expect(actorTwo.symbol).to.beNil;
+                if (actorOne.symbol) {
+                    expect(actorOne.symbol).to.equal(8);
+                    expect(actorTwo.symbol).to.beNil;
+                } else {
+                    expect(actorOne.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.equal(8);
+                }
             });
             
             it(@"handles messages from a specified actor.", ^{
@@ -128,11 +143,19 @@ describe(@"TBActorPool", ^{
                     actorOne.monitorBlock = ^{
                         done();
                     };
+                    actorTwo.monitorBlock = ^{
+                        done();
+                    };
                     [otherActor publish:@"message" payload:@10];
                 });
                 
-                expect(actorOne.symbol).to.equal(@10);
-                expect(actorTwo.symbol).to.beNil;
+                if (actorOne.symbol) {
+                    expect(actorOne.symbol).to.equal(@10);
+                    expect(actorTwo.symbol).to.beNil;
+                } else {
+                    expect(actorOne.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.equal(@10);
+                }
             });
             
             it(@"ignores messages from an unspecified actor.", ^{
@@ -158,11 +181,19 @@ describe(@"TBActorPool", ^{
                     actorOne.monitorBlock = ^{
                         done();
                     };
+                    actorTwo.monitorBlock = ^{
+                        done();
+                    };
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
                 });
                 
-                expect(actorOne.symbol).to.equal(@5);
-                expect(actorTwo.symbol).to.beNil;
+                if (actorOne.symbol) {
+                    expect(actorOne.symbol).to.equal(@5);
+                    expect(actorTwo.symbol).to.beNil;
+                } else {
+                    expect(actorOne.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.equal(@5);
+                }
             });
         });
     });
