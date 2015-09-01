@@ -45,7 +45,7 @@ describe(@"TBActorFutures", ^{
             expect([[actor future:^(id result) {}] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
         
-        it (@"invokes a method asynchronuously returning a value through a future.", ^{
+        it (@"invokes a method asynchronously returning a value through a future.", ^{
             __block TBActorFuture *future;
             waitUntil(^(DoneCallback done) {
                 future = (TBActorFuture *)[[actor future:^(id value){
@@ -86,7 +86,7 @@ describe(@"TBActorPool", ^{
             expect([[pool future:nil] isMemberOfClass:[TBActorProxyFuture class]]).to.beTruthy;
         });
         
-        it (@"invokes a method asynchronuously on an idle actor returning a value through a future.", ^{
+        it (@"invokes a method asynchronously on an idle actor returning a value through a future.", ^{
             __block TBActorFuture *future = nil;
             waitUntil(^(DoneCallback done) {
                 future = (TBActorFuture *)[[pool future:^(id result) {

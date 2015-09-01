@@ -37,7 +37,7 @@ describe(@"TBActor", ^{
                 expect([actor.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
             });
             
-            it (@"invokes a method synchronuously.", ^{
+            it (@"invokes a method synchronously.", ^{
                 __block NSString *result;
                 [actor.sync doSomething:@"foo" withCompletion:^(NSString *string){
                     result = string;
@@ -52,7 +52,7 @@ describe(@"TBActor", ^{
                 expect([actor.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
             });
             
-            it (@"invokes a method asynchronuously.", ^{
+            it (@"invokes a method asynchronously.", ^{
                 __block NSString *result;
                 waitUntil(^(DoneCallback done) {
                     [actor.async doSomething:@"foo" withCompletion:^(NSString *string){

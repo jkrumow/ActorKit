@@ -41,7 +41,7 @@ describe(@"TBActorPromises", ^{
             expect([actor.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
         });
         
-        it (@"invokes a method asynchronuously returning a value through a promise.", ^{
+        it (@"invokes a method asynchronously returning a value through a promise.", ^{
             __block id blockResult;
             __block PMKPromise *promise;
             waitUntil(^(DoneCallback done) {
@@ -79,7 +79,7 @@ describe(@"TBActorPool", ^{
             expect([pool.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
         });
         
-        it (@"invokes a method asynchronuously on an idle actor returning a value through a promise.", ^{
+        it (@"invokes a method asynchronously on an idle actor returning a value through a promise.", ^{
             __block PMKPromise *promise;
             __block id blockResult;
             waitUntil(^(DoneCallback done) {

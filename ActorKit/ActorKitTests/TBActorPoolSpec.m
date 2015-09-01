@@ -60,7 +60,7 @@ describe(@"TBActorPool", ^{
                 expect([pool.sync isMemberOfClass:[TBActorProxySync class]]).to.beTruthy;
             });
             
-            it(@"dispatches invocations synchronuously to an idle actor.", ^{
+            it(@"dispatches invocations synchronously to an idle actor.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
@@ -77,7 +77,7 @@ describe(@"TBActorPool", ^{
                 expect([pool.async isMemberOfClass:[TBActorProxyAsync class]]).to.beTruthy;
             });
             
-            it(@"dispatches invocations asynchronuously to an idle actor.", ^{
+            it(@"dispatches invocations asynchronously to an idle actor.", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
