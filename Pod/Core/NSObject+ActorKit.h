@@ -74,7 +74,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToActor:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a generic sender.
@@ -84,7 +84,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToSender:(id)sender withMessageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Unsubscribes an NSNotification from other actors.

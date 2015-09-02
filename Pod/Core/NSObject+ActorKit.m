@@ -67,10 +67,10 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (void)subscribe:(NSString *)messageName selector:(SEL)selector
 {
-    [self subscribeToActor:nil withMessageName:messageName selector:selector];
+    [self subscribeToActor:nil messageName:messageName selector:selector];
 }
 
-- (void)subscribeToActor:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector;
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:actor
@@ -83,7 +83,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
                                                   }];
 }
 
-- (void)subscribeToSender:(id)sender withMessageName:(NSString *)messageName selector:(SEL)selector
+- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:sender

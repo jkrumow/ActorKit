@@ -79,9 +79,9 @@ Subscribe to a broadcasted message and set a selector which takes the message's 
 Subscribe to a specified actor:
 
 ```objc
-[worker subscribeToPublisher:anotherActor
-             withMessageName:@"anotherMessage"
-                    selector:@selector(handler:)];
+[worker subscribeToActor:anotherActor
+             messageName:@"anotherMessage"
+                selector:@selector(handler:)];
 ```
 
 ### Publishing messages to other actors

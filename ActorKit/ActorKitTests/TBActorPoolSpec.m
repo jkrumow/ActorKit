@@ -137,7 +137,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{
@@ -163,7 +163,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
                 
-                [pool subscribeToActor:otherActor withMessageName:@"message" selector:@selector(handler:)];
+                [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
                 
                 [pool publish:@"message" payload:@10];
                 expect(actorOne.symbol).to.beNil;
@@ -175,7 +175,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 NSObject *sender = [NSObject new];
-                [pool subscribeToSender:sender withMessageName:@"message" selector:@selector(handlerRaw:)];
+                [pool subscribeToSender:sender messageName:@"message" selector:@selector(handlerRaw:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{

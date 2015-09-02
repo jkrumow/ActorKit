@@ -39,7 +39,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self.priv_actors.copy;
 }
 
-- (void)subscribeToActor:(id)actor withMessageName:(NSString *)messageName selector:(SEL)selector
+- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:actor
@@ -52,7 +52,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
-- (void)subscribeToSender:(id)sender withMessageName:(NSString *)messageName selector:(SEL)selector
+- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:sender
