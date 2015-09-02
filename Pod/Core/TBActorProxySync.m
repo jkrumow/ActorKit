@@ -25,10 +25,7 @@
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     [self.actor.actorQueue addOperation:operation];
     [self.actor.actorQueue waitUntilAllOperationsAreFinished];
-    
-    if (self.actor.pool) {
-        [self.actor.pool freeActor:self.actor];
-    }
+    [self freeActor];
 }
 
 @end

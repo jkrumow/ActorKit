@@ -56,10 +56,7 @@
                 blockSelf.completion(blockSelf.future.result);
             }
         }];
-        
-        if (blockSelf.actor.pool) {
-            [blockSelf.actor.pool freeActor:blockSelf.actor];
-        }
+        [blockSelf freeActor];
     }];
     
     // Return future back to original sender - change invocation selector to helper method

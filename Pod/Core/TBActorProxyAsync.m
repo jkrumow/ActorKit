@@ -24,9 +24,7 @@
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     operation.completionBlock = ^{
-        if (self.actor.pool) {
-            [self.actor.pool freeActor:self.actor];
-        }
+        [self freeActor];
     };
     [self.actor.actorQueue addOperation:operation];
 }
