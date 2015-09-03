@@ -8,7 +8,6 @@ Pod::Spec.new do |s|
                        * Actors
                        * Actor Pools
                        * Synchronous and asynchronous invocations
-                       * Futures
                        * Promises
                        * Message subscription and publication
                        DESC
@@ -26,11 +25,6 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
   s.subspec 'Core' do |core|
     core.source_files = 'Pod/Core'
-  end
-
-  s.subspec 'Futures' do |futures|
-    futures.source_files = 'Pod/Futures'
-    futures.dependency 'ActorKit/Core'
   end
 
   s.subspec 'Promises' do |promises|

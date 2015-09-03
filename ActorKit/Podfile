@@ -2,7 +2,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'ActorKitTests', :exclusive => true do
   pod 'ActorKit', :path => '../'
-  pod 'ActorKit/Futures', :path => '../'
   pod 'ActorKit/Promises', :path => '../'
 
   pod 'Specta'
