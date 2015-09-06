@@ -165,7 +165,7 @@ promise.then(^(id result) {
 
 ## Architecture
 
-This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocationOperations`. This three classes practically represent mailbox, thread, runloop and message.
+This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocationOperations`. These three classes practically represent mailbox, thread, runloop and message.
 
 ## Useful Theory on Actors
 
