@@ -25,7 +25,7 @@ task :default => [:build, :test, :coverage]
 private
 
 def build_tests
-  run_xctool('build-tests', WORKSPACE, SCHEME, SDK, COVERAGE_ARGS)
+  run_xctool('clean build-tests', WORKSPACE, SCHEME, SDK, COVERAGE_ARGS)
 end
 
 def run_tests
