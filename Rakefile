@@ -5,12 +5,17 @@ SCHEME = 'ActorKitTests'
 SDK = 'iphonesimulator'
 COVERAGE_ARGS = 'GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES'
 
-desc "Build the tests"
+desc "Clean the workspace"
+task :clean do
+  clean_tests
+end
+
+desc "Build the workspace"
 task :build do
   build_tests
 end
 
-desc "Run the tests"
+desc "Run the workspace"
 task :test do
   run_tests
 end
@@ -24,8 +29,12 @@ task :default => [:build, :test, :coverage]
 
 private
 
+def clean_tests
+  run_xctool('clean', WORKSPACE, SCHEME, SDK)
+end
+
 def build_tests
-  run_xctool('clean build-tests', WORKSPACE, SCHEME, SDK, COVERAGE_ARGS)
+  run_xctool('build-tests', WORKSPACE, SCHEME, SDK, COVERAGE_ARGS)
 end
 
 def run_tests
