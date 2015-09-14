@@ -23,8 +23,7 @@
     [invocation setTarget:self.actor];
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
-    [self.actor.actorQueue addOperation:operation];
-    [self.actor.actorQueue waitUntilAllOperationsAreFinished];
+    [self.actor.actorQueue addOperations:@[operation] waitUntilFinished:YES];
     [self freeActor];
 }
 
