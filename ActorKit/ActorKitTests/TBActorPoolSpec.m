@@ -104,6 +104,33 @@ describe(@"TBActorPool", ^{
             });
         });
         
+        describe(@"broadcast", ^{
+            
+            it (@"returns an broadcast proxy", ^{
+                TBActorProxyBroadcast *proxy = pool.broadcast;
+                expect([proxy isMemberOfClass:[TBActorProxyBroadcast class]]).to.beTruthy;
+            });
+            
+            it(@"dispatches invocations asynchronously to all actors.", ^{
+                TestActor *actorOne = pool.actors[0];
+                TestActor *actorTwo = pool.actors[1];
+                
+                __block int count = 0;
+                waitUntil(^(DoneCallback done) {
+                    [pool.broadcast setSymbol:@456 withCompletion:^(NSNumber *symbol) {
+                        count++;
+                        
+                        if (count == 2) {
+                            done();
+                        }
+                    }];
+                });
+                
+                expect(actorOne.symbol).to.equal(@456);
+                expect(actorTwo.symbol).to.equal(@456);
+            });
+        });
+        
         describe(@"pubsub", ^{
             
             it (@"handles broadcasted subscriptions and publishing.", ^{

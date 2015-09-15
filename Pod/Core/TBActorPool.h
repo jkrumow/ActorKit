@@ -29,6 +29,8 @@
  */
 - (instancetype)initWithActors:(NSArray *)actors;
 
+- (id)broadcast;
+
 /**
  *  Returns an available actor from the pool.
  *
