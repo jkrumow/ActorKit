@@ -29,6 +29,11 @@
  */
 - (instancetype)initWithActors:(NSArray *)actors;
 
+/**
+ *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.
+ *
+ *  @return The TBActorProxyBroadcast instance.
+ */
 - (id)broadcast;
 
 /**

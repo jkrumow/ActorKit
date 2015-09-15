@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.7.5
+
+- Add `TBActorProxyBroadcast` to broadcast messages into all actors in a pool.
+
 ## 0.7.2
 
 - Add instance method `subscribeToSender:withMessageName:selector:` to subscribe to NSNotification of generic senders with aw payload.
