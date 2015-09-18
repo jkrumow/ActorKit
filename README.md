@@ -137,6 +137,14 @@ And unsubscriptions:
 
 The handler will be executed on an available actor in the pool.
 
+#### Broadcasts
+
+To send an asynchronous message to all actors in the pool:
+
+```objc
+[pool.broadcast cancelWork];
+```
+
 ### (work in progress) Promises
 
 Promise support is contained in the subspec `Promises`:
