@@ -1,8 +1,8 @@
 PODS:
-  - ActorKit (0.7.5):
-    - ActorKit/Core (= 0.7.5)
-  - ActorKit/Core (0.7.5)
-  - ActorKit/Promises (0.7.5):
+  - ActorKit (0.8.0):
+    - ActorKit/Core (= 0.8.0)
+  - ActorKit/Core (0.8.0)
+  - ActorKit/Promises (0.8.0):
     - ActorKit/Core
     - PromiseKit/Promise
   - Expecta (1.0.3)
@@ -20,9 +20,9 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ActorKit: 0185f0c496e6d4e8fb5d20401de38fdad893f5af
+  ActorKit: 4eb46012b78eefbfc203146930c83a4a0457307c
   Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
   PromiseKit: 6be651503d4af22830b5313be993c5a0ef77bf77
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0.beta.4

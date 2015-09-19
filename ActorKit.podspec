@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
-  s.version          = "0.7.5"
+  s.version          = "0.8.0"
   s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
                        Brings the actor model to Objective-C.
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '5.0'
   s.watchos.deployment_target = '2.0'
+  s.tvos.deployment_target = '9.0'
   s.osx.deployment_target = '10.7'
 
   s.requires_arc = true
@@ -28,8 +29,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Promises' do |promises|
-    promises.platform = :ios
-    promises.ios.deployment_target = '7.0'
+    promises.platforms = { :ios => '7.0', :osx => '10.7' }
     promises.source_files = 'Pod/Promises'
     promises.dependency 'ActorKit/Core'
     promises.dependency 'PromiseKit/Promise'
