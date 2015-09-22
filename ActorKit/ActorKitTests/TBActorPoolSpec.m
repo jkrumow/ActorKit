@@ -133,7 +133,7 @@ describe(@"TBActorPool", ^{
         
         describe(@"pubsub", ^{
             
-            it (@"handles broadcasted subscriptions and publishing.", ^{
+            it (@"handles messages from other actors.", ^{
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];

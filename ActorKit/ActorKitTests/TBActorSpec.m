@@ -64,7 +64,7 @@ describe(@"TBActor", ^{
     
     describe(@"pubsub", ^{
         
-        it (@"handles broadcasted subscriptions and publishing.", ^{
+        it (@"handles messages from other actors.", ^{
             [actor subscribe:@"message" selector:@selector(handler:)];
             
             expect(^{
