@@ -52,14 +52,28 @@
 
 - (NSNumber *)returnSomething
 {
-    NSLog(@"%@ returnSomething %@", self.uuid, self.uuid);
+    NSLog(@"%@ returnSomething", self.uuid);
     return self.uuid;
 }
 
 - (NSNumber *)returnSomethingBlocking
 {
+    NSLog(@"%@ returnSomethingBlocking", self.uuid);
     sleep([self _randomSleepInterval]);
+    NSLog(@"%@ returnSomethingBlocking ...done", self.uuid);
     return [self returnSomething];
+}
+
+- (void)returnSomethingWithCompletion:(void (^)(NSNumber *))completion
+{
+    NSNumber *number = [self returnSomething];
+    completion(number);
+}
+
+- (void)returnSomethingBlockingWithCompletion:(void (^)(NSNumber *))completion
+{
+    NSNumber *number = [self returnSomethingBlocking];
+    completion(number);
 }
 
 - (void)handler:(id)payload
@@ -81,7 +95,7 @@
     NSLog(@"%@ blockSomething ...done", self.uuid);
 }
 
-- (void)blockSomething:(void (^)(void))completion
+- (void)blockSomethingWithCompletion:(void (^)(void))completion
 {
     [self blockSomething];
     if (completion) {

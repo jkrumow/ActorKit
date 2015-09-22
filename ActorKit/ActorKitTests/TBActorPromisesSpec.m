@@ -19,6 +19,7 @@ __block TestActor *otherActor;
 
 __block TBActorPool *pool;
 __block dispatch_queue_t testQueue;
+__block NSMutableArray *results;
 
 
 describe(@"TBActorPromises", ^{
@@ -58,22 +59,22 @@ describe(@"TBActorPromises", ^{
 
 describe(@"TBActorPool", ^{
     
-    beforeEach(^{
-        pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
-            TestActor *testActor = (TestActor *)actor;
-            testActor.uuid = @(index);
-        }];
-        otherActor = [TestActor new];
-        testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
-    });
-    
     afterEach(^{
         pool = nil;
         otherActor = nil;
         testQueue = nil;
+        results = nil;
     });
     
     describe(@"promise", ^{
+        
+        beforeEach(^{
+            pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @(index);
+            }];
+            otherActor = [TestActor new];
+        });
         
         it (@"returns a promise proxy.", ^{
             expect([pool.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
@@ -95,15 +96,31 @@ describe(@"TBActorPool", ^{
     
     describe(@"thread safety", ^{
         
+        __block size_t poolSize = 5;
         __block size_t loadSize = 30;
-        it(@"seeds work on multiple actors", ^{
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
-                promise.then(^(id result) {
-                    NSLog(@"result: %@", result);
+        
+        beforeEach(^{
+            pool = [TestActor poolWithSize:poolSize configuration:^(NSObject *actor, NSUInteger index) {
+                TestActor *testActor = (TestActor *)actor;
+                testActor.uuid = @(index);
+            }];
+            testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+            results = [NSMutableArray new];
+        });
+        
+        it(@"seeds work onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise.then(^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    });
                 });
             });
-            sleep(1);
+            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
         });
     });
 });

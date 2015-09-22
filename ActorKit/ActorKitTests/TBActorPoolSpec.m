@@ -14,6 +14,7 @@ SpecBegin(TBActorPool)
 __block TBActorPool *pool;
 __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
+__block NSMutableArray *results;
 
 describe(@"TBActorPool", ^{
     
@@ -22,6 +23,7 @@ describe(@"TBActorPool", ^{
         pool = nil;
         otherActor = nil;
         testQueue = nil;
+        results = nil;
     });
     
     describe(@"initialization", ^{
@@ -88,7 +90,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 waitUntil(^(DoneCallback done) {
-                    [pool.async blockSomething:^{
+                    [pool.async blockSomethingWithCompletion:^{
                         done();
                     }];
                     [pool.async setSymbol:@456];
@@ -227,38 +229,67 @@ describe(@"TBActorPool", ^{
     
     describe(@"thread safety", ^{
         
+        __block size_t poolSize = 5;
         __block size_t loadSize = 30;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:10 configuration:^(id actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+            results = [NSMutableArray new];
         });
         
-        it(@"seeds sync work on multiple actors", ^{
+        it(@"seeds long work synchronously onto multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                NSNumber *uuid = [pool.sync uuid];
-                NSLog(@"uuid: %@", uuid);
+                NSNumber *uuid = [pool.sync returnSomethingBlocking];
+                [results addObject:uuid];
             });
-            sleep(1);
+            
+            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
         });
         
-        it(@"seeds async work on multiple actors", ^{
+        it(@"seeds short work synchronously onto multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                [pool.async blockSomething];
+                NSNumber *uuid = [pool.sync returnSomething];
+                [results addObject:uuid];
             });
-            sleep(1);
+            
+            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
         });
         
-        it(@"seeds work on multiple subscribers", ^{
-            [pool subscribe:@"message" selector:@selector(blockSomething)];
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                [pool publish:@"message" payload:@500];
+        it(@"seeds long work asynchronously onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *number) {
+                        [results addObject:number];
+                        
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    }];
+                });
             });
-            sleep(1);
+            
+            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
+        });
+        
+        it(@"seeds short work asynchronously onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    [pool.async returnSomethingWithCompletion:^(NSNumber *number) {
+                        [results addObject:number];
+                        
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    }];
+                });
+            });
+            
+            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
         });
     });
 });

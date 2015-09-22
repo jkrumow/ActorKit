@@ -19,8 +19,10 @@
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
 - (NSNumber *)returnSomething;
 - (NSNumber *)returnSomethingBlocking;
+- (void)returnSomethingWithCompletion:(void (^)(NSNumber *))completion;
+- (void)returnSomethingBlockingWithCompletion:(void (^)(NSNumber *))completion;
 - (void)handler:(id)payload;
 - (void)handlerRaw:(NSDictionary *)payload;
 - (void)blockSomething;
-- (void)blockSomething:(void (^)(void))completion;
+- (void)blockSomethingWithCompletion:(void (^)(void))completion;
 @end
