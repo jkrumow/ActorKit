@@ -19,10 +19,6 @@ __block NSMutableArray *results;
 
 __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger max) {
     NSCountedSet *set = [NSCountedSet setWithArray:array];
-    if (set.count < size) {
-        NSLog(@"error: set size is smaller than expected (%zu < %zu)", set.count, size);
-        return NO;
-    }
     for (NSUInteger i=0; i < set.count; i++) {
         NSNumber *object = @(i);
         NSUInteger count = [set countForObject:object];
@@ -274,11 +270,11 @@ describe(@"TBActorPool", ^{
         });
     });
     
-    describe(@"thread safety", ^{
+    describe(@"load distribution", ^{
         
-        __block size_t poolSize = 5;
-        __block size_t loadSize = 30;
-        __block NSUInteger maxCount = loadSize / 2;
+        __block size_t poolSize = 10;
+        __block size_t loadSize = 100;
+        __block NSUInteger maxCount = loadSize * 0.7;
         
         beforeEach(^{
             pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
@@ -311,7 +307,6 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(loadSize, testQueue, ^(size_t index) {
                     [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *number) {
                         [results addObject:number];
-                        
                         if (results.count == loadSize) {
                             done();
                         }
@@ -326,7 +321,6 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(loadSize, testQueue, ^(size_t index) {
                     [pool.async returnSomethingWithCompletion:^(NSNumber *number) {
                         [results addObject:number];
-                        
                         if (results.count == loadSize) {
                             done();
                         }
