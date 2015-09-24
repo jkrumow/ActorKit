@@ -17,7 +17,7 @@ __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
 __block NSMutableArray *results;
 
-__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger maxCount) {
+__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger max) {
     NSCountedSet *set = [NSCountedSet setWithArray:array];
     if (set.count < size) {
         NSLog(@"error: set size is smaller than expected (%zu < %zu)", set.count, size);
@@ -25,10 +25,10 @@ __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSAr
     }
     for (NSUInteger i=0; i < set.count; i++) {
         NSNumber *object = @(i);
-        NSUInteger countForObject = [set countForObject:object];
-        NSLog(@"count for object %@: %zu", object, countForObject);
-        if (countForObject > maxCount) {
-            NSLog(@"error: count of object %@ exceeds maxCount (%zu > %zu)", object, countForObject, maxCount);
+        NSUInteger count = [set countForObject:object];
+        NSLog(@"count for object %@: %zu", object, count);
+        if (count > max) {
+            NSLog(@"error: count of object %@ exceeds maximum (%zu > %zu)", object, count, max);
             return NO;
         }
     }
