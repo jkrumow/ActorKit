@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1576663A1B82788B00B628FA /* TBActorPromisesSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 157666391B82788B00B628FA /* TBActorPromisesSpec.m */; };
 		15A2811B1B73E60D0069A18B /* TBActorPoolSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A281161B73E60D0069A18B /* TBActorPoolSpec.m */; };
 		15A2811C1B73E60D0069A18B /* TBActorProxySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A281171B73E60D0069A18B /* TBActorProxySpec.m */; };
 		15A2811D1B73E60D0069A18B /* TBActorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A281181B73E60D0069A18B /* TBActorSpec.m */; };
@@ -17,7 +16,6 @@
 
 /* Begin PBXFileReference section */
 		02DB8EDA8C66E0311BA85BC2 /* libPods-ActorKitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActorKitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		157666391B82788B00B628FA /* TBActorPromisesSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorPromisesSpec.m; sourceTree = "<group>"; };
 		15A281051B73E5D40069A18B /* ActorKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ActorKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A2810A1B73E5D40069A18B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15A281151B73E60D0069A18B /* ActorKitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ActorKitTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 				15A281181B73E60D0069A18B /* TBActorSpec.m */,
 				15A281161B73E60D0069A18B /* TBActorPoolSpec.m */,
 				15A281171B73E60D0069A18B /* TBActorProxySpec.m */,
-				157666391B82788B00B628FA /* TBActorPromisesSpec.m */,
 				15A281091B73E5D40069A18B /* Supporting Files */,
 			);
 			path = ActorKitTests;
@@ -219,7 +216,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				15A2811B1B73E60D0069A18B /* TBActorPoolSpec.m in Sources */,
-				1576663A1B82788B00B628FA /* TBActorPromisesSpec.m in Sources */,
 				15A2811D1B73E60D0069A18B /* TBActorSpec.m in Sources */,
 				15A2811C1B73E60D0069A18B /* TBActorProxySpec.m in Sources */,
 				15A2811E1B73E60D0069A18B /* TestActor.m in Sources */,

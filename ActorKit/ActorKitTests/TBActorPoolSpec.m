@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-
+#import <ActorKit/Promises.h>
 #import "TestActor.h"
+
 
 SpecBegin(TBActorPool)
 
@@ -15,6 +16,24 @@ __block TBActorPool *pool;
 __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
 __block NSMutableArray *results;
+
+__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger maxCount) {
+    NSCountedSet *set = [NSCountedSet setWithArray:array];
+    if (set.count < size) {
+        NSLog(@"error: set size is smaller than expected (%zu < %zu)", set.count, size);
+        return NO;
+    }
+    for (NSUInteger i=0; i < set.count; i++) {
+        NSNumber *object = @(i);
+        NSUInteger countForObject = [set countForObject:object];
+        NSLog(@"count for object %@: %zu", object, countForObject);
+        if (countForObject > maxCount) {
+            NSLog(@"error: count of object %@ exceeds maxCount (%zu > %zu)", object, countForObject, maxCount);
+            return NO;
+        }
+    }
+    return YES;
+};
 
 describe(@"TBActorPool", ^{
     
@@ -133,6 +152,34 @@ describe(@"TBActorPool", ^{
             });
         });
         
+        describe(@"promise", ^{
+            
+            beforeEach(^{
+                pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                    TestActor *testActor = (TestActor *)actor;
+                    testActor.uuid = @(index);
+                }];
+                otherActor = [TestActor new];
+            });
+            
+            it (@"returns a promise proxy.", ^{
+                expect([pool.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
+            });
+            
+            it (@"invokes a method asynchronously on an idle actor returning a value through a promise.", ^{
+                __block PMKPromise *promise;
+                __block id blockResult;
+                waitUntil(^(DoneCallback done) {
+                    promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise.then(^(id result) {
+                        blockResult = result;
+                        done();
+                    });
+                });
+                expect(blockResult).to.beInTheRangeOf(@0, @1);
+            });
+        });
+        
         describe(@"pubsub", ^{
             
             it (@"handles messages from other actors.", ^{
@@ -231,6 +278,7 @@ describe(@"TBActorPool", ^{
         
         __block size_t poolSize = 5;
         __block size_t loadSize = 30;
+        __block NSUInteger maxCount = loadSize / 2;
         
         beforeEach(^{
             pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
@@ -247,8 +295,7 @@ describe(@"TBActorPool", ^{
                 NSNumber *uuid = [pool.sync returnSomethingBlocking];
                 [results addObject:uuid];
             });
-            
-            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
         
         it(@"seeds short work synchronously onto multiple actors", ^{
@@ -256,8 +303,7 @@ describe(@"TBActorPool", ^{
                 NSNumber *uuid = [pool.sync returnSomething];
                 [results addObject:uuid];
             });
-            
-            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
         
         it(@"seeds long work asynchronously onto multiple actors", ^{
@@ -272,8 +318,7 @@ describe(@"TBActorPool", ^{
                     }];
                 });
             });
-            
-            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
         
         it(@"seeds short work asynchronously onto multiple actors", ^{
@@ -288,8 +333,37 @@ describe(@"TBActorPool", ^{
                     }];
                 });
             });
-            
-            NSLog(@"results: %@", [results sortedArrayUsingSelector:@selector(compare:)].description);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+        });
+        
+        it(@"seeds long promised onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomethingBlocking];
+                    promise.then(^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    });
+                });
+            });
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+        });
+        
+        it(@"seeds short promised onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise.then(^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    });
+                });
+            });
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
     });
 });
