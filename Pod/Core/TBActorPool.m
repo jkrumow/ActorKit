@@ -75,23 +75,25 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (NSObject *)idleActor
 {
-    NSObject *idleActor = nil;
+    NSObject *actor = nil;
     @synchronized(_priv_actors) {
-        
         __block NSUInteger index = 0;
         __block NSUInteger lowest = NSUIntegerMax;
         [self.loadCounters enumerateObjectsUsingBlock:^(NSNumber *count, NSUInteger idx, BOOL *stop) {
+            if (count.unsignedIntegerValue == 0) {
+                index = idx;
+                *stop = YES;
+            }
             if (count.unsignedIntegerValue < lowest) {
                 lowest = count.unsignedIntegerValue;
                 index = idx;
             }
         }];
-        
-        idleActor = self.priv_actors[index];
+        actor = self.priv_actors[index];
         NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
         self.loadCounters[index] = @(value + 1);
     }
-    return idleActor;
+    return actor;
 }
 
 - (void)freeActor:(NSObject *)actor
