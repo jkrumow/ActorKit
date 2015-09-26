@@ -18,11 +18,12 @@ __block dispatch_queue_t testQueue;
 __block NSMutableArray *results;
 
 __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger max) {
+    NSLog(@"| object | count |");
     NSCountedSet *set = [NSCountedSet setWithArray:array];
     for (NSUInteger i=0; i < set.count; i++) {
         NSNumber *object = @(i);
         NSUInteger count = [set countForObject:object];
-        NSLog(@"count for object %@: %zu", object, count);
+        NSLog(@"\t%@\t\t%zu", object, count);
         if (count > max) {
             NSLog(@"error: count of object %@ exceeds maximum (%zu > %zu)", object, count, max);
             return NO;
@@ -305,8 +306,8 @@ describe(@"TBActorPool", ^{
         it(@"seeds long work asynchronously onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                    [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *number) {
-                        [results addObject:number];
+                    [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
+                        [results addObject:uuid];
                         if (results.count == loadSize) {
                             done();
                         }
@@ -319,8 +320,8 @@ describe(@"TBActorPool", ^{
         it(@"seeds short work asynchronously onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                    [pool.async returnSomethingWithCompletion:^(NSNumber *number) {
-                        [results addObject:number];
+                    [pool.async returnSomethingWithCompletion:^(NSNumber *uuid) {
+                        [results addObject:uuid];
                         if (results.count == loadSize) {
                             done();
                         }

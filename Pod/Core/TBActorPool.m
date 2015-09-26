@@ -27,11 +27,11 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         self.actorQueue.name = TBAKActorPoolQueue;
         
         _priv_actors = actors;
-        [_priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
+        [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
         
         _loadCounters = [NSMutableArray new];
-        [_priv_actors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [_loadCounters addObject:@(0)];
+        [self.priv_actors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self.loadCounters addObject:@(0)];
         }];
     }
     return self;
@@ -90,8 +90,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
             }
         }];
         actor = self.priv_actors[index];
-        NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
-        self.loadCounters[index] = @(value + 1);
+        self.loadCounters[index] = @(lowest + 1);
     }
     return actor;
 }
