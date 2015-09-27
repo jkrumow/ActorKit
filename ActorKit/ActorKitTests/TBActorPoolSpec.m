@@ -44,6 +44,12 @@ describe(@"TBActorPool", ^{
     
     describe(@"initialization", ^{
         
+        it(@"creates an empty pool when not initialized using designated initializer.", ^{
+            pool = [[TBActorPool alloc] init];
+            expect(pool).notTo.beNil;
+            expect(pool.actors).to.beNil;
+        });
+        
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
             pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;

@@ -27,7 +27,7 @@
  *
  *  @return The initialized TBActorPool instance.
  */
-- (instancetype)initWithActors:(NSArray *)actors;
+- (instancetype)initWithActors:(NSArray *)actors NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.

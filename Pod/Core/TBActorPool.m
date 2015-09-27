@@ -22,7 +22,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (instancetype)init
 {
-    return [self initWithActors:@[]];
+    return [self initWithActors:nil];
 }
 
 - (instancetype)initWithActors:(NSArray *)actors
