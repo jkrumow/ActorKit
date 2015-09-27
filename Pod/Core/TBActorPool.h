@@ -47,7 +47,7 @@
  *  Tells the receiver that a task has been processed on the specified actor.
  *  Influences the load distribution inside the pool.
  *
- *  @param actor The actor to check.
+ *  @param actor The actor to relinquish.
  */
-- (void)freeActor:(NSObject *)actor;
+- (void)relinquishActor:(NSObject *)actor;
 @end

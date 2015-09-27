@@ -100,7 +100,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return actor;
 }
 
-- (void)freeActor:(NSObject *)actor
+- (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
         NSUInteger index = [self.priv_actors indexOfObject:actor];

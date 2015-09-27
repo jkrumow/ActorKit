@@ -38,10 +38,10 @@
     return [self.actor methodSignatureForSelector:selector];
 }
 
-- (void)freeActor
+- (void)relinquishActor
 {
     if (self.actor.pool) {
-        [self.actor.pool freeActor:self.actor];
+        [self.actor.pool relinquishActor:self.actor];
     }
 }
 

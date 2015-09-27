@@ -45,5 +45,5 @@
 /**
  *  Releases any occupied resources after having successfully forwarded a message to the proxied object.
  */
-- (void)freeActor;
+- (void)relinquishActor;
 @end
