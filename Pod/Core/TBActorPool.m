@@ -20,6 +20,11 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 @implementation TBActorPool
 
+- (instancetype)init
+{
+    return [self initWithActors:@[]];
+}
+
 - (instancetype)initWithActors:(NSArray *)actors
 {
     self = [super init];
@@ -73,7 +78,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
-- (NSObject *)idleActor
+- (NSObject *)availableActor
 {
     NSObject *actor = nil;
     @synchronized(_priv_actors) {

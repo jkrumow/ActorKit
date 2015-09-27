@@ -33,7 +33,7 @@
 {
     if ([self.actor isKindOfClass:[TBActorPool class]]) {
         TBActorPool *pool = (TBActorPool *)self.actor;
-        self.actor = [pool idleActor];
+        self.actor = [pool availableActor];
     }
     return [self.actor methodSignatureForSelector:selector];
 }

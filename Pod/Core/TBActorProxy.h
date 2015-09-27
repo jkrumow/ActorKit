@@ -23,7 +23,7 @@
 /**
  *  Creates a proxy instance with a given actor. Must be overidden by a subtype.
  *
- *  Throws an exception when called on base class.
+ *  @exception Throws an exception when called on base class.
  *
  *  @param actor The associated actor.
  *
@@ -34,7 +34,7 @@
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
  *
- *  Throws an exception when called on base class.
+ *  @exception Throws an exception when called on base class.
  *
  *  @param actor The associated actor.
  *
@@ -43,7 +43,7 @@
 - (instancetype)initWithActor:(NSObject *)actor;
 
 /**
- *  Releases any allocated resources after having successfully forwarded a message to the proxied object.
+ *  Releases any occupied resources after having successfully forwarded a message to the proxied object.
  */
 - (void)freeActor;
 @end

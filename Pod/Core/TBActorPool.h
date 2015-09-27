@@ -21,7 +21,7 @@
 @property (nonatomic, strong, readonly) NSArray *actors;
 
 /**
- *  Initializes a pool with an array of actors.
+ *  Designated initializer for a pool with an array of actors.
  *
  *  @param actors The array to be pooled.
  *
@@ -37,14 +37,15 @@
 - (id)broadcast;
 
 /**
- *  Returns an available actor from the pool.
+ *  Returns an available actor from the pool. This will be the least busy actor in the pool.
  *
- *  @return The actor.
+ *  @return The available actor.
  */
-- (NSObject *)idleActor;
+- (NSObject *)availableActor;
 
 /**
- *  Returns an actor to `idleActors` set when it not busy anymore.
+ *  Tells the receiver that a task has been processed on the specified actor.
+ *  Influences the load distribution inside the pool.
  *
  *  @param actor The actor to check.
  */
