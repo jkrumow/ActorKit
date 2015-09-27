@@ -281,7 +281,7 @@ describe(@"TBActorPool", ^{
         
         __block size_t poolSize = 10;
         __block size_t loadSize = 100;
-        __block NSUInteger maxCount = loadSize * 0.7;
+        __block NSUInteger maxCount = loadSize * 0.5;
         
         beforeEach(^{
             pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
