@@ -23,9 +23,9 @@ __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSAr
     for (NSUInteger i=0; i < set.count; i++) {
         NSNumber *object = @(i);
         NSUInteger count = [set countForObject:object];
-        NSLog(@"\t%@\t\t%zu", object, count);
+        NSLog(@"\t%@\t\t%lu", object, (unsigned long)count);
         if (count > max) {
-            NSLog(@"error: count of object %@ exceeds maximum (%zu > %zu)", object, count, max);
+            NSLog(@"error: count of object %@ exceeds maximum (%lu > %lu)", object, (unsigned long)count, (unsigned long)max);
             return NO;
         }
     }
