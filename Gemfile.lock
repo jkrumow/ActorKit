@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 25bcc14b04260939144496cc08f091061f5500de
-  branch: tvos
+  revision: 691e3de4405a0b7174ccd9ca85912a045d286aa2
+  branch: master
   specs:
     cocoapods (0.39.0.beta.4)
       activesupport (>= 3.2.15)
@@ -31,8 +31,8 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/Xcodeproj.git
-  revision: b208640ffd04ffb1ec1becc085e8b3f3759ff8f1
-  branch: tvos-support
+  revision: 8347cca0149d6506c0a785a8faa7f6a17dee29fd
+  branch: master
   specs:
     xcodeproj (0.27.2)
       activesupport (>= 3)
