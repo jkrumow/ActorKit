@@ -143,7 +143,6 @@ describe(@"TBActorPool", ^{
                 waitUntil(^(DoneCallback done) {
                     [pool.broadcast setSymbol:@456 withCompletion:^(NSNumber *symbol) {
                         count++;
-                        
                         if (count == 2) {
                             done();
                         }
