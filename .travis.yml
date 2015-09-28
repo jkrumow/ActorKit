@@ -6,8 +6,7 @@ install:
   - cd ActorKit && bundle exec pod install && cd $TRAVIS_BUILD_DIR
 
 script:
-  # - bundle exec rake
-  - bundle exec rake build
+  - bundle exec rake
 
 # after_success:
   # - bundle exec rake coverage
