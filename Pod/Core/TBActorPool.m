@@ -15,22 +15,29 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 @interface TBActorPool ()
 @property (nonatomic, strong) NSArray *priv_actors;
-@property (nonatomic, strong) NSMutableSet *idleActors;
-@property (nonatomic, strong) NSMutableSet *busyActors;
+@property (nonatomic, strong) NSMutableArray *loadCounters;
 @end
 
 @implementation TBActorPool
+
+- (instancetype)init
+{
+    return [self initWithActors:nil];
+}
 
 - (instancetype)initWithActors:(NSArray *)actors
 {
     self = [super init];
     if (self) {
+        self.actorQueue.name = TBAKActorPoolQueue;
+        
         _priv_actors = actors;
         [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
         
-        _idleActors = [[NSMutableSet alloc] initWithArray:self.priv_actors];
-        _busyActors = [NSMutableSet new];
-        self.actorQueue.name = TBAKActorPoolQueue;
+        _loadCounters = [NSMutableArray new];
+        [self.priv_actors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self.loadCounters addObject:@(0)];
+        }];
     }
     return self;
 }
@@ -71,35 +78,36 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
-- (NSObject *)idleActor
+- (NSObject *)availableActor
 {
-    NSObject *idleActor = nil;
-    NSUInteger lowest = NSUIntegerMax;
+    NSObject *actor = nil;
     @synchronized(_priv_actors) {
-        idleActor = [self.idleActors anyObject];
-        if (idleActor) {
-            [self.busyActors addObject:idleActor];
-            [self.idleActors removeObject:idleActor];
-        } else {
-            for (NSObject *actor in self.busyActors) {
-                NSUInteger operationCount = actor.actorQueue.operationCount;
-                if (operationCount < lowest) {
-                    lowest = operationCount;
-                    idleActor = actor;
-                }
+        __block NSUInteger index = 0;
+        __block NSUInteger lowest = NSUIntegerMax;
+        [self.loadCounters enumerateObjectsUsingBlock:^(NSNumber *count, NSUInteger idx, BOOL *stop) {
+            if (count.unsignedIntegerValue == 0) {
+                index = idx;
+                *stop = YES;
             }
-        }
+            if (count.unsignedIntegerValue < lowest) {
+                lowest = count.unsignedIntegerValue;
+                index = idx;
+            }
+        }];
+        actor = self.priv_actors[index];
+        self.loadCounters[index] = @(lowest + 1);
     }
-    return idleActor;
+    return actor;
 }
 
-- (void)freeActor:(NSObject *)actor
+- (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
-        if (actor.actorQueue.operationCount == 0) {
-            [self.busyActors removeObject:actor];
-            [self.idleActors addObject:actor];
-        }
+        NSUInteger index = [self.priv_actors indexOfObject:actor];
+        NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
+        value -= 1;
+        MAX(0, value);
+        self.loadCounters[index] = @(value);
     }
 }
 

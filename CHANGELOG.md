@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.8.0
+
+- Add support for tvOS 9.0
+
 ## 0.7.5
 
 - Add `TBActorProxyBroadcast` to broadcast messages into all actors in a pool.

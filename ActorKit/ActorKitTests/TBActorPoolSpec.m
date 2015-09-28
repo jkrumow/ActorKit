@@ -6,14 +6,31 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-
+#import <ActorKit/Promises.h>
 #import "TestActor.h"
+
 
 SpecBegin(TBActorPool)
 
 __block TBActorPool *pool;
 __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
+__block NSMutableArray *results;
+
+__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger max) {
+    NSLog(@"| object | count |");
+    NSCountedSet *set = [NSCountedSet setWithArray:array];
+    for (NSUInteger i=0; i < set.count; i++) {
+        NSNumber *object = @(i);
+        NSUInteger count = [set countForObject:object];
+        NSLog(@"\t%@\t\t%lu", object, (unsigned long)count);
+        if (count > max) {
+            NSLog(@"error: count of object %@ exceeds maximum (%lu > %lu)", object, (unsigned long)count, (unsigned long)max);
+            return NO;
+        }
+    }
+    return YES;
+};
 
 describe(@"TBActorPool", ^{
     
@@ -22,9 +39,16 @@ describe(@"TBActorPool", ^{
         pool = nil;
         otherActor = nil;
         testQueue = nil;
+        results = nil;
     });
     
     describe(@"initialization", ^{
+        
+        it(@"creates an empty pool when not initialized using designated initializer.", ^{
+            pool = [[TBActorPool alloc] init];
+            expect(pool).notTo.beNil;
+            expect(pool.actors).to.beNil;
+        });
         
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
             pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
@@ -88,7 +112,7 @@ describe(@"TBActorPool", ^{
                 TestActor *actorTwo = pool.actors[1];
                 
                 waitUntil(^(DoneCallback done) {
-                    [pool.async blockSomething:^{
+                    [pool.async blockSomethingWithCompletion:^{
                         done();
                     }];
                     [pool.async setSymbol:@456];
@@ -119,7 +143,6 @@ describe(@"TBActorPool", ^{
                 waitUntil(^(DoneCallback done) {
                     [pool.broadcast setSymbol:@456 withCompletion:^(NSNumber *symbol) {
                         count++;
-                        
                         if (count == 2) {
                             done();
                         }
@@ -131,9 +154,37 @@ describe(@"TBActorPool", ^{
             });
         });
         
+        describe(@"promise", ^{
+            
+            beforeEach(^{
+                pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                    TestActor *testActor = (TestActor *)actor;
+                    testActor.uuid = @(index);
+                }];
+                otherActor = [TestActor new];
+            });
+            
+            it (@"returns a promise proxy.", ^{
+                expect([pool.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
+            });
+            
+            it (@"invokes a method asynchronously on an idle actor returning a value through a promise.", ^{
+                __block PMKPromise *promise;
+                __block id blockResult;
+                waitUntil(^(DoneCallback done) {
+                    promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise.then(^(id result) {
+                        blockResult = result;
+                        done();
+                    });
+                });
+                expect(blockResult).to.beInTheRangeOf(@0, @1);
+            });
+        });
+        
         describe(@"pubsub", ^{
             
-            it (@"handles broadcasted subscriptions and publishing.", ^{
+            it (@"handles messages from other actors.", ^{
                 
                 TestActor *actorOne = pool.actors[0];
                 TestActor *actorTwo = pool.actors[1];
@@ -225,40 +276,94 @@ describe(@"TBActorPool", ^{
         });
     });
     
-    describe(@"thread safety", ^{
+    describe(@"load distribution", ^{
         
-        __block size_t loadSize = 30;
+        __block size_t poolSize = 10;
+        __block size_t loadSize = 100;
+        __block NSUInteger maxCount = loadSize * 0.5;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:10 configuration:^(id actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(index);
             }];
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+            results = [NSMutableArray new];
         });
         
-        it(@"seeds sync work on multiple actors", ^{
+        it(@"seeds long work synchronously onto multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                NSNumber *uuid = [pool.sync uuid];
-                NSLog(@"uuid: %@", uuid);
+                NSNumber *uuid = [pool.sync returnSomethingBlocking];
+                [results addObject:uuid];
             });
-            sleep(1);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
         
-        it(@"seeds async work on multiple actors", ^{
+        it(@"seeds short work synchronously onto multiple actors", ^{
             dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                [pool.async blockSomething];
+                NSNumber *uuid = [pool.sync returnSomething];
+                [results addObject:uuid];
             });
-            sleep(1);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
         
-        it(@"seeds work on multiple subscribers", ^{
-            [pool subscribe:@"message" selector:@selector(blockSomething)];
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
-                [pool publish:@"message" payload:@500];
+        it(@"seeds long work asynchronously onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    }];
+                });
             });
-            sleep(1);
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+        });
+        
+        it(@"seeds short work asynchronously onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    [pool.async returnSomethingWithCompletion:^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    }];
+                });
+            });
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+        });
+        
+        it(@"seeds long promised onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomethingBlocking];
+                    promise.then(^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    });
+                });
+            });
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+        });
+        
+        it(@"seeds short promised onto multiple actors", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise.then(^(NSNumber *uuid) {
+                        [results addObject:uuid];
+                        if (results.count == loadSize) {
+                            done();
+                        }
+                    });
+                });
+            });
+            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
         });
     });
 });

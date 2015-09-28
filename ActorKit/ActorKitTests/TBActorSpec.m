@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-
+#import <ActorKit/Promises.h>
 #import "TestActor.h"
 
 
@@ -62,9 +62,29 @@ describe(@"TBActor", ^{
         });
     });
     
+    describe(@"promise", ^{
+        
+        it (@"returns a promise proxy.", ^{
+            expect([actor.promise isMemberOfClass:[TBActorProxyPromise class]]).to.beTruthy;
+        });
+        
+        it (@"invokes a method asynchronously returning a value through a promise.", ^{
+            __block id blockResult;
+            __block PMKPromise *promise;
+            waitUntil(^(DoneCallback done) {
+                promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+                promise.then(^(id result) {
+                    blockResult = result;
+                    done();
+                });
+            });
+            expect(blockResult).to.equal(@0);
+        });
+    });
+    
     describe(@"pubsub", ^{
         
-        it (@"handles broadcasted subscriptions and publishing.", ^{
+        it (@"handles messages from other actors.", ^{
             [actor subscribe:@"message" selector:@selector(handler:)];
             
             expect(^{

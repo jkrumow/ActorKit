@@ -13,9 +13,7 @@
 
 - (void)setSymbol:(NSNumber *)symbol
 {
-    NSLog(@"%@ setSymbol: %@", self.uuid, symbol);
     _symbol = symbol;
-    
     if (self.monitorBlock) {
         self.monitorBlock();
     }
@@ -23,17 +21,13 @@
 
 - (NSNumber *)symbol
 {
-    NSLog(@"%@ get symbol: %@", self.uuid, _symbol);
     return _symbol;
 }
 
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion
 {
     [self setSymbol:symbol];
-    
-    if (completion) {
-        completion(symbol);
-    }
+    completion(symbol);
 }
 
 - (void)doSomething
@@ -44,15 +38,11 @@
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion
 {
     [self doSomething];
-    
-    if (completion) {
-        completion(stuff);
-    }
+    completion(stuff);
 }
 
 - (NSNumber *)returnSomething
 {
-    NSLog(@"%@ returnSomething %@", self.uuid, self.uuid);
     return self.uuid;
 }
 
@@ -62,31 +52,37 @@
     return [self returnSomething];
 }
 
+- (void)returnSomethingWithCompletion:(void (^)(NSNumber *))completion
+{
+    NSNumber *number = [self returnSomething];
+    completion(number);
+}
+
+- (void)returnSomethingBlockingWithCompletion:(void (^)(NSNumber *))completion
+{
+    NSNumber *number = [self returnSomethingBlocking];
+    completion(number);
+}
+
 - (void)handler:(id)payload
 {
-    NSLog(@"%@ handler: %@", self.uuid, payload);
     self.symbol = payload;
 }
 
 - (void)handlerRaw:(NSDictionary *)payload
 {
-    NSLog(@"%@ handler: %@", self.uuid, payload);
     self.symbol = payload[@"symbol"];
 }
 
 - (void)blockSomething
 {
-    NSLog(@"%@ blockSomething", self.uuid);
     sleep([self _randomSleepInterval]);
-    NSLog(@"%@ blockSomething ...done", self.uuid);
 }
 
-- (void)blockSomething:(void (^)(void))completion
+- (void)blockSomethingWithCompletion:(void (^)(void))completion
 {
     [self blockSomething];
-    if (completion) {
-        completion();
-    }
+    completion();
 }
 
 - (double)_randomSleepInterval

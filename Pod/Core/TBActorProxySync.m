@@ -23,7 +23,7 @@
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     [self.actor.actorQueue addOperations:@[operation] waitUntilFinished:YES];
-    [self freeActor];
+    [self relinquishActor];
 }
 
 @end

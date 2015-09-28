@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import "Promise.h"
+#import <PromiseKit/Promise.h>
 
 /**
  *  This class represents a promise returned by TBActorProxyPromise.

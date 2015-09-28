@@ -36,7 +36,7 @@
         __block NSInvocationOperation *blockOperation = operation;
         operation.completionBlock = ^{
             resolve(blockOperation.result);
-            [self freeActor];
+            [self relinquishActor];
         };
         [self.actor.actorQueue addOperation:operation];
     }];

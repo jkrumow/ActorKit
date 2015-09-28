@@ -22,8 +22,8 @@ To run the example project, clone the repo, and run `pod install` from the `Acto
 
 ## Requirements
 
-* Xcode 6
 * watchOS 2.0
+* tvOS 9.0
 * iOS 5.0
 * OS X 10.7
 
@@ -33,7 +33,7 @@ ActorKit is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "ActorKit"
+pod 'ActorKit'
 ```
 
 ## Usage

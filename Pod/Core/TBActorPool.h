@@ -21,13 +21,13 @@
 @property (nonatomic, strong, readonly) NSArray *actors;
 
 /**
- *  Initializes a pool with an array of actors.
+ *  Designated initializer for a pool with an array of actors.
  *
  *  @param actors The array to be pooled.
  *
  *  @return The initialized TBActorPool instance.
  */
-- (instancetype)initWithActors:(NSArray *)actors;
+- (instancetype)initWithActors:(NSArray *)actors NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.
@@ -37,16 +37,17 @@
 - (id)broadcast;
 
 /**
- *  Returns an available actor from the pool.
+ *  Returns an available actor from the pool. This will be the least busy actor in the pool.
  *
- *  @return The actor.
+ *  @return The available actor.
  */
-- (NSObject *)idleActor;
+- (NSObject *)availableActor;
 
 /**
- *  Returns an actor to `idleActors` set when it not busy anymore.
+ *  Tells the receiver that a task has been processed on the specified actor.
+ *  Influences the load distribution inside the pool.
  *
- *  @param actor The actor to check.
+ *  @param actor The actor to relinquish.
  */
-- (void)freeActor:(NSObject *)actor;
+- (void)relinquishActor:(NSObject *)actor;
 @end

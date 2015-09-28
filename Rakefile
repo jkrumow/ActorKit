@@ -25,7 +25,7 @@ task :coverage do
   run_coverage
 end
 
-task :default => [:build, :test, :coverage]
+task :default => [:build, :test]
 
 private
 

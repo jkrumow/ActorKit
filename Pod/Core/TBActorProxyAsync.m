@@ -23,7 +23,7 @@
     
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
     operation.completionBlock = ^{
-        [self freeActor];
+        [self relinquishActor];
     };
     [self.actor.actorQueue addOperation:operation];
 }
