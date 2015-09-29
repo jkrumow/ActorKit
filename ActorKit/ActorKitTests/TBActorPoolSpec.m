@@ -23,7 +23,7 @@ __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSAr
     for (NSUInteger i=0; i < set.count; i++) {
         NSNumber *worker = @(i);
         NSUInteger count = [set countForObject:worker];
-        NSLog(@"\t%@\t\t\t%lu", worker, (unsigned long)count);
+        NSLog(@"\t %@ \t\t %lu", worker, (unsigned long)count);
         if (count > threshold) {
             NSLog(@"error: task count of worker %@ exceeds threshold (%lu > %lu)", worker, (unsigned long)count, (unsigned long)threshold);
             return NO;
