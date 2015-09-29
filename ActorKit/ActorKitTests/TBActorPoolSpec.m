@@ -17,15 +17,15 @@ __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
 __block NSMutableArray *results;
 
-__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *array, NSUInteger size, NSUInteger max) {
-    NSLog(@"| object | count |");
-    NSCountedSet *set = [NSCountedSet setWithArray:array];
+__block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *data, NSUInteger poolSize, NSUInteger threshold) {
+    NSLog(@"| worker | task count |");
+    NSCountedSet *set = [NSCountedSet setWithArray:data];
     for (NSUInteger i=0; i < set.count; i++) {
-        NSNumber *object = @(i);
-        NSUInteger count = [set countForObject:object];
-        NSLog(@"\t%@\t\t%lu", object, (unsigned long)count);
-        if (count > max) {
-            NSLog(@"error: count of object %@ exceeds maximum (%lu > %lu)", object, (unsigned long)count, (unsigned long)max);
+        NSNumber *worker = @(i);
+        NSUInteger count = [set countForObject:worker];
+        NSLog(@"\t%@\t\t\t%lu", worker, (unsigned long)count);
+        if (count > threshold) {
+            NSLog(@"error: task count of worker %@ exceeds threshold (%lu > %lu)", worker, (unsigned long)count, (unsigned long)threshold);
             return NO;
         }
     }
@@ -279,8 +279,8 @@ describe(@"TBActorPool", ^{
     describe(@"load distribution", ^{
         
         __block size_t poolSize = 10;
-        __block size_t loadSize = 100;
-        __block NSUInteger maxCount = loadSize * 0.5;
+        __block size_t taskCount = 100;
+        __block NSUInteger threshold = taskCount * 0.5;
         
         beforeEach(^{
             pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
@@ -293,77 +293,77 @@ describe(@"TBActorPool", ^{
         });
         
         it(@"seeds long work synchronously onto multiple actors", ^{
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomethingBlocking];
                 [results addObject:uuid];
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds short work synchronously onto multiple actors", ^{
-            dispatch_apply(loadSize, testQueue, ^(size_t index) {
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomething];
                 [results addObject:uuid];
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds long work asynchronously onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
-                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
                         [results addObject:uuid];
-                        if (results.count == loadSize) {
+                        if (results.count == taskCount) {
                             done();
                         }
                     }];
                 });
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds short work asynchronously onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
-                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingWithCompletion:^(NSNumber *uuid) {
                         [results addObject:uuid];
-                        if (results.count == loadSize) {
+                        if (results.count == taskCount) {
                             done();
                         }
                     }];
                 });
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds long promised onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
-                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     PMKPromise *promise = (PMKPromise *)[pool.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
                         [results addObject:uuid];
-                        if (results.count == loadSize) {
+                        if (results.count == taskCount) {
                             done();
                         }
                     });
                 });
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds short promised onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
-                dispatch_apply(loadSize, testQueue, ^(size_t index) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
                         [results addObject:uuid];
-                        if (results.count == loadSize) {
+                        if (results.count == taskCount) {
                             done();
                         }
                     });
                 });
             });
-            expect(checkDistribution(results, poolSize, maxCount)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
         });
     });
 });
