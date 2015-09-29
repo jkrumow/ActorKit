@@ -300,7 +300,7 @@ describe(@"TBActorPool", ^{
                 NSNumber *uuid = [pool.sync returnSomethingBlocking];
                 [results addObject:uuid];
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
         });
         
         it(@"seeds short work synchronously onto multiple actors", ^{
@@ -308,7 +308,7 @@ describe(@"TBActorPool", ^{
                 NSNumber *uuid = [pool.sync returnSomething];
                 [results addObject:uuid];
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
         });
         
         it(@"seeds long work asynchronously onto multiple actors", ^{
