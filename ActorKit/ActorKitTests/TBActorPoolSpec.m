@@ -15,6 +15,7 @@ SpecBegin(TBActorPool)
 __block TBActorPool *pool;
 __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
+__block dispatch_queue_t completionQueue;
 __block NSMutableArray *results;
 
 __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *data, NSUInteger poolSize, NSUInteger threshold) {
@@ -39,6 +40,7 @@ describe(@"TBActorPool", ^{
         pool = nil;
         otherActor = nil;
         testQueue = nil;
+        completionQueue = nil;
         results = nil;
     });
     
@@ -289,6 +291,7 @@ describe(@"TBActorPool", ^{
             }];
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+            completionQueue = dispatch_queue_create("completionQueue", DISPATCH_QUEUE_SERIAL);
             results = [NSMutableArray new];
         });
         
@@ -312,10 +315,12 @@ describe(@"TBActorPool", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
-                        [results addObject:uuid];
-                        if (results.count == taskCount) {
-                            done();
-                        }
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
                     }];
                 });
             });
@@ -326,10 +331,12 @@ describe(@"TBActorPool", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingWithCompletion:^(NSNumber *uuid) {
-                        [results addObject:uuid];
-                        if (results.count == taskCount) {
-                            done();
-                        }
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
                     }];
                 });
             });
@@ -341,10 +348,12 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     PMKPromise *promise = (PMKPromise *)[pool.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
-                        [results addObject:uuid];
-                        if (results.count == taskCount) {
-                            done();
-                        }
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
                     });
                 });
             });
@@ -356,10 +365,12 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
-                        [results addObject:uuid];
-                        if (results.count == taskCount) {
-                            done();
-                        }
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
                     });
                 });
             });
