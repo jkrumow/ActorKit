@@ -298,7 +298,9 @@ describe(@"TBActorPool", ^{
         it(@"seeds long work synchronously onto multiple actors", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomethingBlocking];
-                [results addObject:uuid];
+                dispatch_sync(completionQueue, ^{
+                    [results addObject:uuid];
+                });
             });
             expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
         });
@@ -306,7 +308,9 @@ describe(@"TBActorPool", ^{
         it(@"seeds short work synchronously onto multiple actors", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomething];
-                [results addObject:uuid];
+                dispatch_sync(completionQueue, ^{
+                    [results addObject:uuid];
+                });
             });
             expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
         });
