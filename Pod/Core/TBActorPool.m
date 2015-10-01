@@ -52,7 +52,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return [TBActorProxyBroadcast proxyWithPool:self];
 }
 
-- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector
+- (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:actor

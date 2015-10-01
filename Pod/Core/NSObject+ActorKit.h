@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 
 /**
  *  The payload of a notification sent between actors.
@@ -27,6 +28,8 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  This category extends NSObject with actor model functionality.
  */
 @interface NSObject (ActorKit)
+
+@property (nonatomic, strong) NSString *actorName;
 
 /**
  *  The actor's operation queue.
@@ -74,7 +77,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a generic sender.
@@ -87,7 +90,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 - (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
- *  Unsubscribes an NSNotification from other actors.
+ *  Unsubscribes an NSNotification from other actors or generic senders.
  *
  *  @param messageName The name of the notification.
  */

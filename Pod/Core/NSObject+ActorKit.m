@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
-#import <objc/runtime.h>
-
 #import "NSObject+ActorKit.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
@@ -19,8 +17,19 @@ NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
+@dynamic actorName;
 @dynamic actorQueue;
 @dynamic pool;
+
+- (NSString *)actorName
+{
+    return objc_getAssociatedObject(self, @selector(actorName));
+}
+
+- (void)setActorName:(NSString *)actorName
+{
+    objc_setAssociatedObject(self, @selector(actorName), actorName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (NSOperationQueue *)actorQueue
 {
@@ -32,7 +41,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
         queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
         [self setActorQueue:queue];
     }
-    
     return queue;
 }
 
@@ -70,7 +78,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     [self subscribeToActor:nil messageName:messageName selector:selector];
 }
 
-- (void)subscribeToActor:(id)actor messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:actor
@@ -116,7 +124,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 {
     NSMutableArray *actors = [NSMutableArray new];
     for (NSUInteger i=0; i < size; i++) {
-        id actor = [self new];
+        NSObject *actor = [self new];
         if (configuration) {
             configuration(actor, i);
         }
