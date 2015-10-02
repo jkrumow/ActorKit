@@ -17,7 +17,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   ActorKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   ActorKit: 4eb46012b78eefbfc203146930c83a4a0457307c

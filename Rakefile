@@ -39,7 +39,7 @@ def build_tests
 end
 
 def run_tests
-  run_xctool('run-tests', WORKSPACE, SCHEME, DESTINATION, SDK)
+  run_xctool('run-tests', WORKSPACE, SCHEME, DESTINATION, SDK, COVERAGE_ARGS)
 end
 
 def run_xctool(command, workspace, scheme, destination, sdk, args='')
