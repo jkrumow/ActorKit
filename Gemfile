@@ -6,5 +6,5 @@ gem 'cocoapods', :git => 'https://github.com/CocoaPods/CocoaPods.git', :branch =
 gem 'cocoapods-core', :git => 'https://github.com/CocoaPods/Core.git', :branch => 'master'
 gem 'xcodeproj', :git => 'https://github.com/CocoaPods/Xcodeproj.git', :branch => 'master'
 
-# gem 'slather',   '~> 1.8.0'
-gem 'slather', :git => 'https://github.com/tarbrain/slather.git', :branch => 'feature/test_xcode_7'
+# gem 'cocoapods'
+# gem 'slather'
