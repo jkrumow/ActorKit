@@ -14,7 +14,7 @@
 
 @implementation TBActorProxyBroadcast
 
-+ (TBActorProxy *)proxyWithPool:(TBActorPool *)pool
++ (TBActorProxyBroadcast *)proxyWithPool:(TBActorPool *)pool
 {
     return [[TBActorProxyBroadcast alloc] initWithPool:pool];
 }

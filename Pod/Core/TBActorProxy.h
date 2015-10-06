@@ -29,7 +29,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxy *)proxyWithActor:(NSObject *)actor;
++ (instancetype)proxyWithActor:(NSObject *)actor;
 
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.

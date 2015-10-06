@@ -12,7 +12,7 @@
 
 @implementation TBActorProxyAsync
 
-+ (TBActorProxy *)proxyWithActor:(NSObject *)actor
++ (instancetype)proxyWithActor:(NSObject *)actor
 {
     return [[TBActorProxyAsync alloc] initWithActor:actor];
 }

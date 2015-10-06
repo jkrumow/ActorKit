@@ -14,7 +14,7 @@
 
 @implementation TBActorProxy
 
-+ (TBActorProxy *)proxyWithActor:(NSObject *)actor
++ (instancetype)proxyWithActor:(NSObject *)actor
 {
     @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
     return nil;

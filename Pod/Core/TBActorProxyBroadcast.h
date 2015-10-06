@@ -27,7 +27,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxy *)proxyWithPool:(TBActorPool *)pool;
++ (TBActorProxyBroadcast *)proxyWithPool:(TBActorPool *)pool;
 
 /**
  *  Initializes a proxy instance with a given actor pool.
