@@ -29,18 +29,6 @@ describe(@"TBActor", ^{
         otherActor = nil;
     });
     
-    describe(@"actorName", ^{
-    
-        it(@"sets default nil names for actors.", ^{
-            expect(actor.actorName).to.beNil;
-        });
-        
-        it(@"sets custom names for actors.", ^{
-            actor.actorName = @"foo";
-            expect(actor.actorName).to.equal(@"foo");
-        });
-    });
-    
     describe(@"sync", ^{
         
         it (@"returns a sync proxy.", ^{

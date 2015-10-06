@@ -17,19 +17,8 @@ NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
-@dynamic actorName;
 @dynamic actorQueue;
 @dynamic pool;
-
-- (NSString *)actorName
-{
-    return objc_getAssociatedObject(self, @selector(actorName));
-}
-
-- (void)setActorName:(NSString *)actorName
-{
-    objc_setAssociatedObject(self, @selector(actorName), actorName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
 - (NSOperationQueue *)actorQueue
 {

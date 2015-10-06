@@ -29,8 +29,6 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  */
 @interface NSObject (ActorKit)
 
-@property (nonatomic, strong) NSString *actorName;
-
 /**
  *  The actor's operation queue.
  */
