@@ -22,15 +22,16 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (NSOperationQueue *)actorQueue
 {
-    NSOperationQueue *queue = objc_getAssociatedObject(self, @selector(actorQueue));
-    
-    if (queue == nil) {
-        queue = [NSOperationQueue new];
-        queue.name = TBAKActorQueue;
-        queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
-        [self setActorQueue:queue];
+    @synchronized(self) {
+        NSOperationQueue *queue = objc_getAssociatedObject(self, @selector(actorQueue));
+        if (queue == nil) {
+            queue = [NSOperationQueue new];
+            queue.name = TBAKActorQueue;
+            queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
+            [self setActorQueue:queue];
+        }
+        return queue;
     }
-    return queue;
 }
 
 - (void)setActorQueue:(NSOperationQueue *)actorQueue
