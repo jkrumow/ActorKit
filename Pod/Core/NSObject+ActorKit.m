@@ -17,21 +17,32 @@ NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
+@dynamic onceToken;
 @dynamic actorQueue;
 @dynamic pool;
 
+
+- (NSNumber *)onceToken
+{
+    return objc_getAssociatedObject(self, @selector(onceToken));
+}
+
+- (void)setOnceToken:(NSNumber *)onceToken
+{
+    objc_setAssociatedObject(self, @selector(onceToken), onceToken, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (NSOperationQueue *)actorQueue
 {
-    @synchronized(self) {
-        NSOperationQueue *queue = objc_getAssociatedObject(self, @selector(actorQueue));
-        if (queue == nil) {
-            queue = [NSOperationQueue new];
-            queue.name = TBAKActorQueue;
-            queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
-            [self setActorQueue:queue];
-        }
-        return queue;
-    }
+    dispatch_once_t onceToken = self.onceToken.integerValue;
+    dispatch_once(&onceToken, ^{
+        NSOperationQueue *queue = [NSOperationQueue new];
+        queue.name = TBAKActorQueue;
+        queue.maxConcurrentOperationCount = TBAKActorQueueMaxOperationCount;
+        self.actorQueue = queue;
+    });
+    self.onceToken = @(onceToken);
+    return objc_getAssociatedObject(self, @selector(actorQueue));
 }
 
 - (void)setActorQueue:(NSOperationQueue *)actorQueue
