@@ -17,20 +17,9 @@ NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
-@dynamic onceToken;
 @dynamic actorQueue;
 @dynamic pool;
 
-
-- (NSNumber *)onceToken
-{
-    return objc_getAssociatedObject(self, @selector(onceToken));
-}
-
-- (void)setOnceToken:(NSNumber *)onceToken
-{
-    objc_setAssociatedObject(self, @selector(onceToken), onceToken, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
 
 - (NSOperationQueue *)actorQueue
 {

@@ -28,7 +28,6 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  This category extends NSObject with actor model functionality.
  */
 @interface NSObject (ActorKit)
-@property (nonatomic, strong) NSNumber *onceToken;
 
 /**
  *  The actor's operation queue.
