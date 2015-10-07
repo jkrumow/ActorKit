@@ -14,6 +14,9 @@ SpecBegin(TBActor)
 
 __block TestActor *actor;
 __block NSMutableArray *otherActor;
+__block dispatch_queue_t testQueue;
+__block dispatch_queue_t completionQueue;
+__block NSMutableArray *results;
 
 describe(@"TBActor", ^{
     
@@ -27,6 +30,9 @@ describe(@"TBActor", ^{
         [actor unsubscribe:@"message"];
         actor = nil;
         otherActor = nil;
+        testQueue = nil;
+        completionQueue = nil;
+        results = nil;
     });
     
     describe(@"sync", ^{
@@ -115,6 +121,111 @@ describe(@"TBActor", ^{
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
             expect(actor.symbol).to.equal(@5);
+        });
+    });
+    
+    describe(@"thread safety", ^{
+        
+        __block size_t taskCount = 10;
+        
+        beforeEach(^{
+            testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+            completionQueue = dispatch_queue_create("completionQueue", DISPATCH_QUEUE_SERIAL);
+            results = [NSMutableArray new];
+        });
+        
+        it(@"creates its operation queue lazily once", ^{
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                NSOperationQueue *queue = [actor actorQueue];
+                dispatch_sync(completionQueue, ^{
+                    [results addObject:queue];
+                });
+            });
+            NSCountedSet *set = [NSCountedSet setWithArray:results];
+            expect(set.count).to.equal(1);
+            expect([set countForObject:actor.actorQueue]).to.equal(taskCount);
+        });
+        
+        it(@"executes concurrent short synchronous invocations safely", ^{
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                NSNumber *uuid = [actor.sync returnSomethingBlocking];
+                dispatch_sync(completionQueue, ^{
+                    [results addObject:uuid];
+                });
+            });
+            expect(results).to.haveACountOf(taskCount);
+        });
+        
+        it(@"executes concurrent long synchronous invocations safely", ^{
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                NSNumber *uuid = [actor.sync returnSomething];
+                dispatch_sync(completionQueue, ^{
+                    [results addObject:uuid];
+                });
+            });
+            expect(results).to.haveACountOf(taskCount);
+        });
+        
+        it(@"executes concurrent short asynchronous invocations safely", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    [actor.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
+                    }];
+                });
+            });
+        });
+        
+        it(@"executes concurrent long asynchronous invocations safely", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    [actor.async returnSomethingWithCompletion:^(NSNumber *uuid) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
+                    }];
+                });
+            });
+        });
+        
+        it(@"executes concurrent short promised invocations safely", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+                    promise.then(^(NSNumber *uuid) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
+                    });
+                });
+            });
+        });
+        
+        it(@"executes concurrent long promised invocations safely", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    PMKPromise *promise = (PMKPromise *)[actor.promise returnSomething];
+                    promise.then(^(NSNumber *uuid) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
+                    });
+                });
+            });
         });
     });
 });
