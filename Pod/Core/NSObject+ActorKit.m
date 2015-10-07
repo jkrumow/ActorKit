@@ -111,6 +111,8 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
                                                       userInfo:dictionary]; // Copy payload to prevent shared state.
 }
 
+#pragma mark - Pools
+
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration
 {
     NSMutableArray *actors = [NSMutableArray new];
