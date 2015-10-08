@@ -39,16 +39,6 @@ GIT
       claide (~> 0.9.1)
       colored (~> 1.2)
 
-GIT
-  remote: https://github.com/tarbrain/slather.git
-  revision: eda2757c390d43b81254d4c5c13fc8bc07bd1d9c
-  branch: feature/test_xcode_7
-  specs:
-    slather (1.8.2)
-      clamp (~> 0.6)
-      nokogiri (~> 1.6.3)
-      xcodeproj (~> 0.27.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -59,7 +49,6 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     claide (0.9.1)
-    clamp (0.6.5)
     cocoapods-downloader (0.9.3)
     cocoapods-plugins (0.4.2)
       nap
@@ -74,13 +63,10 @@ GEM
     fuzzy_match (2.0.4)
     i18n (0.7.0)
     json (1.8.3)
-    mini_portile (0.6.2)
     minitest (5.8.1)
     molinillo (0.3.1)
     nap (1.0.0)
     netrc (0.7.8)
-    nokogiri (1.6.6.2)
-      mini_portile (~> 0.6.0)
     rake (10.4.2)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -93,5 +79,7 @@ DEPENDENCIES
   cocoapods!
   cocoapods-core!
   rake
-  slather!
   xcodeproj!
+
+BUNDLED WITH
+   1.10.6
