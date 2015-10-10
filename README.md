@@ -189,6 +189,13 @@ TBActorSupervisor *supervisor = [TBActorSupervisor new];
 [[supervisor[@"master"] sync] doSomething];
 ```
 
+To communicate a crash of a supervised actor call `crashWithError:` from within or outside the actor:
+
+```objc
+[self crashWithError:error];
+[worker crashWithError:error]; 
+```
+
 ### Linking Actors
 
 To link two actors:

@@ -88,8 +88,6 @@
     [self _createActorFromSet:self.supervisionSets[[self _idForActor:actor]]];
 }
 
-#pragma mark - Object Subscripting
-
 - (id)objectForKeyedSubscript:(NSString *)key
 {
     return self.priv_actors[key];
