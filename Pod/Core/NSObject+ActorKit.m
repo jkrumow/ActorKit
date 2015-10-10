@@ -132,6 +132,11 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     }
 }
 
+- (void)cancel
+{
+    [self.actorQueue cancelAllOperations];
+}
+
 #pragma mark - Pools
 
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration

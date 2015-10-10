@@ -42,7 +42,7 @@ describe(@"TBActorSupervisor", ^{
         
         TestActor *master = supervisor[@"master"];
         expect(master).notTo.equal(nil);
-
+        
         // create state and crash
         master.uuid = @(1);
         [master crashWithError:nil];
@@ -51,6 +51,22 @@ describe(@"TBActorSupervisor", ^{
         expect(newMaster).notTo.equal(nil);
         expect(newMaster).notTo.equal(master);
         expect(newMaster.uuid).to.equal(nil);
+    });
+    
+    it(@"cancels remaining operations on the queue when actor crashed", ^{
+        [supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [[supervisor[@"master"] async] doSomething:@"0" withCompletion:^(NSString *string) {
+                [supervisor[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                done();
+            }];
+            [[supervisor[@"master"] async] doSomething:@"1" withCompletion:^(NSString *string) {
+                XCTFail(@"operation should be cancelled");
+            }];
+        });
     });
     
     it(@"it recreates an actor cluster after a crash", ^{

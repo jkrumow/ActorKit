@@ -85,6 +85,7 @@
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
+    [actor cancel];
     [self _createActorFromSet:self.supervisionSets[[self _idForActor:actor]]];
 }
 
