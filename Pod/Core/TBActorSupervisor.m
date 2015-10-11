@@ -12,7 +12,7 @@
 
 @interface TBActorSupervisor ()
 @property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
-@property (nonatomic, strong) NSObject *actor;
+@property (nonatomic, weak) NSObject *actor;
 @end
 
 @implementation TBActorSupervisor
@@ -62,9 +62,9 @@
 
 - (void)_createLinkedActors
 {
-    [self.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
-        TBActorSupervisor *linkedSupervisor = self.supervisionPool.supervisors[linkId];
-        [linkedSupervisor recreateActor];
+    NSArray *linkedSupervisors = [self.supervisionPool supervisorsForIds:self.links];
+    [linkedSupervisors enumerateObjectsUsingBlock:^(TBActorSupervisor *supervisor, NSUInteger idx, BOOL *stop) {
+        [supervisor recreateActor];
     }];
 }
 

@@ -11,9 +11,6 @@
 
 @interface TBActorSupervisionPool : NSObject
 
-@property (nonatomic, strong) NSMutableDictionary *priv_actors;
-@property (nonatomic, strong) NSMutableDictionary *supervisors;
-
 /**
  *  Creates an actor, puts it under supervision and adds it to the supervision pool.
  *
@@ -39,6 +36,15 @@
  *  @return The Id of the given actor instance. Can be nil if actor does not exist.
  */
 - (NSString *)idForActor:(NSObject *)actor;
+
+/**
+ *  Returns supervisors for a given set actor ids.
+ *
+ *  @param Ids A set of actor Ids.
+ *
+ *  @return An array containing all supervisors.
+ */
+- (NSArray *)supervisorsForIds:(NSSet *)Ids;
 
 - (id)objectForKeyedSubscript:(NSString *)key;
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;

@@ -8,13 +8,18 @@
 
 #import "TBActorSupervisionPool.h"
 
+@interface TBActorSupervisionPool ()
+@property (nonatomic, strong) NSMutableDictionary *actors;
+@property (nonatomic, strong) NSMutableDictionary *supervisors;
+@end
+
 @implementation TBActorSupervisionPool
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        _priv_actors = [NSMutableDictionary new];
+        _actors = [NSMutableDictionary new];
         _supervisors = [NSMutableDictionary new];
     }
     return self;
@@ -22,7 +27,14 @@
 
 - (NSString *)idForActor:(NSObject *)actor
 {
-    return [[self.priv_actors allKeysForObject:actor] firstObject];
+    return [[self.actors allKeysForObject:actor] firstObject];
+}
+
+- (NSArray *)supervisorsForIds:(NSSet *)Ids
+{
+    NSMutableArray *supervisors = [[self.supervisors objectsForKeys:[Ids allObjects] notFoundMarker:[NSNull null]] mutableCopy];
+    [supervisors removeObject:[NSNull null]];
+    return supervisors;
 }
 
 - (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
@@ -44,12 +56,12 @@
 
 - (id)objectForKeyedSubscript:(NSString *)key
 {
-    return self.priv_actors[key];
+    return self.actors[key];
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
 {
-    self.priv_actors[key] = obj;
+    self.actors[key] = obj;
 }
 
 @end

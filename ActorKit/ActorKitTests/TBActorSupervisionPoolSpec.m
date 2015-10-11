@@ -53,6 +53,18 @@ describe(@"TBActorSupervisionPool", ^{
         expect(newMaster.uuid).to.equal(nil);
     });
     
+    it(@"returns supervisors by given actor ids", ^{
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        
+        NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
+        expect(supervisors).to.haveACountOf(1);
+        
+        TBActorSupervisor *supervisor = supervisors.firstObject;
+        expect(supervisor.Id).to.equal(@"master");
+    });
+    
     it(@"cancels remaining operations on the queue when actor crashed", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
