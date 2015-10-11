@@ -25,4 +25,12 @@ FOUNDATION_EXPORT NSString * const TBAKException;
  */
 + (NSException *)tbak_abstractClassException:(Class)klass;
 
+/**
+ *  Thrown when using an actor ID more than once.
+ *
+ *  @param Id The actor ID in question.
+ *
+ *  @return The created exception.
+ */
++ (NSException *)tbak_supervisionDuplicateException:(NSString *)Id;
 @end

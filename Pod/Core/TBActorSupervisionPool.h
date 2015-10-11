@@ -14,6 +14,8 @@
 /**
  *  Creates an actor, puts it under supervision and adds it to the supervision pool.
  *
+ *  @exception Throws an exception when an ID is already in use.
+ *
  *  @param Id            The ID of the actor to create.
  *  @param creationBlock The block to create the actor.
  */

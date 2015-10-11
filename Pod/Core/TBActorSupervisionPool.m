@@ -8,6 +8,7 @@
 
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
+#import "NSException+ActorKit.h"
 
 @interface TBActorSupervisionPool ()
 @property (nonatomic, strong) NSMutableDictionary *actors;
@@ -40,6 +41,9 @@
 
 - (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
 {
+    if (self.supervisors[Id]) {
+        @throw [NSException tbak_supervisionDuplicateException:Id];
+    }
     TBActorSupervisor *supervisor = [[TBActorSupervisor alloc] initWithPool:self];
     supervisor.Id = Id;
     supervisor.creationBlock = creationBlock;

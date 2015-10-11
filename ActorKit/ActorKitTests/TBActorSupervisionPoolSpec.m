@@ -34,6 +34,16 @@ describe(@"TBActorSupervisionPool", ^{
         NSNumber *uuid = [[actors[@"master"] sync] uuid];
         expect(uuid).to.equal(1);
     });
+    
+    it(@"throws an exception when an Id is already in use", ^{
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        
+        expect(^{
+            [actors superviseWithId:@"master" creationBlock:nil];
+        }).to.raise(TBAKException);
+    });
 
     it(@"re-creates an actor after a crash", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
