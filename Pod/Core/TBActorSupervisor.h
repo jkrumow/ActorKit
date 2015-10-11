@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TBActorSupervison.h"
+#import "TBActorSupervision.h"
 
 /**
  *  This block helps to create an actor.
@@ -29,7 +29,7 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
  *  TBActorSupervisor *supervisor = ...
  *  NSObject *actor = supervisor[@"myActor"];
  */
-@interface TBActorSupervisor : NSMutableDictionary <TBActorSupervison>
+@interface TBActorSupervisor : NSMutableDictionary <TBActorSupervision>
 
 @property (nonatomic, strong) NSString *Id;
 @property (nonatomic, copy) TBActorCreationBlock creationBlock;

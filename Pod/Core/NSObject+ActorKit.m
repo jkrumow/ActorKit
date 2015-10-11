@@ -42,12 +42,12 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     objc_setAssociatedObject(self, @selector(actorQueue), actorQueue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSObject<TBActorSupervison> *)supervisor
+- (NSObject<TBActorSupervision> *)supervisor
 {
     return objc_getAssociatedObject(self, @selector(supervisor));
 }
 
-- (void)setSupervisor:(NSObject<TBActorSupervison> *)supervisor
+- (void)setSupervisor:(NSObject<TBActorSupervision> *)supervisor
 {
     objc_setAssociatedObject(self, @selector(supervisor), supervisor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }

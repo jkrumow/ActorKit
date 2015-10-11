@@ -22,7 +22,7 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  */
 typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
 
-@protocol TBActorSupervison;
+@protocol TBActorSupervision;
 @class TBActorPool;
 
 /**
@@ -38,7 +38,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 /**
  *  Reference to the current supervisor. Can be messaged through TBActorSupervison protocol.
  */
-@property (nonatomic, weak) NSObject <TBActorSupervison> *supervisor;
+@property (nonatomic, weak) NSObject <TBActorSupervision> *supervisor;
 
 /**
  *  The pool the actor may belong to.

@@ -11,7 +11,7 @@
 /**
  *  This protocol defines the interactor between an actor and a supervisor.
  */
-@protocol TBActorSupervison <NSObject>
+@protocol TBActorSupervision <NSObject>
 
 /**
  *  Notifies the receiver that the specified actor has crashed with an error.
