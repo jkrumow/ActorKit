@@ -31,18 +31,18 @@
 - (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId;
 
 /**
- *  Returns the Id of a given actor instance
+ *  Returns the ID of a given actor instance
  *
  *  @param actor The actor instance.
  *
- *  @return The Id of the given actor instance. Can be nil if actor does not exist.
+ *  @return The ID of the given actor instance. Can be nil if actor does not exist.
  */
 - (NSString *)idForActor:(NSObject *)actor;
 
 /**
  *  Returns supervisors for a given set actor ids.
  *
- *  @param Ids A set of actor Ids.
+ *  @param Ids A set of actor IDs.
  *
  *  @return An array containing all supervisors.
  */

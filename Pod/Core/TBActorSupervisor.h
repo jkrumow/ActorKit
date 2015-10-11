@@ -24,7 +24,7 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
  *  It can detect crashes of actors and recreates them. If other actors are linked to a crashed actor they
  *  will be re-created recursively.
  *
- *  To access an actor by Id use keyed subscripting:
+ *  To access an actor by ID use keyed subscripting:
  *
  *  TBActorSupervisor *supervisor = ...
  *  NSObject *actor = supervisor[@"myActor"];
