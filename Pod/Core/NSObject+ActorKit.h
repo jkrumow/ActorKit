@@ -22,6 +22,7 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  */
 typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
 
+@protocol TBActorSupervision;
 @class TBActorPool;
 
 /**
@@ -35,9 +36,14 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 @property (nonatomic, strong) NSOperationQueue *actorQueue;
 
 /**
+ *  Reference to the current supervisor. Can be messaged through TBActorSupervison protocol.
+ */
+@property (nonatomic, weak) NSObject <TBActorSupervision> *supervisor;
+
+/**
  *  The pool the actor may belong to.
  */
-@property (nonatomic, strong) TBActorPool *pool;
+@property (nonatomic, weak) TBActorPool *pool;
 
 /**
  *  Returns the actor's operation queue.
@@ -101,6 +107,18 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param payload     The payload of the notification.
  */
 - (void)publish:(NSString *)messageName payload:(id)payload;
+
+/**
+ *  Notifies the supervisor about the crash using the TBActorSupervison protocol.
+ *
+ *  @param error The optional error.
+ */
+- (void)crashWithError:(NSError *)error;
+
+/**
+ *  Cancel all pending operations in the actorQueue.
+ */
+- (void)cancel;
 
 /**
  *  Creates a pool of actors of the current class using a specified configuration block.

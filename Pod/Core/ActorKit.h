@@ -12,5 +12,9 @@
 #import "TBActorProxyAsync.h"
 #import "TBActorProxyBroadcast.h"
 #import "TBActorPool.h"
+#import "TBActorSupervision.h"
+#import "TBActorSupervisionPool.h"
+#import "TBActorSupervisor.h"
 #import "NSException+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
+

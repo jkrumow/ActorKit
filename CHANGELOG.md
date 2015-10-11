@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.9.0
+
+- Add supervision and linking
+
 ## 0.8.0
 
 - Add support for tvOS 9.0

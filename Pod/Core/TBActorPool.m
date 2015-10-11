@@ -47,6 +47,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self.priv_actors.copy;
 }
 
+- (void)cancel
+{
+    [super cancel];
+    [self.priv_actors makeObjectsPerformSelector:@selector(cancel)];
+}
+
 - (id)broadcast
 {
     return [TBActorProxyBroadcast proxyWithPool:self];

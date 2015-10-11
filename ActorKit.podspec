@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
-  s.version          = "0.8.0"
+  s.version          = "0.9.0"
   s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
                        Brings the actor model to Objective-C.
@@ -10,6 +10,8 @@ Pod::Spec.new do |s|
                        * Synchronous and asynchronous invocations
                        * Promises
                        * Message subscription and publication
+                       * Supervision
+                       * Linking
                        DESC
   s.homepage         = "https://github.com/tarbrain/ActorKit"
   s.license          = 'MIT'
