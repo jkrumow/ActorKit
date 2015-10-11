@@ -25,6 +25,8 @@
  *  Links two actors by their IDs. If the master actor crashes, the given supervisor
  *  will re-create the linked actors as well.
  *
+ *  @exception Throws an exception when linking would cause circular references.
+ *
  *  @param linkedAactorId The actor to link.
  *  @param actorId        The actor to link to.
  */

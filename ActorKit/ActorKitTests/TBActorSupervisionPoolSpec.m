@@ -35,6 +35,18 @@ describe(@"TBActorSupervisionPool", ^{
         expect(uuid).to.equal(1);
     });
     
+    it(@"returns supervisors by given actor ids", ^{
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        
+        NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
+        expect(supervisors).to.haveACountOf(1);
+        
+        TBActorSupervisor *supervisor = supervisors.firstObject;
+        expect(supervisor.Id).to.equal(@"master");
+    });
+    
     it(@"throws an exception when an Id is already in use", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
@@ -44,12 +56,12 @@ describe(@"TBActorSupervisionPool", ^{
             [actors superviseWithId:@"master" creationBlock:nil];
         }).to.raise(TBAKException);
     });
-
+    
     it(@"re-creates an actor after a crash", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-        
+
         TestActor *master = actors[@"master"];
         expect(master).notTo.equal(nil);
         
@@ -63,23 +75,11 @@ describe(@"TBActorSupervisionPool", ^{
         expect(newMaster.uuid).to.equal(nil);
     });
     
-    it(@"returns supervisors by given actor ids", ^{
-        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-            *actor = [TestActor new];
-        }];
-        
-        NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
-        expect(supervisors).to.haveACountOf(1);
-        
-        TBActorSupervisor *supervisor = supervisors.firstObject;
-        expect(supervisor.Id).to.equal(@"master");
-    });
-    
     it(@"cancels remaining operations on the queue when actor crashed", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-        
+
         waitUntil(^(DoneCallback done) {
             [[actors[@"master"] async] doSomething:@"0" withCompletion:^(NSString *string) {
                 [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
@@ -140,6 +140,29 @@ describe(@"TBActorSupervisionPool", ^{
         expect(newSlave.uuid).to.equal(nil);
         expect(newOtherSlave.uuid).to.equal(nil);
         expect(newSlaveSlave.uuid).to.equal(nil);
+    });
+    
+    it(@"throws an exception when linking actors causes circular references", ^{
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        [actors superviseWithId:@"slave" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        [actors superviseWithId:@"otherslave" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        [actors superviseWithId:@"slave.slave" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        
+        [actors linkActor:@"slave" toActor:@"master"];
+        [actors linkActor:@"otherslave" toActor:@"master"];
+        [actors linkActor:@"slave.slave" toActor:@"slave"];
+        
+        expect(^{
+            [actors linkActor:@"master" toActor:@"slave.slave"];
+        }).to.raise(TBAKException);
     });
 });
 

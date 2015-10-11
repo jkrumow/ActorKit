@@ -53,8 +53,21 @@
 
 - (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId
 {
+    [self _validateLinkFrom:linkedActorId to:actorId];
     TBActorSupervisor *supervisor = self.supervisors[actorId];
     [supervisor.links addObject:linkedActorId];
+}
+
+- (void)_validateLinkFrom:(NSString *)linkedActorId to:(NSString *)actorId
+{
+    TBActorSupervisor *supervisor = self.supervisors[linkedActorId];
+    if ([supervisor.links containsObject:actorId]) {
+        @throw [NSException tbak_supervisionLinkException:linkedActorId to:actorId];
+    }
+    
+    [supervisor.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
+        [self _validateLinkFrom:linkId to:actorId];
+    }];
 }
 
 #pragma mark - Keyed subscripting
