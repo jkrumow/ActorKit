@@ -7,6 +7,7 @@
 //
 
 #import "TBActorSupervisionPool.h"
+#import "NSObject+ActorKit.h"
 
 @interface TBActorSupervisionPool ()
 @property (nonatomic, strong) NSMutableDictionary *actors;
@@ -56,12 +57,12 @@
 
 - (id)objectForKeyedSubscript:(NSString *)key
 {
-    return self.actors[key];
+    return [self.actors.sync objectForKey:key];
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
 {
-    self.actors[key] = obj;
+    [self.actors.sync setObject:obj forKey:key];
 }
 
 @end

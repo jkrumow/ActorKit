@@ -128,7 +128,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     if (self.pool) {
         [self.pool crashWithError:error];
     } else if (self.supervisor) {
-        [self.supervisor actor:self didCrashWithError:error];
+        [self.supervisor.sync actor:self didCrashWithError:error];
     }
 }
 
