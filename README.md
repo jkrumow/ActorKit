@@ -147,9 +147,9 @@ To send an asynchronous message to all actors in the pool:
 [pool.broadcast cancelWork];
 ```
 
-### (work in progress) Promises
+### Promises
 
-Promise support is contained in the subspec `Promises`:
+Promise support via [PromiseKit](http://promisekit.org) is contained in the subspec `Promises`:
 
 ```ruby
 target 'MyApp', :exclusive => true do

@@ -35,8 +35,22 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
 @property (nonatomic, copy) TBActorCreationBlock creationBlock;
 @property (nonatomic, strong) NSMutableSet *links;
 
+/**
+ *  Iniaializes a supervisor with a given supervision pool instance.
+ *
+ *  @param pool The supervision pool
+ *
+ *  @return The initialized supervisor instance.
+ */
 - (instancetype)initWithPool:(TBActorSupervisionPool *)pool NS_DESIGNATED_INITIALIZER;
 
+/**
+ *  Creates an actor and puts it under supervision.
+ */
 - (void)createActor;
+
+/**
+ *  Destroys an actor and creates a new instance.
+ */
 - (void)recreateActor;
 @end

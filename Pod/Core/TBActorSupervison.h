@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  This protocol describes an actor inside a supervision pool.
+ *  This protocol defines the interactor between an actor and a supervisor.
  */
 @protocol TBActorSupervison <NSObject>
 
