@@ -11,8 +11,8 @@
 #import "NSObject+ActorKit.h"
 
 @interface TBActorSupervisor ()
+@property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
 @property (nonatomic, strong) NSObject *actor;
-@property (nonatomic, strong) TBActorSupervisionPool *pool;
 @end
 
 @implementation TBActorSupervisor
@@ -36,7 +36,7 @@
 {
     self = [super init];
     if (self) {
-        _pool = pool;
+        _supervisionPool = pool;
         _links = [NSMutableSet new];
     }
     return self;
@@ -48,7 +48,7 @@
     self.creationBlock(&actor);
     actor.supervisor = self;
     self.actor = actor;
-    self.pool[self.Id] = actor;
+    self.supervisionPool[self.Id] = actor;
     [self _createLinkedActors];
 }
 
@@ -63,7 +63,7 @@
 - (void)_createLinkedActors
 {
     [self.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
-        TBActorSupervisor *linkedSupervisor = self.pool.supervisors[linkId];
+        TBActorSupervisor *linkedSupervisor = self.supervisionPool.supervisors[linkId];
         [linkedSupervisor recreateActor];
     }];
 }
