@@ -7,96 +7,72 @@
 //
 
 #import "TBActorSupervisor.h"
+#import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
 
-@interface TBActorSupervisionSet : NSObject
-@property (nonatomic, strong) NSString *Id;
-@property (nonatomic, copy) TBActorCreationBlock creationBlock;
-@property (nonatomic, strong) NSMutableSet *links;
-@end
-@implementation TBActorSupervisionSet
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _links = [NSMutableSet new];
-    }
-    return self;
-}
-@end
-
 @interface TBActorSupervisor ()
-@property (nonatomic, strong) NSMutableDictionary *priv_actors;
-@property (nonatomic, strong) NSMutableDictionary *supervisionSets;
+@property (nonatomic, strong) NSObject *actor;
+@property (nonatomic, strong) TBActorSupervisionPool *pool;
 @end
 
 @implementation TBActorSupervisor
 
 - (instancetype)init
 {
+    return [self initWithPool:nil];
+}
+
+- (instancetype)initWithCapacity:(NSUInteger)numItems
+{
+    return [self initWithPool:nil];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithPool:nil];
+}
+
+- (instancetype)initWithPool:(TBActorSupervisionPool *)pool
+{
     self = [super init];
     if (self) {
-        _priv_actors = [NSMutableDictionary new];
-        _supervisionSets = [NSMutableDictionary new];
+        _pool = pool;
+        _links = [NSMutableSet new];
     }
     return self;
 }
 
-- (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
+- (void)createActor
 {
-    TBActorSupervisionSet *set = [TBActorSupervisionSet new];
-    set.Id = Id;
-    set.creationBlock = creationBlock;
-    [self.supervisionSets setObject:set forKey:Id];
-    [self _createActorFromSet:set];
+    NSObject *actor = nil;
+    self.creationBlock(&actor);
+    actor.supervisor = self;
+    self.actor = actor;
+    self.pool[self.Id] = actor;
+    [self _createLinkedActors];
 }
 
-- (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId
+- (void)recreateActor
 {
-    TBActorSupervisionSet *set = self.supervisionSets[actorId];
-    [set.links addObject:linkedActorId];
+    [self.actor cancel];
+    [self createActor];
 }
 
 #pragma mark - internal methods
 
-- (void)_createActorFromSet:(TBActorSupervisionSet *)set
+- (void)_createLinkedActors
 {
-    NSObject *actor = nil;
-    set.creationBlock(&actor);
-    actor.supervisor = self;
-    self.priv_actors[set.Id] = actor;
-    [self _createLinkedActorsFromSet:set];
-}
-
-- (void)_createLinkedActorsFromSet:(TBActorSupervisionSet *)set
-{
-    [set.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
-        TBActorSupervisionSet *linkedSet = self.supervisionSets[linkId];
-        [self _createActorFromSet:linkedSet];
+    [self.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
+        TBActorSupervisor *linkedSupervisor = self.pool.supervisors[linkId];
+        [linkedSupervisor recreateActor];
     }];
-}
-
-- (NSString *)_idForActor:(NSObject *)actor
-{
-    return [[self.priv_actors allKeysForObject:actor] firstObject];
 }
 
 #pragma mark - TBActorSupervison
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
-    [actor cancel];
-    [self _createActorFromSet:self.supervisionSets[[self _idForActor:actor]]];
-}
-
-- (id)objectForKeyedSubscript:(NSString *)key
-{
-    return self.priv_actors[key];
-}
-
-- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
-{
-    self.priv_actors[key] = obj;
+    [self recreateActor];
 }
 
 @end

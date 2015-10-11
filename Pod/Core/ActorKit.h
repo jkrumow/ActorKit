@@ -14,6 +14,7 @@
 #import "TBActorPool.h"
 #import "TBActorSupervison.h"
 #import "TBActorSupervisor.h"
+#import "TBActorSupervisionPool.h"
 #import "NSException+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
 

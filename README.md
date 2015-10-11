@@ -178,15 +178,15 @@ promise.then(^(id result) {
 To add an actor to a supervision pool and access it by its id:
 
 ```objc
-TBActorSupervisor *supervisor = [TBActorSupervisor new];
+TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 
-[supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+[actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
     WorkerActor *worker = [WorkerActor new];
     worker.name = @"master";
     *actor = worker;
 }];
 
-[[supervisor[@"master"] sync] doSomething];
+[[actors[@"master"] sync] doSomething];
 ```
 
 To communicate a crash of a supervised actor call `crashWithError:` from within or outside the actor:
@@ -201,7 +201,7 @@ To communicate a crash of a supervised actor call `crashWithError:` from within 
 To link two actors:
 
 ```objc
-[supervisor linkActor:@"slave" toActor:@"master"];
+[actors linkActor:@"slave" toActor:@"master"];
 ```
 
 ## Architecture

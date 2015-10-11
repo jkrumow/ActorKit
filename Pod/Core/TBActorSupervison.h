@@ -20,7 +20,4 @@
  *  @param error The error describing the crash.
  */
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error;
-
-- (id)objectForKeyedSubscript:(NSString *)key;
-- (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
 @end

@@ -1,5 +1,5 @@
 //
-//  TBActorSupervisorSpec.m
+//  TBActorSupervisionPoolSpec.m
 //  ActorKit
 //
 //  Created by Julian Krumow on 09.10.15.
@@ -8,89 +8,89 @@
 
 #import "TestActor.h"
 
-SpecBegin(TBActorSupervisor)
+SpecBegin(TBActorSupervisionPool)
 
-__block TBActorSupervisor *supervisor;
+__block TBActorSupervisionPool *actors;
 
-describe(@"TBActorSupervisor", ^{
+describe(@"TBActorSupervisionPool", ^{
     
     beforeEach(^{
-        supervisor = [TBActorSupervisor new];
+        actors = [TBActorSupervisionPool new];
     });
     
     afterEach(^{
-        supervisor = nil;
+        actors = nil;
     });
     
     it(@"creates an actor based on a creation block", ^{
-        [supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
         
-        TestActor *master = supervisor[@"master"];
+        TestActor *master = actors[@"master"];
         expect(master).notTo.equal(nil);
         
         master.uuid = @(1);
-        NSNumber *uuid = [[supervisor[@"master"] sync] uuid];
+        NSNumber *uuid = [[actors[@"master"] sync] uuid];
         expect(uuid).to.equal(1);
     });
-    
+
     it(@"re-creates an actor after a crash", ^{
-        [supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
         
-        TestActor *master = supervisor[@"master"];
+        TestActor *master = actors[@"master"];
         expect(master).notTo.equal(nil);
         
         // create state and crash
         master.uuid = @(1);
         [master crashWithError:nil];
         
-        TestActor *newMaster = supervisor[@"master"];
+        TestActor *newMaster = actors[@"master"];
         expect(newMaster).notTo.equal(nil);
         expect(newMaster).notTo.equal(master);
         expect(newMaster.uuid).to.equal(nil);
     });
     
     it(@"cancels remaining operations on the queue when actor crashed", ^{
-        [supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
         
         waitUntil(^(DoneCallback done) {
-            [[supervisor[@"master"] async] doSomething:@"0" withCompletion:^(NSString *string) {
-                [supervisor[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+            [[actors[@"master"] async] doSomething:@"0" withCompletion:^(NSString *string) {
+                [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
                 done();
             }];
-            [[supervisor[@"master"] async] doSomething:@"1" withCompletion:^(NSString *string) {
+            [[actors[@"master"] async] doSomething:@"1" withCompletion:^(NSString *string) {
                 XCTFail(@"operation should be cancelled");
             }];
         });
     });
     
     it(@"it recreates an actor cluster after a crash", ^{
-        [supervisor superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-        [supervisor superviseWithId:@"slave" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"slave" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-        [supervisor superviseWithId:@"otherslave" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"otherslave" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-        [supervisor superviseWithId:@"slave.slave" creationBlock:^(NSObject **actor) {
+        [actors superviseWithId:@"slave.slave" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
         
-        [supervisor linkActor:@"slave" toActor:@"master"];
-        [supervisor linkActor:@"otherslave" toActor:@"master"];
-        [supervisor linkActor:@"slave.slave" toActor:@"slave"];
+        [actors linkActor:@"slave" toActor:@"master"];
+        [actors linkActor:@"otherslave" toActor:@"master"];
+        [actors linkActor:@"slave.slave" toActor:@"slave"];
         
-        TestActor *master = supervisor[@"master"];
-        TestActor *slave = supervisor[@"slave"];
-        TestActor *otherSlave = supervisor[@"otherslave"];
-        TestActor *slaveSlave = supervisor[@"slave.slave"];
+        TestActor *master = actors[@"master"];
+        TestActor *slave = actors[@"slave"];
+        TestActor *otherSlave = actors[@"otherslave"];
+        TestActor *slaveSlave = actors[@"slave.slave"];
         
         // create state and crash
         master.uuid = @(0);
@@ -99,10 +99,10 @@ describe(@"TBActorSupervisor", ^{
         slaveSlave.uuid = @(11);
         [master crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
         
-        TestActor *newMaster = supervisor[@"master"];
-        TestActor *newSlave = supervisor[@"slave"];
-        TestActor *newOtherSlave = supervisor[@"otherslave"];
-        TestActor *newSlaveSlave = supervisor[@"slave.slave"];
+        TestActor *newMaster = actors[@"master"];
+        TestActor *newSlave = actors[@"slave"];
+        TestActor *newOtherSlave = actors[@"otherslave"];
+        TestActor *newSlaveSlave = actors[@"slave.slave"];
         
         expect(newMaster).notTo.equal(nil);
         expect(newSlave).notTo.equal(nil);
