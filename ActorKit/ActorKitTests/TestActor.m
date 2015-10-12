@@ -41,6 +41,11 @@
     completion(stuff);
 }
 
+- (void)address:(void (^)(id))completion
+{
+    completion(self);
+}
+
 - (NSNumber *)returnSomething
 {
     return self.uuid;

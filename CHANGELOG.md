@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.10.0
+
+- Execute scheduled invocations on re-created supervised actor after a crash
+
 ## 0.9.0
 
 - Add supervision and linking

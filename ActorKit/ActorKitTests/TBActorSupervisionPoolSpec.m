@@ -75,20 +75,29 @@ describe(@"TBActorSupervisionPool", ^{
         expect(newMaster.uuid).to.equal(nil);
     });
     
-    it(@"cancels remaining operations on the queue when actor crashed", ^{
+    it(@"executes remaining operations on the re-created actor instance after a crash", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
 
+        __block id addressOne = nil;
+        __block id addressTwo = nil;
+        __block id addressThree = nil;
         waitUntil(^(DoneCallback done) {
-            [[actors[@"master"] async] doSomething:@"0" withCompletion:^(NSString *string) {
+            [[actors[@"master"] async] address:^(id address) {
+                addressOne = address;
                 [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+            }];
+            [[actors[@"master"] async] address:^(id address) {
+                addressTwo = address;
+            }];
+            [[actors[@"master"] async] address:^(id address) {
+                addressThree = address;
                 done();
             }];
-            [[actors[@"master"] async] doSomething:@"1" withCompletion:^(NSString *string) {
-                XCTFail(@"operation should be cancelled");
-            }];
         });
+        expect(addressOne).notTo.equal(addressTwo);
+        expect(addressTwo).to.equal(addressThree);
     });
     
     it(@"it recreates an actor cluster after a crash", ^{

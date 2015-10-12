@@ -34,7 +34,9 @@
 
 - (NSArray *)supervisorsForIds:(NSSet *)Ids
 {
-    NSMutableArray *supervisors = [[self.supervisors objectsForKeys:[Ids allObjects] notFoundMarker:[NSNull null]] mutableCopy];
+    NSMutableArray *supervisors = [[self.supervisors objectsForKeys:[Ids allObjects]
+                                                     notFoundMarker:[NSNull null]]
+                                   mutableCopy];
     [supervisors removeObject:[NSNull null]];
     return supervisors;
 }
@@ -48,7 +50,7 @@
     supervisor.Id = Id;
     supervisor.creationBlock = creationBlock;
     self.supervisors[Id] = supervisor;
-    [supervisor recreateActor];
+    [supervisor createActor];
 }
 
 - (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId
@@ -64,7 +66,6 @@
     if ([supervisor.links containsObject:actorId]) {
         @throw [NSException tbak_supervisionLinkException:linkedActorId to:actorId];
     }
-    
     [supervisor.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
         [self _validateLinkFrom:linkId to:actorId];
     }];

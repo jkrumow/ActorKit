@@ -54,8 +54,17 @@
 
 - (void)recreateActor
 {
-    [self.actor cancel];
+    // Save invocations in mailbox and update target
+    self.actor.actorQueue.suspended = YES;
+    NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
+    self.actor.actorQueue = queue;
+    [queue.operations enumerateObjectsUsingBlock:^(NSInvocationOperation *operation, NSUInteger idx, BOOL *stop) {
+        if (!operation.isExecuting && !operation.isCancelled && !operation.isFinished) {
+            operation.invocation.target = self.actor;
+        }
+    }];
+    queue.suspended = NO;
 }
 
 #pragma mark - internal methods
