@@ -74,12 +74,12 @@
 
 - (id)objectForKeyedSubscript:(NSString *)key
 {
-    return self.actors[key];
+    return [self.actors.sync objectForKey:key];
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
 {
-    self.actors[key] = obj;
+    [self.actors.sync setObject:obj forKey:key];
 }
 
 @end
