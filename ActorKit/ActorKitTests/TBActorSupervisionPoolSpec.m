@@ -94,7 +94,7 @@ describe(@"TBActorSupervisionPool", ^{
         
         waitUntil(^(DoneCallback done) {
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                [[actors[@"master"] async] address:^(id address) {
+                [[actors[@"master"] async] address:^(NSString *address) {
                     dispatch_sync(completionQueue, ^{
                         [results addObject:address];
                         
@@ -111,7 +111,10 @@ describe(@"TBActorSupervisionPool", ^{
         
         NSCountedSet *set = [NSCountedSet setWithArray:results];
         expect(set.count).to.equal(2);
-        expect([set countForObject:actors[@"master"]]).to.equal(20);
+        
+        TestActor *actor = actors[@"master"];
+        NSString *address = [actor address];
+        expect([set countForObject:address]).to.equal(20);
     });
     
     it(@"it recreates an actor cluster after a crash", ^{
