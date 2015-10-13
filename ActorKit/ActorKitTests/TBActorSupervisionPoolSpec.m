@@ -116,6 +116,8 @@ describe(@"TBActorSupervisionPool", ^{
             });
         });
         
+        NSLog(@"results: %@", results);
+        
         NSCountedSet *set = [NSCountedSet setWithArray:results];
         expect(set.count).to.equal(2);
         
