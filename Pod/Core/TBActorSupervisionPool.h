@@ -7,12 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "TBActorSupervisor.h"
 
+/**
+ *  This class represents a supervision pool which manages the lifecyle of registered actors.
+ *
+ *  When an actor is put under supervision it is reachable via a unique ID.
+ *
+ *  In case of a crash the actor will be replaced with a new instance. Unprocessed messages will remain
+ *  inside the actor's mailbox and will be executed on the new instance as soon as it is ready.
+ *
+ *  Actors can be linked to ensure that they will be re-created alongside the crashed actor.
+ */
 @interface TBActorSupervisionPool : NSObject
 
 /**
- *  Creates an actor, puts it under supervision and adds it to the supervision pool.
+ *  Creates an actor and adds it to the supervision pool.
  *
  *  @exception Throws an exception when an ID is already in use.
  *

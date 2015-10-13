@@ -31,12 +31,23 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
  */
 @interface TBActorSupervisor : NSMutableDictionary <TBActorSupervision>
 
+/**
+ *  The unique ID of the supervised actor.
+ */
 @property (nonatomic, strong) NSString *Id;
+
+/**
+ *  THe block used to create the supervised actor.
+ */
 @property (nonatomic, copy) TBActorCreationBlock creationBlock;
+
+/**
+ *  IDs of linked actors.
+ */
 @property (nonatomic, strong) NSMutableSet *links;
 
 /**
- *  Iniaializes a supervisor with a given supervision pool instance.
+ *  Initializes a supervisor with a given supervision pool instance.
  *
  *  @param pool The supervision pool
  *
