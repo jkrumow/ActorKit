@@ -11,15 +11,24 @@
 SpecBegin(TBActorSupervisionPool)
 
 __block TBActorSupervisionPool *actors;
+__block dispatch_queue_t testQueue;
+__block dispatch_queue_t completionQueue;
+__block NSMutableArray *results;
 
 describe(@"TBActorSupervisionPool", ^{
     
     beforeEach(^{
         actors = [TBActorSupervisionPool new];
+        testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
+        completionQueue = dispatch_queue_create("completionQueue", DISPATCH_QUEUE_SERIAL);
+        results = [NSMutableArray new];
     });
     
     afterEach(^{
         actors = nil;
+        testQueue = nil;
+        completionQueue = nil;
+        results = nil;
     });
     
     it(@"creates an actor based on a creation block", ^{
@@ -61,7 +70,7 @@ describe(@"TBActorSupervisionPool", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-
+        
         TestActor *master = actors[@"master"];
         expect(master).notTo.equal(nil);
         
@@ -76,28 +85,33 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     it(@"executes remaining operations on the re-created actor instance after a crash", ^{
+        
+        __block size_t taskCount = 25;
+        
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];
         }];
-
-        __block id addressOne = nil;
-        __block id addressTwo = nil;
-        __block id addressThree = nil;
+        
         waitUntil(^(DoneCallback done) {
-            [[actors[@"master"] async] address:^(id address) {
-                addressOne = address;
-                [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
-            }];
-            [[actors[@"master"] async] address:^(id address) {
-                addressTwo = address;
-            }];
-            [[actors[@"master"] async] address:^(id address) {
-                addressThree = address;
-                done();
-            }];
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                [[actors[@"master"] async] address:^(id address) {
+                    dispatch_sync(completionQueue, ^{
+                        [results addObject:address];
+                        
+                        if (results.count == 5) {
+                            [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                        }
+                        if (results.count == taskCount) {
+                            done();
+                        }
+                    });
+                }];
+            });
         });
-        expect(addressOne).notTo.equal(addressTwo);
-        expect(addressTwo).to.equal(addressThree);
+        
+        NSCountedSet *set = [NSCountedSet setWithArray:results];
+        expect(set.count).to.equal(2);
+        expect([set countForObject:actors[@"master"]]).to.equal(20);
     });
     
     it(@"it recreates an actor cluster after a crash", ^{
