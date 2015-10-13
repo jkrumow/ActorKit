@@ -41,9 +41,15 @@
     completion(stuff);
 }
 
-- (void)address:(void (^)(id))completion
+- (NSString *)address
 {
-    completion(self);
+    return [NSString stringWithFormat:@"%p", self];
+}
+
+- (void)address:(void (^)(NSString *))completion
+{
+    NSString *address = [self address];
+    completion(address);
 }
 
 - (NSNumber *)returnSomething

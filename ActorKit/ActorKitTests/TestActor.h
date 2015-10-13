@@ -17,7 +17,8 @@
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion;
 - (void)doSomething;
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
-- (void)address:(void (^)(id))completion;
+- (NSString *)address;
+- (void)address:(void (^)(NSString *))completion;
 - (NSNumber *)returnSomething;
 - (NSNumber *)returnSomethingBlocking;
 - (void)returnSomethingWithCompletion:(void (^)(NSNumber *))completion;

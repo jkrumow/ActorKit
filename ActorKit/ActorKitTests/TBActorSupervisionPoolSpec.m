@@ -121,7 +121,7 @@ describe(@"TBActorSupervisionPool", ^{
         
         TestActor *actor = actors[@"master"];
         NSString *address = [actor address];
-        expect([set countForObject:address]).to.equal(20);
+        expect([set countForObject:address]).to.beInTheRangeOf(19, 20);
     });
     
     it(@"it recreates an actor cluster after a crash", ^{
