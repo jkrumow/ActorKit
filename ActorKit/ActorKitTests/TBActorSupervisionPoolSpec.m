@@ -31,6 +31,13 @@ describe(@"TBActorSupervisionPool", ^{
         results = nil;
     });
     
+    it(@"creates a singleton instance", ^{
+        TBActorSupervisionPool *instanceOne = [TBActorSupervisionPool sharedInstance];
+        TBActorSupervisionPool *instanceTwo = [TBActorSupervisionPool sharedInstance];
+        
+        expect(instanceOne).to.equal(instanceTwo);
+    });
+    
     it(@"creates an actor based on a creation block", ^{
         [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
             *actor = [TestActor new];

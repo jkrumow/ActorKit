@@ -23,6 +23,13 @@
 @interface TBActorSupervisionPool : NSObject
 
 /**
+ *  The receiver returns a singleton instance of a supervision pool.
+ *
+ *  @return The singleton instance.
+ */
++ (instancetype)sharedInstance;
+
+/**
  *  Creates an actor and adds it to the supervision pool.
  *
  *  @exception Throws an exception when an ID is already in use.
