@@ -42,6 +42,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self.actor.actorQueue cancelAllOperations];
+}
+
 - (void)createActor
 {
     NSObject *actor = nil;
@@ -67,13 +72,13 @@
     queue.suspended = NO;
 }
 
-#pragma mark - internal methods
+#pragma mark - Internal methods
 
 - (void)_createLinkedActors
 {
     NSArray *linkedSupervisors = [self.supervisionPool supervisorsForIds:self.links];
     [linkedSupervisors enumerateObjectsUsingBlock:^(TBActorSupervisor *supervisor, NSUInteger idx, BOOL *stop) {
-        [supervisor recreateActor];
+        [supervisor.sync recreateActor];
     }];
 }
 
