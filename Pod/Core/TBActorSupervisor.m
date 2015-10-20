@@ -10,6 +10,8 @@
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
 
+static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
+
 @interface TBActorSupervisor ()
 @property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
 @property (nonatomic, weak) NSObject *actor;
@@ -36,6 +38,7 @@
 {
     self = [super init];
     if (self) {
+        self.actorQueue.name = TBAKActorSupervisorQueue;
         _supervisionPool = pool;
         _links = [NSMutableSet new];
     }
