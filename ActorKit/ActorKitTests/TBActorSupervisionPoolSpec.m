@@ -78,8 +78,10 @@ describe(@"TBActorSupervisionPool", ^{
             *actor = [TestActor new];
         }];
         TestActor *actor = actors[@"master"];
+        TestActor *otherActor = [TestActor new];
+        
         expect([actors idForActor:actor]).to.equal(@"master");
-    
+        expect([actors idForActor:otherActor]).to.beNil;
     });
     
     it(@"throws an exception when an Id is already in use", ^{
