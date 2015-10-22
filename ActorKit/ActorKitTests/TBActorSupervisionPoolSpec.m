@@ -1,6 +1,6 @@
 //
 //  TBActorSupervisionPoolSpec.m
-//  ActorKit
+//  ActorKitTests
 //
 //  Created by Julian Krumow on 09.10.15.
 //  Copyright © 2015 Julian Krumow. All rights reserved.
@@ -71,6 +71,15 @@ describe(@"TBActorSupervisionPool", ^{
         
         TBActorSupervisor *supervisor = supervisors.firstObject;
         expect(supervisor.Id).to.equal(@"master");
+    });
+    
+    it(@"returns the id of a given actor instance", ^{
+        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+            *actor = [TestActor new];
+        }];
+        TestActor *actor = actors[@"master"];
+        expect([actors idForActor:actor]).to.equal(@"master");
+    
     });
     
     it(@"throws an exception when an Id is already in use", ^{
