@@ -67,11 +67,11 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;
-    [queue.operations enumerateObjectsUsingBlock:^(NSInvocationOperation *operation, NSUInteger idx, BOOL *stop) {
+    for (NSInvocationOperation *operation in queue.operations) {
         if (!operation.isExecuting && !operation.isCancelled && !operation.isFinished) {
             operation.invocation.target = self.actor;
         }
-    }];
+    }
     queue.suspended = NO;
 }
 
@@ -80,9 +80,9 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)_createLinkedActors
 {
     NSArray *linkedSupervisors = [self.supervisionPool supervisorsForIds:self.links];
-    [linkedSupervisors enumerateObjectsUsingBlock:^(TBActorSupervisor *supervisor, NSUInteger idx, BOOL *stop) {
+    for (TBActorSupervisor *supervisor in linkedSupervisors) {
         [supervisor.sync recreateActor];
-    }];
+    }
 }
 
 #pragma mark - TBActorSupervison
