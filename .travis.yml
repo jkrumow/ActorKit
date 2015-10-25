@@ -3,7 +3,7 @@ language: objective-c
 
 install:
   - brew uninstall xctool --force
-  - brew install --HEAD xctool
+  - brew install xctool
   - bundle install --without=documentation
   - cd ActorKit && bundle exec pod install && cd $TRAVIS_BUILD_DIR
 
