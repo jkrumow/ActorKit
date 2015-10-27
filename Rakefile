@@ -3,7 +3,7 @@ require 'rake'
 WORKSPACE = 'ActorKit/ActorKit.xcworkspace'
 SCHEME = 'ActorKitTests'
 SDK = 'iphonesimulator'
-DESTINATION = 'platform=iOS Simulator,name=iPhone 6'
+DESTINATION = 'platform=iphonesimulator9.1,name=iPhone 6'
 COVERAGE_ARGS = 'GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES'
 
 desc "Clean the workspace"
