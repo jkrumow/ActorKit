@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:tarbrain/slather.git
+  remote: https://github.com/tarbrain/slather.git
   revision: fef0848738e0ee726aa334e9bad0bbdade9dd9d2
   specs:
     slather (1.8.2)
