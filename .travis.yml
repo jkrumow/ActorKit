@@ -7,3 +7,6 @@ install:
 
 script:
   - bundle exec rake
+
+after_success:
+  - bundle exec rake coverage
