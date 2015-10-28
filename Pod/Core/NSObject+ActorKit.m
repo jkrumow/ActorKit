@@ -134,6 +134,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (void)cancel
 {
+    self.actorQueue.suspended = YES;
     [self.actorQueue cancelAllOperations];
 }
 
