@@ -142,6 +142,38 @@ describe(@"TBActorSupervisionPool", ^{
             NSCountedSet *set = [NSCountedSet setWithArray:results];
             expect(set.count).to.equal(2);
         });
+        
+        it(@"executes remaining operations on the re-created actor-pool instance after a crash", ^{
+            
+            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
+                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                    TestActor *testActor = (TestActor *)actor;
+                    testActor.uuid = @(index);
+                }];
+            }];
+            
+            id poolAddress = actors[@"pool"];
+            
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    [[actors[@"pool"] async] address:^(NSString *address) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:address];
+                            
+                            if (results.count == 5) {
+                                [[actors[@"pool"] async] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                                done();
+                            }
+                        });
+                    }];
+                });
+            });
+            
+            NSLog(@"results: %@", results);
+            
+            expect(poolAddress).notTo.equal(actors[@"pool"]);
+            expect(results.count).to.beLessThan(taskCount);
+        });
     });
     
     describe(@"linking", ^{

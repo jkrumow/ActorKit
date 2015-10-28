@@ -42,6 +42,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self;
 }
 
+- (void)dealloc
+{
+    [self cancel];
+    [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:nil];
+}
+
 - (NSArray *)actors
 {
     return self.priv_actors.copy;
@@ -49,7 +55,6 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (void)cancel
 {
-    [super cancel];
     [self.priv_actors makeObjectsPerformSelector:@selector(cancel)];
 }
 
@@ -115,6 +120,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         MAX(0, value);
         self.loadCounters[index] = @(value);
     }
+}
+
+- (void)crashWithError:(NSError *)error
+{
+    [self cancel];
+    [super crashWithError:error];
 }
 
 @end

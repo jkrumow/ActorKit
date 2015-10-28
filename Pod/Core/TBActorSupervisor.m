@@ -9,6 +9,7 @@
 #import "TBActorSupervisor.h"
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
+#import "TBActorPool.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
 
@@ -67,12 +68,22 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;
+    [self updateInvocationTargetsInQueue:queue];
+    queue.suspended = NO;
+}
+
+- (void)updateInvocationTargetsInQueue:(NSOperationQueue *)queue
+{
     for (NSInvocationOperation *operation in queue.operations) {
         if (!operation.isExecuting && !operation.isCancelled && !operation.isFinished) {
-            operation.invocation.target = self.actor;
+            if ([self.actor isKindOfClass:[TBActorPool class]]) {
+                TBActorPool *pool = (TBActorPool *)self.actor;
+                operation.invocation.target = [pool availableActor];
+            } else {
+                operation.invocation.target = self.actor;
+            }
         }
     }
-    queue.suspended = NO;
 }
 
 #pragma mark - Internal methods
