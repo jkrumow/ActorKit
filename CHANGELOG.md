@@ -1,5 +1,10 @@
 # ActorKit CHANGELOG
 
+## 0.11.0
+
+- Improve thread safety of `TBActorSupervisor` and `TBActorSupervisionPool`
+
+
 ## 0.10.0
 
 - Execute scheduled invocations on re-created supervised actor after a crash

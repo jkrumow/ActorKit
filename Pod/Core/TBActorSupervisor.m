@@ -10,6 +10,8 @@
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
 
+static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
+
 @interface TBActorSupervisor ()
 @property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
 @property (nonatomic, weak) NSObject *actor;
@@ -36,10 +38,16 @@
 {
     self = [super init];
     if (self) {
+        self.actorQueue.name = TBAKActorSupervisorQueue;
         _supervisionPool = pool;
         _links = [NSMutableSet new];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [self.actor.actorQueue cancelAllOperations];
 }
 
 - (void)createActor
@@ -59,22 +67,22 @@
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;
-    [queue.operations enumerateObjectsUsingBlock:^(NSInvocationOperation *operation, NSUInteger idx, BOOL *stop) {
+    for (NSInvocationOperation *operation in queue.operations) {
         if (!operation.isExecuting && !operation.isCancelled && !operation.isFinished) {
             operation.invocation.target = self.actor;
         }
-    }];
+    }
     queue.suspended = NO;
 }
 
-#pragma mark - internal methods
+#pragma mark - Internal methods
 
 - (void)_createLinkedActors
 {
     NSArray *linkedSupervisors = [self.supervisionPool supervisorsForIds:self.links];
-    [linkedSupervisors enumerateObjectsUsingBlock:^(TBActorSupervisor *supervisor, NSUInteger idx, BOOL *stop) {
-        [supervisor recreateActor];
-    }];
+    for (TBActorSupervisor *supervisor in linkedSupervisors) {
+        [supervisor.sync recreateActor];
+    }
 }
 
 #pragma mark - TBActorSupervison

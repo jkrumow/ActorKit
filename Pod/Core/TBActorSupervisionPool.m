@@ -10,6 +10,8 @@
 #import "NSObject+ActorKit.h"
 #import "NSException+ActorKit.h"
 
+static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.TBActorSupervisionPool";
+
 @interface TBActorSupervisionPool ()
 @property (nonatomic, strong) NSMutableDictionary *actors;
 @property (nonatomic, strong) NSMutableDictionary *supervisors;
@@ -32,6 +34,7 @@
 {
     self = [super init];
     if (self) {
+        self.actorQueue.name = TBAKActorSupervisionPoolQueue;
         _actors = [NSMutableDictionary new];
         _supervisors = [NSMutableDictionary new];
     }
@@ -77,9 +80,9 @@
     if ([supervisor.links containsObject:actorId]) {
         @throw [NSException tbak_supervisionLinkException:linkedActorId to:actorId];
     }
-    [supervisor.links enumerateObjectsUsingBlock:^(NSString *linkId, BOOL *stop) {
+    for (NSString *linkId in supervisor.links) {
         [self _validateLinkFrom:linkId to:actorId];
-    }];
+    }
 }
 
 #pragma mark - Keyed subscripting

@@ -35,9 +35,9 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
         
         _loadCounters = [NSMutableArray new];
-        [self.priv_actors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        for (NSUInteger i=0; i < self.priv_actors.count; i++) {
             [self.loadCounters addObject:@(0)];
-        }];
+        }
     }
     return self;
 }
