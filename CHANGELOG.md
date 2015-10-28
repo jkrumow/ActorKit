@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.12.0
+
+- Improve reliability and thread safety of `TBActorSupervisor` when recreating `TBActorPool` instances
+
 ## 0.11.0
 
 - Improve thread safety of `TBActorSupervisor` and `TBActorSupervisionPool`
