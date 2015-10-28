@@ -160,7 +160,7 @@ describe(@"TBActorSupervisionPool", ^{
                         dispatch_sync(completionQueue, ^{
                             [results addObject:address];
                             
-                            if (results.count == 5) {
+                            if (results.count == 2) {
                                 [[actors[@"pool"] async] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
                                 done();
                             }
