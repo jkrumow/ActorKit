@@ -44,18 +44,12 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (void)dealloc
 {
-    [self cancel];
     [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:nil];
 }
 
 - (NSArray *)actors
 {
     return self.priv_actors.copy;
-}
-
-- (void)cancel
-{
-    [self.priv_actors makeObjectsPerformSelector:@selector(cancel)];
 }
 
 - (id)broadcast

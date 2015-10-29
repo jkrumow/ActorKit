@@ -144,7 +144,7 @@ The handler will be executed on an available actor in the pool.
 To send an asynchronous message to all actors in the pool:
 
 ```objc
-[pool.broadcast cancelWork];
+[pool.broadcast pause];
 ```
 
 ### Promises

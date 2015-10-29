@@ -116,11 +116,6 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 - (void)crashWithError:(NSError *)error;
 
 /**
- *  Cancel all pending operations in the actorQueue.
- */
-- (void)cancel;
-
-/**
  *  Creates a pool of actors of the current class using a specified configuration block.
  *
  *  @param configuration The configuration block.
