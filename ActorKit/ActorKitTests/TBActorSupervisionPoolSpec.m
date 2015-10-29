@@ -152,27 +152,33 @@ describe(@"TBActorSupervisionPool", ^{
                 }];
             }];
             
-            id poolAddress = actors[@"pool"];
+            TBActorPool *poolInstance = actors[@"pool"];
+            NSLog(@"0: %@", poolInstance.actors[0]);
+            NSLog(@"1: %@", poolInstance.actors[1]);
             
-            waitUntil(^(DoneCallback done) {
-                dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    [[actors[@"pool"] async] address:^(NSString *address) {
-                        dispatch_sync(completionQueue, ^{
-                            [results addObject:address];
-                            
-                            if (results.count == 2) {
-                                [results addObject:@"--- crash ---"];
-                                [[actors[@"pool"] async] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
-                                done();
-                            }
-                        });
-                    }];
-                });
+            NSObject *actorToCrash = poolInstance.actors[0];
+            
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                [[actors[@"pool"] async] addressBlocking:^(NSString *address) {
+                    dispatch_sync(completionQueue, ^{
+                        [results addObject:address];
+                        
+                        if (results.count == 2) {
+                            [actorToCrash crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                        }
+                    });
+                }];
             });
+            
+            sleep(1);
             
             NSLog(@"results: %@", results);
             
-            expect(poolAddress).notTo.equal(actors[@"pool"]);
+            TBActorPool *newInstance = actors[@"pool"];
+            NSLog(@"0: %@", newInstance.actors[0]);
+            NSLog(@"1: %@", newInstance.actors[1]);
+            
+            expect(poolInstance).notTo.equal(newInstance);
         });
     });
     

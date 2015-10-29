@@ -52,6 +52,12 @@
     completion(address);
 }
 
+- (void)addressBlocking:(void (^)(NSString *))completion
+{
+    [self blockSomething];
+    [self address:completion];
+}
+
 - (NSNumber *)returnSomething
 {
     return self.uuid;
