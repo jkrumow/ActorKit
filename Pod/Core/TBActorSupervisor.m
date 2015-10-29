@@ -65,6 +65,11 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 {
     // Save invocations in mailbox and update target
     self.actor.actorQueue.suspended = YES;
+    
+    if ([self.actor isKindOfClass:[TBActorPool class]]) {
+        [self.actor cancel];
+    }
+    
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;

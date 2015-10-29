@@ -122,10 +122,4 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     }
 }
 
-- (void)crashWithError:(NSError *)error
-{
-    [self cancel];
-    [super crashWithError:error];
-}
-
 @end
