@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ActorKit: b9479c5f71f5d9dbf1e73cb53b37ac5eeb962ff6
+  ActorKit: 364debd192587872d7d6f4043f0766b3a151a576
   Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
   PromiseKit: 6be651503d4af22830b5313be993c5a0ef77bf77
   Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
