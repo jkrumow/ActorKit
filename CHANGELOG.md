@@ -2,7 +2,7 @@
 
 ## 0.12.0
 
-- Improve reliability and thread safety of `TBActorSupervisor` when recreating `TBActorPool` instances
+- Remove supervision and linking
 
 ## 0.11.0
 

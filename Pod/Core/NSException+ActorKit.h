@@ -25,22 +25,4 @@ FOUNDATION_EXPORT NSString * const TBAKException;
  */
 + (NSException *)tbak_abstractClassException:(Class)klass;
 
-/**
- *  Thrown when when the specified actor ID is already in use.
- *
- *  @param Id The actor ID in question.
- *
- *  @return The created exception.
- */
-+ (NSException *)tbak_supervisionDuplicateException:(NSString *)Id;
-
-/**
- *  Thrown when linking would cause circular references.
- *
- *  @param linkedActorId The actor to link.
- *  @param actorId       The actor to link to.
- *
- *  @return The created exception.
- */
-+ (NSException *)tbak_supervisionLinkException:(NSString *)linkedActorId to:(NSString *)actorId;
 @end

@@ -9,7 +9,6 @@
 #import "NSObject+ActorKit.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
-#import "TBActorSupervisor.h"
 #import "TBActorPool.h"
 
 
@@ -19,7 +18,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;
-@dynamic supervisor;
 @dynamic pool;
 
 
@@ -40,16 +38,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 - (void)setActorQueue:(NSOperationQueue *)actorQueue
 {
     objc_setAssociatedObject(self, @selector(actorQueue), actorQueue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSObject<TBActorSupervision> *)supervisor
-{
-    return objc_getAssociatedObject(self, @selector(supervisor));
-}
-
-- (void)setSupervisor:(NSObject<TBActorSupervision> *)supervisor
-{
-    objc_setAssociatedObject(self, @selector(supervisor), supervisor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (TBActorPool *)pool
@@ -121,15 +109,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName
                                                         object:self
                                                       userInfo:dictionary]; // Copy payload to prevent shared state.
-}
-
-- (void)crashWithError:(NSError *)error
-{
-    if (self.pool) {
-        [self.pool crashWithError:error];
-    } else if (self.supervisor) {
-        [self.supervisor.sync actor:self didCrashWithError:error];
-    }
 }
 
 #pragma mark - Pools

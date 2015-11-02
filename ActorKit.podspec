@@ -10,8 +10,6 @@ Pod::Spec.new do |s|
                        * Synchronous and asynchronous invocations
                        * Promises
                        * Message subscription and publication
-                       * Supervision
-                       * Linking
                        DESC
   s.homepage         = "https://github.com/tarbrain/ActorKit"
   s.license          = 'MIT'
