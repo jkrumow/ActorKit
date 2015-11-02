@@ -70,14 +70,10 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)updateInvocationTargetsInQueue:(NSOperationQueue *)queue
 {
     for (NSInvocationOperation *operation in queue.operations) {
-        if (!operation.isExecuting && !operation.isCancelled && !operation.isFinished) {
-            if ([self.actor isKindOfClass:[TBActorPool class]]) {
-                TBActorPool *pool = (TBActorPool *)self.actor;
-                operation.invocation.target = [pool availableActor];
-            } else {
-                operation.invocation.target = self.actor;
-            }
+        if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
+            continue;
         }
+        operation.invocation.target = self.actor;
     }
 }
 
