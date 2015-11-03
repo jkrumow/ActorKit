@@ -47,7 +47,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (void)setPool:(TBActorPool *)pool
 {
-    objc_setAssociatedObject(self, @selector(pool), pool, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(pool), pool, OBJC_ASSOCIATION_ASSIGN);
 }
 
 #pragma mark - Invocatons
