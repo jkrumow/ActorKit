@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.12.1
+
+- Fixed retain cycle in pubsub mechanism
+
 ## 0.12.0
 
 - Remove supervision and linking

@@ -11,7 +11,6 @@
 #import "TBActorProxyAsync.h"
 #import "TBActorPool.h"
 
-
 NSUInteger const TBAKActorQueueMaxOperationCount = 1;
 NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
 NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
@@ -19,7 +18,6 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;
 @dynamic pool;
-
 
 - (NSOperationQueue *)actorQueue
 {
@@ -71,26 +69,28 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
 {
+    __weak typeof(self) weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:actor
                                                        queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [self performSelector:selector withObject:note.userInfo[TBAKActorPayload]];
+                                                      [weakSelf performSelector:selector withObject:note.userInfo[TBAKActorPayload]];
 #pragma clang diagnostic pop
                                                   }];
 }
 
 - (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector
 {
+    __weak typeof(self) weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:messageName
                                                       object:sender
                                                        queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [self performSelector:selector withObject:note.userInfo];
+                                                      [weakSelf performSelector:selector withObject:note.userInfo];
 #pragma clang diagnostic pop
                                                   }];
 }
@@ -104,11 +104,11 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 {
     NSDictionary *dictionary = nil;
     if (payload) {
-        dictionary = @{TBAKActorPayload:[payload copy]};
+        dictionary = @{TBAKActorPayload:[payload copy]}; // Copy payload to prevent shared state.
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:messageName
                                                         object:self
-                                                      userInfo:dictionary]; // Copy payload to prevent shared state.
+                                                      userInfo:dictionary];
 }
 
 #pragma mark - Pools

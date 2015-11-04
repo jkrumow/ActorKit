@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 
 /**
  *  This category extends NSObject with methods to use promises in async calls.
