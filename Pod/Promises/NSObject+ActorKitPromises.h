@@ -18,5 +18,5 @@
  *
  *  @return The TBActorProxyPromise instance.
  */
-- (id)promise;
+- (nonnull id)promise;
 @end

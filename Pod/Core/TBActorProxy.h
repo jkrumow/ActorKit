@@ -18,7 +18,7 @@
 /**
  *  The actor associated with this proxy instance.
  */
-@property (nonatomic, strong) NSObject *actor;
+@property (nonatomic, strong, nonnull) NSObject *actor;
 
 /**
  *  Creates a proxy instance with a given actor. Must be overidden by a subtype.
@@ -29,7 +29,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (instancetype)proxyWithActor:(NSObject *)actor;
++ (nullable instancetype)proxyWithActor:(nonnull NSObject *)actor;
 
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
@@ -40,7 +40,7 @@
  *
  *  @return The initialized proxy instance.
  */
-- (instancetype)initWithActor:(NSObject *)actor;
+- (nullable instancetype)initWithActor:(nonnull NSObject *)actor;
 
 /**
  *  Releases any occupied resources after having successfully forwarded a message to the proxied object.

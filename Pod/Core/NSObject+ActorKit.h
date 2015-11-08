@@ -12,7 +12,7 @@
 /**
  *  The payload of a notification sent between actors.
  */
-FOUNDATION_EXPORT NSString * const TBAKActorPayload;
+FOUNDATION_EXPORT NSString * const _Nonnull TBAKActorPayload;
 
 /**
  *  A block to configure a pool of actors.
@@ -20,7 +20,7 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  *  @param actor The actor instance to configure.
  *  @param index The index of the actor in the pool.
  */
-typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
+typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInteger index);
 
 @class TBActorPool;
 
@@ -32,33 +32,33 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 /**
  *  The actor's operation queue.
  */
-@property (nonatomic, strong) NSOperationQueue *actorQueue;
+@property (nonatomic, strong, nonnull) NSOperationQueue *actorQueue;
 
 /**
  *  The pool the actor may belong to.
  */
-@property (nonatomic, assign) TBActorPool *pool;
+@property (nonatomic, assign, nullable) TBActorPool *pool;
 
 /**
  *  Returns the actor's operation queue.
  *
  *  @return The operation queue.
  */
-- (NSOperationQueue *)actorQueue;
+- (nonnull NSOperationQueue *)actorQueue;
 
 /**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxySync instance.
  */
-- (id)sync;
+- (nonnull id)sync;
 
 /**
  *  Creates a TBActorProxyAsync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxyAsync instance.
  */
-- (id)async;
+- (nonnull id)async;
 
 /**
  *  Subscribes to an NSNotification sent from other actors.
@@ -66,7 +66,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribe:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribe:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a specified actor.
@@ -75,7 +75,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToActor:(nullable NSObject *)actor messageName:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a generic sender.
@@ -85,14 +85,14 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribeToSender:(nonnull id)sender messageName:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
 
 /**
  *  Unsubscribes an NSNotification from other actors or generic senders.
  *
  *  @param messageName The name of the notification.
  */
-- (void)unsubscribe:(NSString *)messageName;
+- (void)unsubscribe:(nonnull NSString *)messageName;
 
 /**
  *  Send a notification to other actors.
@@ -100,7 +100,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  @param messageName The name of the notification.
  *  @param payload     The payload of the notification.
  */
-- (void)publish:(NSString *)messageName payload:(id)payload;
+- (void)publish:(nonnull NSString *)messageName payload:(nullable id)payload;
 
 /**
  *  Creates a pool of actors of the current class using a specified configuration block.
@@ -109,5 +109,5 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *
  *  @return The created actor pool instance.
  */
-+ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration;
++ (nonnull TBActorPool *)poolWithSize:(NSUInteger)size configuration:(nullable TBActorPoolConfigurationBlock)configuration;
 @end

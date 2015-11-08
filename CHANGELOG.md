@@ -2,6 +2,7 @@
 
 ## 0.12.1
 
+- Add nullability annotations and generics to improve Swift compatibility
 - Fixed retain cycle in pubsub mechanism
 
 ## 0.12.0

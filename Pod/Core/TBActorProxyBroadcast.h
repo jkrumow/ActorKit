@@ -18,7 +18,7 @@
 /**
  *  The actor pool associated with this proxy instance.
  */
-@property (nonatomic, strong) TBActorPool *pool;
+@property (nonatomic, strong, nonnull) TBActorPool *pool;
 
 /**
  *  Creates a proxy instance with a given actor pool.
@@ -27,7 +27,7 @@
  *
  *  @return The created proxy instance.
  */
-+ (TBActorProxyBroadcast *)proxyWithPool:(TBActorPool *)pool;
++ (nullable TBActorProxyBroadcast *)proxyWithPool:(nonnull TBActorPool *)pool;
 
 /**
  *  Initializes a proxy instance with a given actor pool.
@@ -36,5 +36,5 @@
  *
  *  @return The initialized proxy instance.
  */
-- (instancetype)initWithPool:(TBActorPool *)pool;
+- (nullable instancetype)initWithPool:(nonnull TBActorPool *)pool;
 @end
