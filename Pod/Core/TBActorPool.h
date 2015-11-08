@@ -18,7 +18,7 @@
 /**
  *  The actors in the pool.
  */
-@property (nonatomic, strong, readonly, nonnull) NSArray<NSObject *> *actors;
+@property (nonatomic, strong, readonly, nonnull) NSArray<__kindof NSObject *> *actors;
 
 /**
  *  Designated initializer for a pool with an array of actors.
@@ -27,7 +27,7 @@
  *
  *  @return The initialized TBActorPool instance.
  */
-- (nullable instancetype)initWithActors:(nonnull NSArray<NSObject *> *)actors NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithActors:(nonnull NSArray<__kindof NSObject *> *)actors NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.
