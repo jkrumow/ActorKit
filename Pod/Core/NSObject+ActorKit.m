@@ -52,12 +52,12 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 - (id)sync
 {
-    return [TBActorProxySync proxyWithActor:self];
+    return [[TBActorProxySync alloc] initWithActor:self];
 }
 
 - (id)async
 {
-    return [TBActorProxyAsync proxyWithActor:self];
+    return [[TBActorProxyAsync alloc] initWithActor:self];
 }
 
 #pragma mark - Pubsub

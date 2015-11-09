@@ -13,7 +13,7 @@
 
 - (id)promise
 {
-    return [TBActorProxyPromise proxyWithActor:self];
+    return [[TBActorProxyPromise alloc] initWithActor:self];
 }
 
 @end

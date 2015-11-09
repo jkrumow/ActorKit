@@ -12,11 +12,6 @@
 
 @implementation TBActorProxySync
 
-+ (instancetype)proxyWithActor:(NSObject *)actor
-{
-    return [[TBActorProxySync alloc] initWithActor:actor];
-}
-
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     [invocation setTarget:self.actor];

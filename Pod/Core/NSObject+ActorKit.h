@@ -40,13 +40,6 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
 @property (nonatomic, assign, nullable) TBActorPool *pool;
 
 /**
- *  Returns the actor's operation queue.
- *
- *  @return The operation queue.
- */
-- (nonnull NSOperationQueue *)actorQueue;
-
-/**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxySync instance.

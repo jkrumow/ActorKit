@@ -11,14 +11,7 @@
 #import "NSObject+ActorKit.h"
 #import "NSException+ActorKit.h"
 
-
 @implementation TBActorProxy
-
-+ (instancetype)proxyWithActor:(NSObject *)actor
-{
-    @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
-    return nil;
-}
 
 - (instancetype)initWithActor:(NSObject *)actor
 {

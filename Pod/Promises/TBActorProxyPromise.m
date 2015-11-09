@@ -19,11 +19,6 @@
 
 @implementation TBActorProxyPromise
 
-+ (TBActorProxy *)proxyWithActor:(NSObject *)actor
-{
-    return [[TBActorProxyPromise alloc] initWithActor:actor];
-}
-
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     // Create invocation for message to be sent to the actor

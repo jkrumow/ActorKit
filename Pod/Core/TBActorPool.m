@@ -54,7 +54,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (id)broadcast
 {
-    return [TBActorProxyBroadcast proxyWithPool:self];
+    return [[TBActorProxyBroadcast alloc] initWithPool:self];
 }
 
 - (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector

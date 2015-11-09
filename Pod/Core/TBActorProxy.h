@@ -21,17 +21,6 @@
 @property (nonatomic, strong, nonnull) NSObject *actor;
 
 /**
- *  Creates a proxy instance with a given actor. Must be overidden by a subtype.
- *
- *  @exception Throws an exception when called on base class.
- *
- *  @param actor The associated actor.
- *
- *  @return The created proxy instance.
- */
-+ (nullable instancetype)proxyWithActor:(nonnull NSObject *)actor;
-
-/**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
  *
  *  @exception Throws an exception when called on base class.

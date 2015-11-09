@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 /**
  *  This category extends NSInvocation with methods to create library specific exception objects.
  */

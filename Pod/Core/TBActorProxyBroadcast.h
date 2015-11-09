@@ -21,15 +21,6 @@
 @property (nonatomic, strong, nonnull) TBActorPool *pool;
 
 /**
- *  Creates a proxy instance with a given actor pool.
- *
- *  @param pool The associated actor pool.
- *
- *  @return The created proxy instance.
- */
-+ (nullable TBActorProxyBroadcast *)proxyWithPool:(nonnull TBActorPool *)pool;
-
-/**
  *  Initializes a proxy instance with a given actor pool.
  *
  *  @param pool The associated actor pool.
