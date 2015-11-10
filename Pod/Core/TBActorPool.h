@@ -10,6 +10,8 @@
 
 #import "NSObject+ActorKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  This class represents a pool of actor instances.
  */
@@ -18,7 +20,7 @@
 /**
  *  The actors in the pool.
  */
-@property (nonatomic, readonly, nonnull) NSArray<__kindof NSObject *> *actors;
+@property (nonatomic, readonly) NSArray<__kindof NSObject *> *actors;
 
 /**
  *  Designated initializer for a pool with an array of actors.
@@ -34,14 +36,14 @@
  *
  *  @return The TBActorProxyBroadcast instance.
  */
-- (nonnull id)broadcast;
+- (id)broadcast;
 
 /**
  *  Returns an available actor from the pool. This will be the least busy actor in the pool.
  *
  *  @return The available actor.
  */
-- (nonnull NSObject *)availableActor;
+- (NSObject *)availableActor;
 
 /**
  *  Tells the receiver that a task has been processed on the specified actor.
@@ -49,5 +51,6 @@
  *
  *  @param actor The actor to relinquish.
  */
-- (void)relinquishActor:(nonnull NSObject *)actor;
+- (void)relinquishActor:(NSObject *)actor;
 @end
+NS_ASSUME_NONNULL_END

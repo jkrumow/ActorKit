@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  The payload of a notification sent between actors.
  */
-FOUNDATION_EXPORT NSString * const _Nonnull TBAKActorPayload;
+FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
 /**
  *  A block to configure a pool of actors.
@@ -20,7 +22,7 @@ FOUNDATION_EXPORT NSString * const _Nonnull TBAKActorPayload;
  *  @param actor The actor instance to configure.
  *  @param index The index of the actor in the pool.
  */
-typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInteger index);
+typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
 
 @class TBActorPool;
 
@@ -44,14 +46,14 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *
  *  @return The TBActorProxySync instance.
  */
-- (nonnull id)sync;
+- (id)sync;
 
 /**
  *  Creates a TBActorProxyAsync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxyAsync instance.
  */
-- (nonnull id)async;
+- (id)async;
 
 /**
  *  Subscribes to an NSNotification sent from other actors.
@@ -59,7 +61,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribe:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
+- (void)subscribe:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a specified actor.
@@ -68,7 +70,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToActor:(nullable NSObject *)actor messageName:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
+- (void)subscribeToActor:(nullable NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Subscribes to an NSNotification sent from a generic sender.
@@ -78,14 +80,14 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *  @param messageName The name of the notification.
  *  @param selector    The selector of the method to be called when receiving the notification.
  */
-- (void)subscribeToSender:(nonnull id)sender messageName:(nonnull NSString *)messageName selector:(nonnull SEL)selector;
+- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector;
 
 /**
  *  Unsubscribes an NSNotification from other actors or generic senders.
  *
  *  @param messageName The name of the notification.
  */
-- (void)unsubscribe:(nonnull NSString *)messageName;
+- (void)unsubscribe:(NSString *)messageName;
 
 /**
  *  Send a notification to other actors.
@@ -93,7 +95,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *  @param messageName The name of the notification.
  *  @param payload     The payload of the notification.
  */
-- (void)publish:(nonnull NSString *)messageName payload:(nullable id)payload;
+- (void)publish:(NSString *)messageName payload:(nullable id)payload;
 
 /**
  *  Creates a pool of actors of the current class using a specified configuration block.
@@ -102,5 +104,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject * _Nonnull actor, NSUInte
  *
  *  @return The created actor pool instance.
  */
-+ (nonnull TBActorPool *)poolWithSize:(NSUInteger)size configuration:(nullable TBActorPoolConfigurationBlock)configuration;
++ (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(nullable TBActorPoolConfigurationBlock)configuration;
 @end
+
+NS_ASSUME_NONNULL_END
