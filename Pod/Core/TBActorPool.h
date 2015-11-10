@@ -18,7 +18,7 @@
 /**
  *  The actors in the pool.
  */
-@property (nonatomic, strong, readonly, nonnull) NSArray<__kindof NSObject *> *actors;
+@property (nonatomic, readonly, nonnull) NSArray<__kindof NSObject *> *actors;
 
 /**
  *  Designated initializer for a pool with an array of actors.

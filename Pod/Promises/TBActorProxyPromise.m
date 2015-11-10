@@ -14,7 +14,7 @@
 #import "NSObject+ActorKit.h"
 
 @interface TBActorProxyPromise ()
-@property (nonatomic, strong) PMKPromise *promise;
+@property (nonatomic) PMKPromise *promise;
 @end
 
 @implementation TBActorProxyPromise

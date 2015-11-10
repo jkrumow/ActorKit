@@ -14,8 +14,8 @@
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
-@property (nonatomic, strong) NSArray *priv_actors;
-@property (nonatomic, strong) NSMutableArray *loadCounters;
+@property (nonatomic) NSArray *priv_actors;
+@property (nonatomic) NSMutableArray *loadCounters;
 @end
 
 @implementation TBActorPool

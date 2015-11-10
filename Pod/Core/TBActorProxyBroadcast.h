@@ -18,7 +18,7 @@
 /**
  *  The actor pool associated with this proxy instance.
  */
-@property (nonatomic, strong, nonnull) TBActorPool *pool;
+@property (nonatomic, nonnull) TBActorPool *pool;
 
 /**
  *  Initializes a proxy instance with a given actor pool.

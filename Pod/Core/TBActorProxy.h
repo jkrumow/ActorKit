@@ -18,7 +18,7 @@
 /**
  *  The actor associated with this proxy instance.
  */
-@property (nonatomic, strong, nonnull) NSObject *actor;
+@property (nonatomic, nonnull) NSObject *actor;
 
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
