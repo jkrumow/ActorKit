@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.15.0
+
+- Update subspec `ActorKit/Promises` to use latest version of PromiseKit.
+
 ## 0.12.1
 
 - Add nullability annotations and generics to improve Swift compatibility
