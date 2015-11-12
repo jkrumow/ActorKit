@@ -4,10 +4,28 @@ PODS:
   - ActorKit/Core (0.12.1)
   - ActorKit/Promises (0.12.1):
     - ActorKit/Core
-    - PromiseKit/Promise
-  - Expecta (1.0.3)
-  - PromiseKit/Promise (1.6.0)
-  - Specta (1.0.4)
+    - PromiseKit
+  - Expecta (1.0.5)
+  - OMGHTTPURLRQ (3.0.2):
+    - OMGHTTPURLRQ/RQ (= 3.0.2)
+  - OMGHTTPURLRQ/FormURLEncode (3.0.2)
+  - OMGHTTPURLRQ/RQ (3.0.2):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (3.0.2)
+  - PromiseKit (3.0.0):
+    - PromiseKit/Foundation (= 3.0.0)
+    - PromiseKit/QuartzCore (= 3.0.0)
+    - PromiseKit/UIKit (= 3.0.0)
+  - PromiseKit/CorePromise (3.0.0)
+  - PromiseKit/Foundation (3.0.0):
+    - OMGHTTPURLRQ (~> 3.0.0)
+    - PromiseKit/CorePromise
+  - PromiseKit/QuartzCore (3.0.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (3.0.0):
+    - PromiseKit/CorePromise
+  - Specta (1.0.5)
 
 DEPENDENCIES:
   - ActorKit (from `../`)
@@ -20,9 +38,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ActorKit: 5faff649b69e0bd7815daf588c4bc1c7f19e9ec7
-  Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
-  PromiseKit: 6be651503d4af22830b5313be993c5a0ef77bf77
-  Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
+  ActorKit: d8e4d6972928e8253f5b1cf2a574456cd1068293
+  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  OMGHTTPURLRQ: 8376dc887d76a5a7e2a67881dc788f917a2f437c
+  PromiseKit: 665540a1eb43156446872dcf49ed7dee6ebbe13b
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 COCOAPODS: 0.39.0

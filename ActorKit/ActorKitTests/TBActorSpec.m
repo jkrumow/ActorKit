@@ -76,9 +76,9 @@ describe(@"TBActor", ^{
         
         it (@"invokes a method asynchronously returning a value through a promise.", ^{
             __block id blockResult;
-            __block PMKPromise *promise;
+            __block AnyPromise *promise;
             waitUntil(^(DoneCallback done) {
-                promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+                promise = (AnyPromise *)[actor.promise returnSomethingBlocking];
                 promise.then(^(id result) {
                     blockResult = result;
                     done();
@@ -199,7 +199,7 @@ describe(@"TBActor", ^{
         it(@"executes concurrent short promised invocations safely", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    PMKPromise *promise = (PMKPromise *)[actor.promise returnSomethingBlocking];
+                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];
@@ -215,7 +215,7 @@ describe(@"TBActor", ^{
         it(@"executes concurrent long promised invocations safely", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    PMKPromise *promise = (PMKPromise *)[actor.promise returnSomething];
+                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];

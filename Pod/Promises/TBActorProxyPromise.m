@@ -14,7 +14,7 @@
 #import "NSObject+ActorKit.h"
 
 @interface TBActorProxyPromise ()
-@property (nonatomic) PMKPromise *promise;
+@property (nonatomic) AnyPromise *promise;
 @end
 
 @implementation TBActorProxyPromise
@@ -27,7 +27,7 @@
     NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:forwardedInvocation];
     
     // Create promise wrapping the invocation operation.
-    self.promise = [PMKPromise promiseWithResolver:^(PMKResolver resolve) {
+    self.promise = [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
         __block NSInvocationOperation *blockOperation = operation;
         operation.completionBlock = ^{
             resolve(blockOperation.result);

@@ -164,7 +164,7 @@ Actors and pool can return a promise for an asynchronous task.
 Send a asynchronous message and receive a promise back:
 
 ```objc
-TBActorPromise *promise = (TBActorPromise *)[worker.promise returnSomethingBlocking];
+AnyPromise *promise = (AnyPromise *)[worker.promise returnSomethingBlocking];
 promise.then(^(id result) {
     
     // ...

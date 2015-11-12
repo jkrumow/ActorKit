@@ -29,9 +29,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Promises' do |promises|
-    promises.platforms = { :ios => '7.0', :osx => '10.7' }
+    promises.platforms = { :ios => '8.0', :watchos => '2.0', :osx => '10.9' }
     promises.source_files = 'Pod/Promises'
     promises.dependency 'ActorKit/Core'
-    promises.dependency 'PromiseKit/Promise'
+    promises.dependency 'PromiseKit'
   end
 end

@@ -171,10 +171,10 @@ describe(@"TBActorPool", ^{
             });
             
             it (@"invokes a method asynchronously on an idle actor returning a value through a promise.", ^{
-                __block PMKPromise *promise;
+                __block AnyPromise *promise;
                 __block id blockResult;
                 waitUntil(^(DoneCallback done) {
-                    promise = (PMKPromise *)[pool.promise returnSomething];
+                    promise = (AnyPromise *)[pool.promise returnSomething];
                     promise.then(^(id result) {
                         blockResult = result;
                         done();
@@ -350,7 +350,7 @@ describe(@"TBActorPool", ^{
         it(@"seeds long promised onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomethingBlocking];
+                    AnyPromise *promise = (AnyPromise *)[pool.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];
@@ -367,7 +367,7 @@ describe(@"TBActorPool", ^{
         it(@"seeds short promised onto multiple actors", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    PMKPromise *promise = (PMKPromise *)[pool.promise returnSomething];
+                    AnyPromise *promise = (AnyPromise *)[pool.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];
