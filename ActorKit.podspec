@@ -15,10 +15,10 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Julian Krumow" => "julian.krumow@tarbrain.com" }
 
-  s.ios.deployment_target = '5.0'
+  s.ios.deployment_target = '8.0'
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
-  s.osx.deployment_target = '10.7'
+  s.osx.deployment_target = '10.9'
 
   s.requires_arc = true
   s.source = { :git => "https://github.com/tarbrain/ActorKit.git", :tag => s.version.to_s }

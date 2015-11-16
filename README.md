@@ -22,10 +22,10 @@ To run the example project, clone the repo, and run `pod install` from the `Acto
 
 ## Requirements
 
+* iOS 8.0
 * watchOS 2.0
 * tvOS 9.0
-* iOS 5.0
-* OS X 10.7
+* OS X 10.9
 
 ## Installation
 
