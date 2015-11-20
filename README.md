@@ -15,6 +15,8 @@ A lightweight actor framework in Objective-C.
 * Synchronous and asynchronous invocations
 * Promises
 * Message subscription and publication
+* Supervision
+* Linking
 
 ## Example Project
 
@@ -169,6 +171,37 @@ promise.then(^(id result) {
     
     // ...
 });
+```
+
+### Supervision
+
+To add an actor to a supervision pool and access it by its id:
+
+```objc
+TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
+
+[actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+    WorkerActor *worker = [WorkerActor new];
+    worker.name = @"master";
+    *actor = worker;
+}];
+
+[[actors[@"master"] sync] doSomething];
+```
+
+To communicate a crash of a supervised actor call `crashWithError:` from within or outside the actor:
+
+```objc
+[self crashWithError:error];
+[worker crashWithError:error]; 
+```
+
+### Linking Actors
+
+To link two actors:
+
+```objc
+[actors linkActor:@"slave" toActor:@"master"];
 ```
 
 ## Architecture

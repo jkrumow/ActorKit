@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXPORT NSString * _Nonnull const TBAKException;
+NS_ASSUME_NONNULL_BEGIN
+
+FOUNDATION_EXPORT NSString * const TBAKException;
 
 /**
  *  This category extends NSException with methods to create library specific exception objects.
@@ -22,6 +24,25 @@ FOUNDATION_EXPORT NSString * _Nonnull const TBAKException;
  *
  *  @return The created exception.
  */
-+ (nonnull NSException *)tbak_abstractClassException:(nonnull Class)klass;
++ (NSException *)tbak_abstractClassException:(Class)klass;
 
+/**
+ *  Thrown when when the specified actor ID is already in use.
+ *
+ *  @param Id The actor ID in question.
+ *
+ *  @return The created exception.
+ */
++ (NSException *)tbak_supervisionDuplicateException:(NSString *)Id;
+
+/**
+ *  Thrown when linking would cause circular references.
+ *
+ *  @param linkedActorId The actor to link.
+ *  @param actorId       The actor to link to.
+ *
+ *  @return The created exception.
+ */
++ (NSException *)tbak_supervisionLinkException:(NSString *)linkedActorId to:(NSString *)actorId;
 @end
+NS_ASSUME_NONNULL_END
