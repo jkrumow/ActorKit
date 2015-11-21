@@ -32,5 +32,4 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (NSException *)tbak_supervisionLinkException:(NSString *)linkedActorId to:(NSString *)actorId;
 @end
-
 NS_ASSUME_NONNULL_END

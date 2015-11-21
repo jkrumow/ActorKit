@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  This category extends NSObject with methods to use promises in async calls.
  */
@@ -18,5 +20,6 @@
  *
  *  @return The TBActorProxyPromise instance.
  */
-- (nonnull id)promise;
+- (id)promise;
 @end
+NS_ASSUME_NONNULL_END

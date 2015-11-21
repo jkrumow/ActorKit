@@ -34,7 +34,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 /**
  *  The actor's operation queue.
  */
-@property (nonatomic, nonnull) NSOperationQueue *actorQueue;
+@property (nonatomic) NSOperationQueue *actorQueue;
 
 /**
  *  The pool the actor may belong to.

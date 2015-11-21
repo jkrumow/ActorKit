@@ -18,5 +18,5 @@
  *
  *  @return The copy.
  */
-- (nonnull id)tbak_copy;
+- (id)tbak_copy;
 @end

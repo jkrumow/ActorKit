@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  This class represents an "abstract" base class for actor proxies.
  *
@@ -18,7 +20,7 @@
 /**
  *  The actor associated with this proxy instance.
  */
-@property (nonatomic, nonnull) NSObject *actor;
+@property (nonatomic) NSObject *actor;
 
 /**
  *  Initializes a proxy instance with a given actor. Must be overidden by a subtype.
@@ -29,10 +31,11 @@
  *
  *  @return The initialized proxy instance.
  */
-- (nullable instancetype)initWithActor:(nonnull NSObject *)actor;
+- (nullable instancetype)initWithActor:(NSObject *)actor;
 
 /**
  *  Releases any occupied resources after having successfully forwarded a message to the proxied object.
  */
 - (void)relinquishActor;
 @end
+NS_ASSUME_NONNULL_END

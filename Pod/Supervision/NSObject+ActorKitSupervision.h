@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol TBActorSupervision;
 @interface NSObject (ActorKitSupervision)
 
 /**
  *  Reference to the current supervisor. Can be messaged through TBActorSupervison protocol.
  */
-@property (nonatomic, weak) NSObject <TBActorSupervision> *supervisor;
+@property (nonatomic, weak, nullable) NSObject <TBActorSupervision> *supervisor;
 
 /**
  *  Notifies the supervisor about the crash using the TBActorSupervison protocol.
@@ -23,3 +25,4 @@
  */
 - (void)crashWithError:(nullable NSError *)error;
 @end
+NS_ASSUME_NONNULL_END

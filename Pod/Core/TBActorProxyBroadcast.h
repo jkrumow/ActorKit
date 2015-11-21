@@ -8,6 +8,8 @@
 
 #import "TBActorProxy.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class TBActorPool;
 
 /**
@@ -18,7 +20,7 @@
 /**
  *  The actor pool associated with this proxy instance.
  */
-@property (nonatomic, nonnull) TBActorPool *pool;
+@property (nonatomic) TBActorPool *pool;
 
 /**
  *  Initializes a proxy instance with a given actor pool.
@@ -27,5 +29,6 @@
  *
  *  @return The initialized proxy instance.
  */
-- (nullable instancetype)initWithPool:(nonnull TBActorPool *)pool;
+- (nullable instancetype)initWithPool:(TBActorPool *)pool;
 @end
+NS_ASSUME_NONNULL_END
