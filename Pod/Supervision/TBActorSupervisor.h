@@ -1,21 +1,23 @@
 //
 //  TBActorSupervisor.h
-//  Pods
+//  ActorKitSupervision
 //
 //  Created by Julian Krumow on 09.10.15.
-//
+//  Copyright (c) 2015 Julian Krumow. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 #import "TBActorSupervision.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  This block helps to create an actor.
  *
  *  @param actor A pointer to the actor to create.
  */
-typedef void (^TBActorCreationBlock)(NSObject **actor);
+typedef void (^TBActorCreationBlock)(NSObject * _Nonnull * _Nonnull actor);
 
 @class TBActorSupervisionPool;
 
@@ -39,7 +41,7 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
 /**
  *  THe block used to create the supervised actor.
  */
-@property (nonatomic, copy) TBActorCreationBlock creationBlock;
+@property (nonatomic, copy, nullable) TBActorCreationBlock creationBlock;
 
 /**
  *  IDs of linked actors.
@@ -65,3 +67,4 @@ typedef void (^TBActorCreationBlock)(NSObject **actor);
  */
 - (void)recreateActor;
 @end
+NS_ASSUME_NONNULL_END

@@ -1,6 +1,6 @@
 //
 //  TBActorSupervisionPool.m
-//  ActorKit
+//  ActorKitSupervision
 //
 //  Created by Julian Krumow on 11.10.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKit.h"
-#import "NSException+ActorKit.h"
+#import "NSException+ActorKitSupervision.h"
 
 static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.TBActorSupervisionPool";
 

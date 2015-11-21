@@ -1,6 +1,6 @@
 //
 //  TBActorSupervisionPool.h
-//  ActorKit
+//  ActorKitSupervision
 //
 //  Created by Julian Krumow on 11.10.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 #import "TBActorSupervisor.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  This class represents a supervision pool which manages the lifecyle of registered actors.
@@ -37,7 +39,7 @@
  *  @param Id            The ID of the actor to create.
  *  @param creationBlock The block to create the actor.
  */
-- (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock;
+- (void)superviseWithId:(NSString *)Id creationBlock:(nullable TBActorCreationBlock)creationBlock;
 
 /**
  *  Links two actors by their IDs. If the master actor crashes, the given supervisor
@@ -57,7 +59,7 @@
  *
  *  @return The ID of the given actor instance. Can be nil if actor does not exist.
  */
-- (NSString *)idForActor:(NSObject *)actor;
+- (nullable NSString *)idForActor:(NSObject *)actor;
 
 /**
  *  Returns supervisors for a given set actor ids.
@@ -68,6 +70,7 @@
  */
 - (NSArray *)supervisorsForIds:(NSSet *)Ids;
 
-- (id)objectForKeyedSubscript:(NSString *)key;
+- (nullable id)objectForKeyedSubscript:(NSString *)key;
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
 @end
+NS_ASSUME_NONNULL_END

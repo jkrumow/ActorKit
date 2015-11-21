@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
-  s.version          = "0.15.0"
+  s.version          = "0.16.0"
   s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
                        Brings the actor model to Objective-C.
@@ -10,6 +10,8 @@ Pod::Spec.new do |s|
                        * Synchronous and asynchronous invocations
                        * Promises
                        * Message subscription and publication
+                       * Supervision
+                       * Linking
                        DESC
   s.homepage         = "https://github.com/tarbrain/ActorKit"
   s.license          = 'MIT'
@@ -26,6 +28,10 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
   s.subspec 'Core' do |core|
     core.source_files = 'Pod/Core'
+  end
+
+  s.subspec 'Supervision' do |supervision|
+    supervision.source_files = 'Pod/Supervision'
   end
 
   s.subspec 'Promises' do |promises|

@@ -1,6 +1,6 @@
 //
 //  TBActorSupervisor.m
-//  ActorKit
+//  ActorKitSupervision
 //
 //  Created by Julian Krumow on 09.10.15.
 //  Copyright (c) 2015 Julian Krumow. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "TBActorSupervisor.h"
 #import "TBActorSupervisionPool.h"
-#import "NSObject+ActorKit.h"
+#import "NSObject+ActorKitSupervision.h"
 #import "TBActorPool.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
@@ -22,17 +22,17 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (instancetype)init
 {
-    return [self initWithPool:nil];
+    return [self initWithPool:[TBActorSupervisionPool new]];
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems
 {
-    return [self initWithPool:nil];
+    return [self initWithPool:[TBActorSupervisionPool new]];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    return [self initWithPool:nil];
+    return [self initWithPool:[TBActorSupervisionPool new]];
 }
 
 - (instancetype)initWithPool:(TBActorSupervisionPool *)pool

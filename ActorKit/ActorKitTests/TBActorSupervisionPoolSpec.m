@@ -6,6 +6,8 @@
 //  Copyright © 2015 Julian Krumow. All rights reserved.
 //
 
+#import <ActorKit/Supervision.h>
+
 #import "TestActor.h"
 
 SpecBegin(TBActorSupervisionPool)

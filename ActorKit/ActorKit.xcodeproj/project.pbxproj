@@ -68,12 +68,12 @@
 		15A281081B73E5D40069A18B /* ActorKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				15DD52331BFFB68900E773C0 /* TBActorSupervisionPoolSpec.m */,
 				15A281191B73E60D0069A18B /* TestActor.h */,
 				15A2811A1B73E60D0069A18B /* TestActor.m */,
 				15A281181B73E60D0069A18B /* TBActorSpec.m */,
 				15A281161B73E60D0069A18B /* TBActorPoolSpec.m */,
 				15A281171B73E60D0069A18B /* TBActorProxySpec.m */,
+				15DD52331BFFB68900E773C0 /* TBActorSupervisionPoolSpec.m */,
 				15A281091B73E5D40069A18B /* Supporting Files */,
 			);
 			path = ActorKitTests;
