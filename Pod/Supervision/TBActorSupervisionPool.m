@@ -67,21 +67,21 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
     [supervisor createActor];
 }
 
-- (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId
+- (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId
 {
-    [self _validateLinkFrom:linkedActorId to:actorId];
-    TBActorSupervisor *supervisor = self.supervisors[actorId];
-    [supervisor.links addObject:linkedActorId];
+    [self _validateLinkFrom:actorId to:parentActorId];
+    TBActorSupervisor *supervisor = self.supervisors[parentActorId];
+    [supervisor.links addObject:actorId];
 }
 
-- (void)_validateLinkFrom:(NSString *)linkedActorId to:(NSString *)actorId
+- (void)_validateLinkFrom:(NSString *)actorId to:(NSString *)parentActorId
 {
-    TBActorSupervisor *supervisor = self.supervisors[linkedActorId];
-    if ([supervisor.links containsObject:actorId]) {
-        @throw [NSException tbak_supervisionLinkException:linkedActorId to:actorId];
+    TBActorSupervisor *supervisor = self.supervisors[actorId];
+    if ([supervisor.links containsObject:parentActorId]) {
+        @throw [NSException tbak_supervisionLinkException:actorId to:parentActorId];
     }
     for (NSString *linkId in supervisor.links) {
-        [self _validateLinkFrom:linkId to:actorId];
+        [self _validateLinkFrom:linkId to:parentActorId];
     }
 }
 

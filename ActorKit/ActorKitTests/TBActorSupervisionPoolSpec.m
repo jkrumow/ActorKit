@@ -190,30 +190,30 @@ describe(@"TBActorSupervisionPool", ^{
             [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"slave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"child" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"otherslave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"otherchild" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"slave.slave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"child.child" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
             
-            [actors linkActor:@"slave" toActor:@"master"];
-            [actors linkActor:@"otherslave" toActor:@"master"];
-            [actors linkActor:@"slave.slave" toActor:@"slave"];
+            [actors linkActor:@"child" toParentActor:@"master"];
+            [actors linkActor:@"otherchild" toParentActor:@"master"];
+            [actors linkActor:@"child.child" toParentActor:@"master"];
             
             TestActor *master = actors[@"master"];
-            TestActor *slave = actors[@"slave"];
-            TestActor *otherSlave = actors[@"otherslave"];
-            TestActor *slaveSlave = actors[@"slave.slave"];
+            TestActor *child = actors[@"child"];
+            TestActor *otherSlave = actors[@"otherchild"];
+            TestActor *childSlave = actors[@"child.child"];
             
             // Create state and crash two actors
             master.uuid = @(0);
-            slave.uuid = @(1);
+            child.uuid = @(1);
             otherSlave.uuid = @(2);
-            slaveSlave.uuid = @(11);
+            childSlave.uuid = @(11);
             
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
@@ -230,12 +230,12 @@ describe(@"TBActorSupervisionPool", ^{
                         });
                     }];
                     
-                    [[actors[@"slave.slave"] async] address:^(NSString *address) {
+                    [[actors[@"child.child"] async] address:^(NSString *address) {
                         dispatch_sync(completionQueue2, ^{
                             [results2 addObject:address];
                             
                             if (results2.count == 5) {
-                                [actors[@"slave.slave"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                                [actors[@"child.child"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
                             }
                             if (results.count == taskCount && results2.count == taskCount) {
                                 done();
@@ -246,9 +246,9 @@ describe(@"TBActorSupervisionPool", ^{
             });
             
             TestActor *newMaster = actors[@"master"];
-            TestActor *newSlave = actors[@"slave"];
-            TestActor *newOtherSlave = actors[@"otherslave"];
-            TestActor *newSlaveSlave = actors[@"slave.slave"];
+            TestActor *newSlave = actors[@"child"];
+            TestActor *newOtherSlave = actors[@"otherchild"];
+            TestActor *newSlaveSlave = actors[@"child.child"];
             
             expect(newMaster).notTo.beNil;
             expect(newSlave).notTo.beNil;
@@ -256,9 +256,9 @@ describe(@"TBActorSupervisionPool", ^{
             expect(newSlaveSlave).notTo.beNil;
             
             expect(newMaster).notTo.equal(master);
-            expect(newSlave).notTo.equal(slave);
+            expect(newSlave).notTo.equal(child);
             expect(newOtherSlave).notTo.equal(otherSlave);
-            expect(newSlaveSlave).notTo.equal(slaveSlave);
+            expect(newSlaveSlave).notTo.equal(childSlave);
             
             expect(newMaster.uuid).to.beNil;
             expect(newSlave.uuid).to.beNil;
@@ -279,22 +279,22 @@ describe(@"TBActorSupervisionPool", ^{
             [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"slave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"child" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"otherslave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"otherchild" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
-            [actors superviseWithId:@"slave.slave" creationBlock:^(NSObject **actor) {
+            [actors superviseWithId:@"child.child" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
             }];
             
-            [actors linkActor:@"slave" toActor:@"master"];
-            [actors linkActor:@"otherslave" toActor:@"master"];
-            [actors linkActor:@"slave.slave" toActor:@"slave"];
+            [actors linkActor:@"child" toParentActor:@"master"];
+            [actors linkActor:@"otherchild" toParentActor:@"master"];
+            [actors linkActor:@"child.child" toParentActor:@"child"];
             
             expect(^{
-                [actors linkActor:@"master" toActor:@"slave.slave"];
+                [actors linkActor:@"master" toParentActor:@"child.child"];
             }).to.raise(TBAKException);
         });
     });

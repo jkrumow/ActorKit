@@ -42,15 +42,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)superviseWithId:(NSString *)Id creationBlock:(nullable TBActorCreationBlock)creationBlock;
 
 /**
- *  Links two actors by their IDs. If the master actor crashes, the given supervisor
+ *  Links two actors by their IDs. If the parent actor crashes, the given supervisor
  *  will re-create the linked actors as well.
  *
  *  @exception Throws an exception when linking would cause circular references.
  *
- *  @param linkedAactorId The actor to link.
- *  @param actorId        The actor to link to.
+ *  @param actorId       The actor to link.
+ *  @param parentActorId The parent actor to link to.
  */
-- (void)linkActor:(NSString *)linkedActorId toActor:(NSString *)actorId;
+- (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId;
 
 /**
  *  Returns the ID of a given actor instance
