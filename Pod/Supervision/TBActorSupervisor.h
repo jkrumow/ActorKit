@@ -36,7 +36,7 @@ typedef void (^TBActorCreationBlock)(NSObject * _Nonnull * _Nonnull actor);
 /**
  *  The unique ID of the supervised actor.
  */
-@property (nonatomic, strong) NSString *Id;
+@property (nonatomic) NSString *Id;
 
 /**
  *  THe block used to create the supervised actor.
@@ -46,7 +46,7 @@ typedef void (^TBActorCreationBlock)(NSObject * _Nonnull * _Nonnull actor);
 /**
  *  IDs of linked actors.
  */
-@property (nonatomic, strong) NSMutableSet *links;
+@property (nonatomic) NSMutableSet *links;
 
 /**
  *  Initializes a supervisor with a given supervision pool instance.

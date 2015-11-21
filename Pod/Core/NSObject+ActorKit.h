@@ -39,7 +39,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 /**
  *  The pool the actor may belong to.
  */
-@property (nonatomic, assign, nullable) TBActorPool *pool;
+@property (nonatomic, weak, nullable) TBActorPool *pool;
 
 /**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.

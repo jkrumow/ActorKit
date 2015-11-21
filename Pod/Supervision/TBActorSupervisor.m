@@ -15,7 +15,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 @interface TBActorSupervisor ()
 @property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
-@property (nonatomic, weak) NSObject *actor;
+@property (nonatomic) NSObject *actor;
 @end
 
 @implementation TBActorSupervisor

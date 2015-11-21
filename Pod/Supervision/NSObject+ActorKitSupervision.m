@@ -20,7 +20,7 @@
 
 - (void)setSupervisor:(NSObject<TBActorSupervision> *)supervisor
 {
-    objc_setAssociatedObject(self, @selector(supervisor), supervisor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(supervisor), supervisor, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (void)crashWithError:(NSError *)error

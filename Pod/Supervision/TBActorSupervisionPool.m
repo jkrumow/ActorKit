@@ -13,8 +13,8 @@
 static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.TBActorSupervisionPool";
 
 @interface TBActorSupervisionPool ()
-@property (nonatomic, strong) NSMutableDictionary *actors;
-@property (nonatomic, strong) NSMutableDictionary *supervisors;
+@property (nonatomic) NSMutableDictionary *actors;
+@property (nonatomic) NSMutableDictionary *supervisors;
 @end
 
 @implementation TBActorSupervisionPool
