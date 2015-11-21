@@ -107,7 +107,7 @@ Before destroying an actor you should unsubscribe from all messages.
 
 The actor pool class `TBActorPool` is a subtype of actor so it is basically a proxy actor which mananges multiple actors. A received message will be forwarded on an available actor in the pool.
 
-Create an actor pool using your actor subclass which you like to pool:
+Create an actor pool by invoking the method below on your class of coice. An actor instance will be created and passed into the configuration block for further initialization:
 
 ```objc
 TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(NSObject *actor, NSUInteger index) {
@@ -149,15 +149,13 @@ To send an asynchronous message to all actors in the pool:
 
 ### Promises
 
-Promise support via [PromiseKit](http://promisekit.org) is contained in the subspec `Promises`:
+Promise support using [PromiseKit](http://promisekit.org) is available via the subspec `Promises`:
 
 ```ruby
 target 'MyApp', :exclusive => true do
   pod 'ActorKit/Promises'
 end
 ```
-
-Actors and pool can return a promise for an asynchronous task.
 
 ```objc
 #import <ActorKit/Promises.h>
@@ -173,9 +171,23 @@ promise.then(^(id result) {
 });
 ```
 
-### Supervision
+### Supervision and Linking of Actors
 
-To add an actor to a supervision pool and access it by its id:
+Supervision and Linking is available via the subspec `Supervision`:
+
+```ruby
+target 'MyApp', :exclusive => true do
+  pod 'ActorKit/Supervision'
+end
+```
+
+```objc
+#import <ActorKit/Supervision.h>
+```
+
+#### Supervising an Actor
+
+To add an actor to a supervision pool define a creation block and instanciate the actor it:
 
 ```objc
 TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
@@ -185,23 +197,42 @@ TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
     worker.name = @"master";
     *actor = worker;
 }];
+```
 
+The creation block will be called whenever the actor has to be (re)created.
+
+#### Accessing Actors inside the Supervision Pool
+
+Access the supervised actor by its id on the supervision pool:
+
+```objc
 [[actors[@"master"] sync] doSomething];
 ```
 
-To communicate a crash of a supervised actor call `crashWithError:` from within or outside the actor:
+#### Communicating Crashes
+
+To communicate the crash of a supervised actor call `crashWithError:` from within the actor:
 
 ```objc
-[self crashWithError:error];
-[worker crashWithError:error]; 
+@implementation Worker
+
+- (void)doSomething
+{
+    NSError *error = nil;
+    if (![self _doInternalWork:&error]) {
+        [self crashWithError:error];
+    }
+}
+
+@end
 ```
 
-### Linking Actors
+#### Linking Actors
 
-To link two actors:
+Links establish parent-child relationships between actors. Linked actors will be supervised depending on each other. If the parent actor crashes the child actor will be re-created as well.
 
 ```objc
-[actors linkActor:@"slave" toActor:@"master"];
+[actors linkActor:@"child" toParentActor:@"master"];
 ```
 
 ## Architecture
