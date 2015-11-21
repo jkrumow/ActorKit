@@ -1,8 +1,12 @@
 # ActorKit CHANGELOG
 
+## 0.16.0
+
+- re-add supervision and linking via subspec `Supervision`
+
 ## 0.15.0
 
-- Update subspec `ActorKit/Promises` to use latest version of PromiseKit.
+- Update subspec `ActorKit/Promises` to use latest version of `PromiseKit`
 
 ## 0.12.1
 

@@ -16,7 +16,7 @@ static NSString * const TBAKAbstractClassExceptionReason = @"Class %@ is abstrac
 
 + (NSException *)tbak_abstractClassException:(Class)klass
 {
-	return [NSException exceptionWithName:TBAKException reason:[NSString stringWithFormat:TBAKAbstractClassExceptionReason, NSStringFromClass(klass)] userInfo:nil];
+    return [NSException exceptionWithName:TBAKException reason:[NSString stringWithFormat:TBAKAbstractClassExceptionReason, NSStringFromClass(klass)] userInfo:nil];
 }
 
 @end

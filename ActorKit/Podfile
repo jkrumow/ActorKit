@@ -4,6 +4,7 @@ use_frameworks!
 
 target 'ActorKitTests', :exclusive => true do
   pod 'ActorKit', :path => '../'
+  pod 'ActorKit/Supervision', :path => '../'
   pod 'ActorKit/Promises', :path => '../'
 
   pod 'Specta'

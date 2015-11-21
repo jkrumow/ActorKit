@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXPORT NSString * _Nonnull const TBAKException;
+NS_ASSUME_NONNULL_BEGIN
+
+FOUNDATION_EXPORT NSString * const TBAKException;
 
 /**
  *  This category extends NSException with methods to create library specific exception objects.
@@ -22,6 +24,6 @@ FOUNDATION_EXPORT NSString * _Nonnull const TBAKException;
  *
  *  @return The created exception.
  */
-+ (nonnull NSException *)tbak_abstractClassException:(nonnull Class)klass;
-
++ (NSException *)tbak_abstractClassException:(Class)klass;
 @end
+NS_ASSUME_NONNULL_END
