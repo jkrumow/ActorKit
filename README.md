@@ -219,7 +219,8 @@ To communicate the crash of a supervised actor call `crashWithError:` from withi
 - (void)doSomething
 {
     NSError *error = nil;
-    if (![self _doInternalWork:&error]) {
+    [self _doSomethingInternal:&error];
+    if (error) {
         [self crashWithError:error];
     }
 }
