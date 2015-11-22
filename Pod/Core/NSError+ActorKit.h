@@ -13,8 +13,18 @@ NS_ASSUME_NONNULL_BEGIN
 FOUNDATION_EXPORT NSString * const TBAKErrorDomain;
 FOUNDATION_EXPORT NSString * const TBAKUnderlyingException;
 
+/**
+ *  This category extends NSError with ActorKit functionality.
+ */
 @interface NSError (ActorKit)
 
+/**
+ *  Returns a wrapping error containing a given NSException object.
+ *
+ *  @param exception The exception to wrap.
+ *
+ *  @return The created NSError instance.
+ */
 + (instancetype)wrappingErrorForException:(NSException *)exception;
 
 @end
