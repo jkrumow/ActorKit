@@ -7,6 +7,7 @@
 //
 
 #import "NSObject+ActorKit.h"
+#import "TBActorOperation.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
 #import "TBActorProxyBroadcast.h"

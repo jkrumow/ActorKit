@@ -7,10 +7,11 @@
 //
 
 #import "TBActorProxyBroadcast.h"
-#import "TBActorPool.h"
 #import "NSObject+ActorKit.h"
+#import "TBActorOperation.h"
 #import "NSException+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
+#import "TBActorPool.h"
 
 @implementation TBActorProxyBroadcast
 
@@ -32,7 +33,7 @@
         NSInvocation *forwardInvocation = invocation.tbak_copy;
         [forwardInvocation setTarget:actor];
     
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:forwardInvocation];
+        TBActorOperation *operation = [TBActorOperation operationWithInvocation:forwardInvocation];
         operation.completionBlock = ^{
             [self.pool relinquishActor:actor];
         };

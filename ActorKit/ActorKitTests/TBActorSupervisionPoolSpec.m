@@ -125,16 +125,16 @@ describe(@"TBActorSupervisionPool", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [[actors[@"master"] async] address:^(NSString *address) {
-                        dispatch_sync(completionQueue, ^{
+                        @synchronized(results) {
                             [results addObject:address];
                             
                             if (results.count == 5) {
-                                [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                                [actors[@"master"] doCrash];
                             }
                             if (results.count == taskCount) {
                                 done();
                             }
-                        });
+                        }
                     }];
                 });
             });
@@ -158,17 +158,17 @@ describe(@"TBActorSupervisionPool", ^{
             NSLog(@"0: %@", poolInstance.actors[0]);
             NSLog(@"1: %@", poolInstance.actors[1]);
             
-            NSObject *actorToCrash = poolInstance.actors[0];
+            TestActor *actorToCrash = poolInstance.actors[0];
             
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 [[actors[@"pool"] async] addressBlocking:^(NSString *address) {
-                    dispatch_sync(completionQueue, ^{
+                    @synchronized(results) {
                         [results addObject:address];
                         
                         if (results.count == 2) {
-                            [actorToCrash crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                            [actorToCrash doCrash];
                         }
-                    });
+                    }
                 }];
             });
             
@@ -183,7 +183,6 @@ describe(@"TBActorSupervisionPool", ^{
             expect(poolInstance).notTo.equal(newInstance);
         });
     });
-    
     describe(@"linking", ^{
         
         it(@"it recreates linked actors after simultanious crashes", ^{
@@ -218,29 +217,29 @@ describe(@"TBActorSupervisionPool", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [[actors[@"master"] async] address:^(NSString *address) {
-                        dispatch_sync(completionQueue, ^{
+                        @synchronized(results) {
                             [results addObject:address];
                             
                             if (results.count == 5) {
-                                [actors[@"master"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                                [actors[@"master"] doCrash];
                             }
                             if (results.count == taskCount && results2.count == taskCount) {
                                 done();
                             }
-                        });
+                        }
                     }];
                     
                     [[actors[@"child.child"] async] address:^(NSString *address) {
-                        dispatch_sync(completionQueue2, ^{
+                        @synchronized(results) {
                             [results2 addObject:address];
                             
                             if (results2.count == 5) {
-                                [actors[@"child.child"] crashWithError:[NSError errorWithDomain:@"com.tarbrain.ActorKit" code:100 userInfo:nil]];
+                                [actors[@"child.child"] doCrash];
                             }
                             if (results.count == taskCount && results2.count == taskCount) {
                                 done();
                             }
-                        });
+                        }
                     }];
                 });
             });

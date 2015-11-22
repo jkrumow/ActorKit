@@ -102,6 +102,11 @@
     completion();
 }
 
+- (void)doCrash
+{
+    @throw [NSException exceptionWithName:@"foo" reason:@"bar" userInfo:nil];
+}
+
 - (double)_randomSleepInterval
 {
     return (rand() % 1000) / 1000.0;

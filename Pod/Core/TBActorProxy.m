@@ -7,9 +7,9 @@
 //
 
 #import "TBActorProxy.h"
-#import "TBActorPool.h"
 #import "NSObject+ActorKit.h"
 #import "NSException+ActorKit.h"
+#import "TBActorPool.h"
 
 @implementation TBActorProxy
 
@@ -22,6 +22,13 @@
     return self;
 }
 
+- (void)relinquishActor
+{
+    if (self.actor.pool) {
+        [self.actor.pool relinquishActor:self.actor];
+    }
+}
+
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
     if ([self.actor isKindOfClass:[TBActorPool class]]) {
@@ -31,11 +38,9 @@
     return [self.actor methodSignatureForSelector:selector];
 }
 
-- (void)relinquishActor
+- (void)forwardInvocation:(NSInvocation *)invocation
 {
-    if (self.actor.pool) {
-        [self.actor.pool relinquishActor:self.actor];
-    }
+    @throw [NSException tbak_abstractClassException:[TBActorProxy class]];
 }
 
 @end

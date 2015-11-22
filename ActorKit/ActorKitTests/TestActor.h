@@ -28,4 +28,5 @@
 - (void)handlerRaw:(NSDictionary *)payload;
 - (void)blockSomething;
 - (void)blockSomethingWithCompletion:(void (^)(void))completion;
+- (void)doCrash;
 @end
