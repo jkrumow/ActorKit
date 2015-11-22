@@ -211,7 +211,7 @@ Access the supervised actor by its id on the supervision pool:
 
 #### Communicating Crashes
 
-To communicate the crash of a supervised actor call `crashWithError:` from within the actor:
+To communicate the crash of a supervised actor the method `crashWithError:` is called from within the actor whenever an exception is caught. You can also call the method manually:
 
 ```objc
 @implementation Worker
