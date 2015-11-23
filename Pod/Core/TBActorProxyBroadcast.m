@@ -32,8 +32,8 @@
         
         NSInvocation *forwardInvocation = invocation.tbak_copy;
         [forwardInvocation setTarget:actor];
-    
-        TBActorOperation *operation = [TBActorOperation operationWithInvocation:forwardInvocation];
+        
+        TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:forwardInvocation];
         operation.completionBlock = ^{
             [self.pool relinquishActor:actor];
         };

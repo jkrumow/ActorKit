@@ -11,9 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  This class extends an NSBlockOperation with actor related functionality.
+ *  This class represents an operation to execute an NSInvocation on an actor's operation queue.
  */
-@interface TBActorOperation : NSBlockOperation
+@interface TBActorOperation : NSOperation
 
 /**
  *  The invocation to be executed by the operations main method.
@@ -21,12 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSInvocation *invocation;
 
 /**
- *  Creates an TBActorOperation with a given NSInvocation.
+ *  Initializes an TBActorOperation with a given NSInvocation.
  *
  *  @param invocation The invication to execute.
  *
- *  @return The created operation instance.
+ *  @return The initialized operation instance.
  */
-+ (instancetype)operationWithInvocation:(NSInvocation *)invocation;
+- (instancetype)initWithInvocation:(NSInvocation *)invocation NS_DESIGNATED_INITIALIZER;
 @end
 NS_ASSUME_NONNULL_END

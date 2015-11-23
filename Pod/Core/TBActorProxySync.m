@@ -17,7 +17,7 @@
 {
     [invocation setTarget:self.actor];
     
-    TBActorOperation *operation = [TBActorOperation operationWithInvocation:invocation];
+    TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:invocation];
     [self.actor.actorQueue addOperations:@[operation] waitUntilFinished:YES];
     [self relinquishActor];
 }

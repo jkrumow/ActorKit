@@ -13,21 +13,26 @@
 
 @implementation TBActorOperation
 
-+ (instancetype)operationWithInvocation:(NSInvocation *)invocation
+- (instancetype)init
 {
-    TBActorOperation *operation = [TBActorOperation new];
-    operation.invocation = invocation;
-    [operation.invocation retainArguments];
-    [operation addExecutionBlock:^{
-        [invocation invoke];
-    }];
-    return operation;
+    self = [self initWithInvocation:[NSInvocation new]];
+    return self;
+}
+
+- (instancetype)initWithInvocation:(NSInvocation *)invocation
+{
+    self = [super init];
+    if (self) {
+        [invocation retainArguments];
+        _invocation = invocation;
+    }
+    return self;
 }
 
 - (void)main
 {
     @try {
-        [super main];
+        [self.invocation invoke];
     }
     @catch (NSException *exception) {
         if ([self.invocation.target respondsToSelector:@selector(crashWithError:)]) {

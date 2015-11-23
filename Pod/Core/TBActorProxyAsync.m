@@ -16,7 +16,7 @@
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     [invocation setTarget:self.actor];
-    TBActorOperation *operation = [TBActorOperation operationWithInvocation:invocation];
+    TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:invocation];
     operation.completionBlock = ^{
         [self relinquishActor];
     };
