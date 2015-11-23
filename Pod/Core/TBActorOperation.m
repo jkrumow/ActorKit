@@ -31,7 +31,7 @@
 
 - (void)main
 {
-    if (self.isCancelled || self.isFinished) {
+    if (self.isCancelled) {
         return;
     }
     @try {
