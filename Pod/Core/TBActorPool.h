@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return The initialized TBActorPool instance.
  */
-- (nullable instancetype)initWithActors:(NSArray<__kindof NSObject *> *)actors NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSize:(NSUInteger)size class:(Class)klass configuration:(nullable TBActorPoolConfigurationBlock)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.

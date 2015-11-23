@@ -115,15 +115,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(TBActorPoolConfigurationBlock)configuration
 {
-    NSMutableArray *actors = [NSMutableArray new];
-    for (NSUInteger i=0; i < size; i++) {
-        NSObject *actor = [self new];
-        if (configuration) {
-            configuration(actor, i);
-        }
-        [actors addObject:actor];
-    }
-    return [[TBActorPool alloc] initWithActors:actors];
+    return [[TBActorPool alloc] initWithSize:size class:self configuration:configuration];
 }
 
 @end

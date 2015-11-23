@@ -14,24 +14,33 @@
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
-@property (nonatomic) NSArray *priv_actors;
+@property (nonatomic) NSMutableArray *priv_actors;
 @property (nonatomic) NSMutableArray *loadCounters;
+
+@property (nonatomic) Class klass;
+@property (nonatomic, copy) TBActorPoolConfigurationBlock configuration;
 @end
 
 @implementation TBActorPool
 
 - (instancetype)init
 {
-    return [self initWithActors:@[]];
+    return [self initWithSize:0 class:[NSObject class] configuration:nil];
 }
 
-- (instancetype)initWithActors:(NSArray *)actors
+- (instancetype)initWithSize:(NSUInteger)size class:(Class)klass configuration:(TBActorPoolConfigurationBlock)configuration
 {
     self = [super init];
     if (self) {
         self.actorQueue.name = TBAKActorPoolQueue;
         
-        _priv_actors = actors;
+        _klass = klass;
+        _configuration = configuration;
+        
+        _priv_actors = [NSMutableArray new];
+        for (NSUInteger i=0; i < size; i++) {
+            [self.priv_actors addObject:[self createActorWithIndex:i]];
+        }
         [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
         
         _loadCounters = [NSMutableArray new];
@@ -116,6 +125,15 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         MAX(0, value);
         self.loadCounters[index] = @(value);
     }
+}
+
+- (NSObject *)createActorWithIndex:(NSUInteger)index
+{
+    NSObject *actor = [self.klass new];
+    if (self.configuration) {
+        self.configuration(actor, index);
+    }
+    return actor;
 }
 
 @end
