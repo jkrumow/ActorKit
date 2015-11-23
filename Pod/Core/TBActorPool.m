@@ -119,11 +119,32 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 - (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
+        if (![self.priv_actors containsObject:actor]) {
+            return;
+        }
         NSUInteger index = [self.priv_actors indexOfObject:actor];
         NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
         value -= 1;
         MAX(0, value);
         self.loadCounters[index] = @(value);
+    }
+}
+
+- (void)removeActor:(NSObject *)actor
+{
+    @synchronized(_priv_actors) {
+        NSUInteger index = [self.priv_actors indexOfObject:actor];
+        [self.priv_actors removeObjectAtIndex:index];
+        [self.loadCounters removeObjectAtIndex:index];
+    }
+}
+
+- (void)createActor
+{
+    @synchronized(_priv_actors) {
+        NSObject *actor = [self createActorWithIndex:self.priv_actors.count];
+        [self.priv_actors addObject:actor];
+        [self.loadCounters addObject:@(0)];
     }
 }
 

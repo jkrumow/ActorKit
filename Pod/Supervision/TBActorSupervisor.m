@@ -67,6 +67,33 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     queue.suspended = NO;
 }
 
+- (void)recreatePool
+{
+    TBActorPool *pool = (TBActorPool *)self.actor;
+    pool.actorQueue.suspended = YES;
+    [pool.actorQueue cancelAllOperations];
+    for (NSObject *actor in pool.actors) {
+        actor.actorQueue.suspended = YES;
+        [actor.actorQueue cancelAllOperations];
+    }
+    [self createActor];
+}
+
+- (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
+{
+    pool.actorQueue.suspended = YES;
+    for (NSObject *object in pool.actors) {
+        object.actorQueue.suspended = YES;
+    }
+    [pool removeActor:actor];
+    [pool createActor];
+    
+    for (NSObject *object in pool.actors) {
+        object.actorQueue.suspended = NO;
+    }
+    pool.actorQueue.suspended = NO;
+}
+
 - (void)updateInvocationTargetsInQueue:(NSOperationQueue *)queue
 {
     for (NSInvocationOperation *operation in queue.operations) {
@@ -91,7 +118,16 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
-    [self recreateActor];
+    if ([actor isKindOfClass:[TBActorPool class]]) {
+        [self recreatePool];
+    } else {
+        [self recreateActor];
+    }
+}
+
+- (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
+{
+    [self recreateActor:actor inPool:pool];
 }
 
 @end

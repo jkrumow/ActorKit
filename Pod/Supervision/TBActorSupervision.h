@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TBActorPool;
+
 /**
  *  This protocol defines the interactor between an actor and a supervisor.
  */
@@ -22,5 +24,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param error The error describing the crash.
  */
 - (void)actor:(NSObject *)actor didCrashWithError:(nullable NSError *)error;
+
+/**
+ *  Notifies the receiver that the specified actor has crashed with an error.
+ *
+ *  @param actor The actor which has crashed.
+ *  @param pool  The pool containing the crashed actor.
+ *  @param error The error describing the crash.
+ */
+- (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(nullable NSError *)error;
 @end
 NS_ASSUME_NONNULL_END

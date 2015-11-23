@@ -141,11 +141,13 @@ describe(@"TBActorSupervisionPool", ^{
             
             NSLog(@"results: %@", results);
             
+            expect(results).to.haveACountOf(taskCount);
+            
             NSCountedSet *set = [NSCountedSet setWithArray:results];
             expect(set.count).to.equal(2);
         });
         
-        it(@"executes remaining operations on the re-created actor-pool instance after a crash", ^{
+        it(@"re-creates a new actor pool after a crash", ^{
             
             [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
@@ -154,19 +156,20 @@ describe(@"TBActorSupervisionPool", ^{
                 }];
             }];
             
-            TBActorPool *poolInstance = actors[@"pool"];
-            NSLog(@"0: %@", poolInstance.actors[0]);
-            NSLog(@"1: %@", poolInstance.actors[1]);
+            TBActorPool *pool = actors[@"pool"];
+            TestActor *workerOne = pool.actors[0];
+            TestActor *workerTwo = pool.actors[1];
             
-            TestActor *actorToCrash = poolInstance.actors[0];
+            NSLog(@"0: %@", workerOne);
+            NSLog(@"1: %@", workerTwo);
             
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 [[actors[@"pool"] async] addressBlocking:^(NSString *address) {
                     @synchronized(results) {
                         [results addObject:address];
                         
-                        if (results.count == 2) {
-                            [actorToCrash doCrash];
+                        if (results.count == 1) {
+                            [pool crashWithError:nil];
                         }
                     }
                 }];
@@ -176,13 +179,63 @@ describe(@"TBActorSupervisionPool", ^{
             
             NSLog(@"results: %@", results);
             
-            TBActorPool *newInstance = actors[@"pool"];
-            NSLog(@"0: %@", newInstance.actors[0]);
-            NSLog(@"1: %@", newInstance.actors[1]);
+            TBActorPool *newPool = actors[@"pool"];
+            TestActor *newWorkerOne = newPool.actors[0];
+            TestActor *newWorkerTwo = newPool.actors[1];
             
-            expect(poolInstance).notTo.equal(newInstance);
+            NSLog(@"0: %@", newWorkerOne);
+            NSLog(@"1: %@", newWorkerTwo);
+            
+            expect(newPool).notTo.equal(pool);
+            expect(newWorkerOne).notTo.equal(workerOne);
+            expect(newWorkerTwo).notTo.equal(workerTwo);
+        });
+        
+        it(@"executes remaining operations on the re-created pooled actor instance after a crash", ^{
+            
+            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
+                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                    TestActor *testActor = (TestActor *)actor;
+                    testActor.uuid = @(index);
+                }];
+            }];
+            
+            TBActorPool *pool = actors[@"pool"];
+            TestActor *workerOne = pool.actors[0];
+            TestActor *workerTwo = pool.actors[1];
+            
+            NSLog(@"0: %@", workerOne);
+            NSLog(@"1: %@", workerTwo);
+            
+            dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                [[actors[@"pool"] async] addressBlocking:^(NSString *address) {
+                    @synchronized(results) {
+                        [results addObject:address];
+                        
+                        if (results.count == 1) {
+                            [workerOne doCrash];
+                        }
+                    }
+                }];
+            });
+            
+            sleep(1);
+            
+            NSLog(@"results: %@", results);
+            
+            TBActorPool *samePool = actors[@"pool"];
+            TestActor *sameWorkerTwo = samePool.actors[0];
+            TestActor *newWorkerOne = samePool.actors[1];
+            
+            NSLog(@"0: %@", newWorkerOne);
+            NSLog(@"1: %@", sameWorkerTwo);
+            
+            expect(samePool).to.equal(pool);
+            expect(newWorkerOne).notTo.equal(workerOne);
+            expect(sameWorkerTwo).to.equal(workerTwo);
         });
     });
+    
     describe(@"linking", ^{
         
         it(@"it recreates linked actors after simultanious crashes", ^{

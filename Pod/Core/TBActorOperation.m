@@ -31,6 +31,9 @@
 
 - (void)main
 {
+    if (self.isCancelled || self.isFinished) {
+        return;
+    }
     @try {
         [self.invocation invoke];
     }

@@ -25,11 +25,15 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Designated initializer for a pool with an array of actors.
  *
- *  @param actors The array to be pooled.
+ *  @param size         The size of the pool.
+ *  @param klass        The class of the pooled actors.
+ *  @param confguration The configurationblock to set up the actors.
  *
  *  @return The initialized TBActorPool instance.
  */
-- (instancetype)initWithSize:(NSUInteger)size class:(Class)klass configuration:(nullable TBActorPoolConfigurationBlock)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSize:(NSUInteger)size
+                       class:(Class)klass
+               configuration:(nullable TBActorPoolConfigurationBlock)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.
@@ -52,5 +56,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param actor The actor to relinquish.
  */
 - (void)relinquishActor:(NSObject *)actor;
+
+/**
+ *  Removes a given actor from the pool.
+ *
+ *  @param actor The actor to remove.
+ */
+- (void)removeActor:(NSObject *)actor;
+
+/**
+ *  Creates and adds a new actor to the pool.
+ */
+- (void)createActor;
 @end
 NS_ASSUME_NONNULL_END
