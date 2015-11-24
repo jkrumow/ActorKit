@@ -246,7 +246,7 @@ Links establish parent-child relationships between actors. Linked actors will be
 
 ## Architecture
 
-This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocationOperation` objects. These three classes practically represent mailbox, thread, runloop and message.
+This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSOperation` objects. These three classes practically represent mailbox, thread, runloop and message.
 
 ## Useful Theory on Actors
 
