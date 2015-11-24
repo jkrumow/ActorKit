@@ -209,9 +209,17 @@ Access the supervised actor by its id on the supervision pool:
 [[actors[@"master"] sync] doSomething];
 ```
 
-#### Communicating Crashes
+#### Recovering from Crashes
 
-To communicate the crash of a supervised actor the method `crashWithError:` is called from within the actor whenever an exception is caught. You can also call the method manually:
+Whenever an actor crashes it is re-created by its supervisor and will resume executinig messages from its mailbox.
+
+*Special behavior for pools:*
+
+- when the pool actor itself crashes the whole pool is recreated completely and all unprocessed messages are lost.
+
+- when an actor inside the pool crashes only this actor is recreated and its mailbox content will be processed by its successor.
+
+You can also communicate a crash manually by calling `crashWithError:`:
 
 ```objc
 @implementation Worker
