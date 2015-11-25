@@ -81,12 +81,18 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     TBActorPool *newPool = (TBActorPool *)self.actor;
     newPool.actorQueue = poolQueue;
     [self updateInvocationTarget:newPool inQueue:newPool.actorQueue];
-    NSUInteger index = 0;
-    for (NSObject *actor in newPool.actors) {
+    [self updateMailboxesInPool:newPool withQueues:queues];
+    [newPool resume];
+}
+
+- (void)updateMailboxesInPool:(TBActorPool *)pool withQueues:(NSArray *)queues
+{
+    NSArray *actors = pool.actors.allObjects;
+    for (NSUInteger index=0; index < actors.count; index++) {
+        NSObject *actor = actors[index];
         actor.actorQueue = queues[index];
         [self updateInvocationTarget:actor inQueue:actor.actorQueue];
     }
-    [newPool resume];
 }
 
 - (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
