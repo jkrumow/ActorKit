@@ -23,7 +23,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    return [self.pool.actors.firstObject methodSignatureForSelector:selector];
+    return [self.pool.actors.anyObject methodSignatureForSelector:selector];
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation

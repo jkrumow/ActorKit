@@ -148,15 +148,15 @@ describe(@"TBActorSupervisionPool", ^{
         it(@"re-creates a new actor pool after a crash", ^{
             
             [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor) {
                     TestActor *testActor = (TestActor *)actor;
-                    testActor.uuid = @(index);
+                    testActor.uuid = @(5);
                 }];
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *workerOne = pool.actors[0];
-            TestActor *workerTwo = pool.actors[1];
+            TestActor *workerOne = pool.actors.allObjects[0];
+            TestActor *workerTwo = pool.actors.allObjects[1];
             
             NSLog(@"0: %@", workerOne);
             NSLog(@"1: %@", workerTwo);
@@ -176,15 +176,15 @@ describe(@"TBActorSupervisionPool", ^{
             sleep(1);
             
             TBActorPool *newPool = actors[@"pool"];
-            TestActor *newWorkerOne = newPool.actors[0];
-            TestActor *newWorkerTwo = newPool.actors[1];
+            TestActor *newWorkerOne = newPool.actors.allObjects[0];
+            TestActor *newWorkerTwo = newPool.actors.allObjects[1];
             
             NSLog(@"0: %@", newWorkerOne);
             NSLog(@"1: %@", newWorkerTwo);
             
             expect(newPool).notTo.equal(pool);
-            expect(newWorkerOne).notTo.equal(workerOne);
-            expect(newWorkerTwo).notTo.equal(workerTwo);
+            expect(newPool.actors).notTo.contain(workerOne);
+            expect(newPool.actors).notTo.contain(workerTwo);
             
             NSLog(@"results: %@", results);
             
@@ -195,15 +195,15 @@ describe(@"TBActorSupervisionPool", ^{
         it(@"executes remaining operations on the re-created pooled actor instance after a crash", ^{
             
             [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                *actor = [TestActor poolWithSize:2 configuration:^(NSObject *actor) {
                     TestActor *testActor = (TestActor *)actor;
-                    testActor.uuid = @(index);
+                    testActor.uuid = @(5);
                 }];
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *workerOne = pool.actors[0];
-            TestActor *workerTwo = pool.actors[1];
+            TestActor *workerOne = pool.actors.allObjects[0];
+            TestActor *workerTwo = pool.actors.allObjects[1];
             
             NSLog(@"0: %@", workerOne);
             NSLog(@"1: %@", workerTwo);
@@ -214,7 +214,7 @@ describe(@"TBActorSupervisionPool", ^{
                         [results addObject:address];
                         
                         if (results.count == 5) {
-                            [workerOne doCrash];
+                            [workerOne.async doCrash];
                         }
                     }
                 }];
@@ -224,8 +224,8 @@ describe(@"TBActorSupervisionPool", ^{
             
             TBActorPool *samePool = actors[@"pool"];
             
-            NSLog(@"0: %@", samePool.actors[0]);
-            NSLog(@"1: %@", samePool.actors[1]);
+            NSLog(@"0: %@", samePool.actors.allObjects[0]);
+            NSLog(@"1: %@", samePool.actors.allObjects[1]);
             
             expect(samePool).to.equal(pool);
             

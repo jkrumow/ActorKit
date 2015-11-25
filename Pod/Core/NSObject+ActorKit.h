@@ -20,9 +20,8 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  *  A block to configure a pool of actors.
  *
  *  @param actor The actor instance to configure.
- *  @param index The index of the actor in the pool.
  */
-typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index);
+typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 
 @class TBActorPool;
 
@@ -40,6 +39,8 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
  *  The pool the actor may belong to.
  */
 @property (nonatomic, weak, nullable) TBActorPool *pool;
+
+@property (nonatomic) NSNumber *loadCount;
 
 /**
  *  Suspends the actorQueue.

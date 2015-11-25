@@ -76,7 +76,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     TBActorPool *pool = (TBActorPool *)self.actor;
     [pool suspend];
     NSOperationQueue *poolQueue = pool.actorQueue;
-    NSArray *queues = [pool.actors valueForKeyPath:@"actorQueue"];
+    NSArray *queues = [[pool.actors valueForKeyPath:@"actorQueue"] allObjects];
     [self createActor];
     TBActorPool *newPool = (TBActorPool *)self.actor;
     newPool.actorQueue = poolQueue;

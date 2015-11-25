@@ -53,29 +53,27 @@ describe(@"TBActorPool", ^{
         });
         
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
-            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor) {
                 TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @(index);
+                testActor.uuid = @(5);
             }];
             
             expect(pool.actors.count).to.equal(2);
             
-            TestActor *actorOne = pool.actors[0];
-            TestActor *actorTwo = pool.actors[1];
+            TestActor *actorOne = pool.actors.allObjects[0];
+            TestActor *actorTwo = pool.actors.allObjects[1];
             
             expect(actorOne).to.beInstanceOf([TestActor class]);
             expect(actorTwo).to.beInstanceOf([TestActor class]);
-            expect(actorOne.uuid).to.equal(@0);
-            expect(actorTwo.uuid).to.equal(@1);
         });
     });
     
     describe(@"invocations", ^{
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:2 configuration:^(id actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:2 configuration:^(id actor) {
                 TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @(index);
+                testActor.uuid = @(5);
             }];
             otherActor = [TestActor new];
         });
@@ -87,8 +85,8 @@ describe(@"TBActorPool", ^{
             });
             
             it(@"dispatches invocations synchronously to an idle actor.", ^{
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 [pool.sync blockSomething];
                 [pool.sync setSymbol:@123];
@@ -110,8 +108,8 @@ describe(@"TBActorPool", ^{
             });
             
             it(@"dispatches invocations asynchronously to an idle actor.", ^{
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 waitUntil(^(DoneCallback done) {
                     [pool.async blockSomethingWithCompletion:^{
@@ -138,8 +136,8 @@ describe(@"TBActorPool", ^{
             });
             
             it(@"dispatches invocations asynchronously to all actors.", ^{
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 __block int count = 0;
                 waitUntil(^(DoneCallback done) {
@@ -159,9 +157,9 @@ describe(@"TBActorPool", ^{
         describe(@"promise", ^{
             
             beforeEach(^{
-                pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor, NSUInteger index) {
+                pool = [TestActor poolWithSize:2 configuration:^(NSObject *actor) {
                     TestActor *testActor = (TestActor *)actor;
-                    testActor.uuid = @(index);
+                    testActor.uuid = @(5);
                 }];
                 otherActor = [TestActor new];
             });
@@ -180,7 +178,7 @@ describe(@"TBActorPool", ^{
                         done();
                     });
                 });
-                expect(blockResult).to.beInTheRangeOf(@0, @1);
+                expect(blockResult).to.equal(@5);
             });
         });
         
@@ -188,8 +186,8 @@ describe(@"TBActorPool", ^{
             
             it (@"handles messages from other actors.", ^{
                 
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 [pool subscribe:@"message" selector:@selector(handler:)];
                 
@@ -214,8 +212,8 @@ describe(@"TBActorPool", ^{
             
             it(@"handles messages from a specified actor.", ^{
                 
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
                 
@@ -240,8 +238,8 @@ describe(@"TBActorPool", ^{
             
             it(@"ignores messages from an unspecified actor.", ^{
                 
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
                 
@@ -251,8 +249,8 @@ describe(@"TBActorPool", ^{
             });
             
             it(@"handles generic NSNotifications", ^{
-                TestActor *actorOne = pool.actors[0];
-                TestActor *actorTwo = pool.actors[1];
+                TestActor *actorOne = pool.actors.allObjects[0];
+                TestActor *actorTwo = pool.actors.allObjects[1];
                 
                 NSObject *sender = [NSObject new];
                 [pool subscribeToSender:sender messageName:@"message" selector:@selector(handlerRaw:)];
@@ -285,9 +283,9 @@ describe(@"TBActorPool", ^{
         __block NSUInteger threshold = taskCount * 0.5;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:poolSize configuration:^(id actor, NSUInteger index) {
+            pool = [TestActor poolWithSize:poolSize configuration:^(id actor) {
                 TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @(index);
+                testActor.uuid = @(5);
             }];
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);

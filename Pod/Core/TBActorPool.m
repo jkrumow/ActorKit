@@ -14,9 +14,7 @@
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
-@property (nonatomic) NSMutableArray *priv_actors;
-@property (nonatomic) NSMutableArray *loadCounters;
-
+@property (nonatomic) NSMutableSet *priv_actors;
 @property (nonatomic) Class klass;
 @property (nonatomic, copy) TBActorPoolConfigurationBlock configuration;
 @end
@@ -37,16 +35,11 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         _klass = klass;
         _configuration = configuration;
         
-        _priv_actors = [NSMutableArray new];
+        _priv_actors = [NSMutableSet new];
         for (NSUInteger i=0; i < size; i++) {
-            [self.priv_actors addObject:[self createActorWithIndex:i]];
+            [self.priv_actors addObject:[self _createActor]];
         }
         [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
-        
-        _loadCounters = [NSMutableArray new];
-        for (NSUInteger i=0; i < self.priv_actors.count; i++) {
-            [self.loadCounters addObject:@(0)];
-        }
     }
     return self;
 }
@@ -56,7 +49,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:nil];
 }
 
-- (NSArray *)actors
+- (NSSet *)actors
 {
     return self.priv_actors.copy;
 }
@@ -118,67 +111,55 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 
 - (NSObject *)availableActor
 {
-    NSObject *actor = nil;
     @synchronized(_priv_actors) {
-        __block NSUInteger index = 0;
+        __block NSObject *actor = nil;
         __block NSUInteger lowest = NSUIntegerMax;
-        [self.loadCounters enumerateObjectsUsingBlock:^(NSNumber *count, NSUInteger idx, BOOL *stop) {
-            if (count.unsignedIntegerValue == 0) {
-                index = idx;
+        [self.priv_actors enumerateObjectsUsingBlock:^(NSObject *anActor, BOOL *stop) {
+            if (anActor.loadCount.unsignedIntegerValue == 0) {
+                actor = anActor;
                 *stop = YES;
             }
-            if (count.unsignedIntegerValue < lowest) {
-                lowest = count.unsignedIntegerValue;
-                index = idx;
+            if (anActor.loadCount.unsignedIntegerValue < lowest) {
+                lowest = anActor.loadCount.unsignedIntegerValue;
+                actor = anActor;
             }
         }];
-        actor = self.priv_actors[index];
-        self.loadCounters[index] = @(lowest + 1);
+        actor.loadCount = @(lowest + 1);
+        return actor;
     }
-    return actor;
 }
 
 - (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
-        if (![self.priv_actors containsObject:actor]) {
-            return;
-        }
-        NSUInteger index = [self.priv_actors indexOfObject:actor];
-        NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
+        NSUInteger value = actor.loadCount.unsignedIntegerValue;
         value -= 1;
         MAX(0, value);
-        self.loadCounters[index] = @(value);
+        actor.loadCount = @(value);
     }
 }
 
 - (void)removeActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
-        if (![self.priv_actors containsObject:actor]) {
-            return;
-        }
-        NSUInteger index = [self.priv_actors indexOfObject:actor];
-        [self.priv_actors removeObjectAtIndex:index];
-        [self.loadCounters removeObjectAtIndex:index];
+        [self.priv_actors removeObject:actor];
     }
 }
 
 - (NSObject *)createActor
 {
     @synchronized(_priv_actors) {
-        NSObject *actor = [self createActorWithIndex:self.priv_actors.count];
+        NSObject *actor = [self _createActor];
         [self.priv_actors addObject:actor];
-        [self.loadCounters addObject:@(0)];
         return actor;
     }
 }
 
-- (NSObject *)createActorWithIndex:(NSUInteger)index
+- (NSObject *)_createActor
 {
     NSObject *actor = [self.klass new];
     if (self.configuration) {
-        self.configuration(actor, index);
+        self.configuration(actor);
     }
     return actor;
 }

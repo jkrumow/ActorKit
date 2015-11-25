@@ -18,6 +18,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;
 @dynamic pool;
+@dynamic loadCount;
 
 - (NSOperationQueue *)actorQueue
 {
@@ -46,6 +47,23 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 - (void)setPool:(TBActorPool *)pool
 {
     objc_setAssociatedObject(self, @selector(pool), pool, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (NSNumber *)loadCount
+{
+    @synchronized(self) {
+        NSNumber *count = objc_getAssociatedObject(self, @selector(loadCount));
+        if (count == nil) {
+            count = @(0);
+            self.loadCount = count;
+        }
+        return count;
+    }
+}
+
+- (void)setLoadCount:(NSNumber *)loadCount
+{
+    objc_setAssociatedObject(self, @selector(loadCount), loadCount, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)suspend
