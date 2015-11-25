@@ -62,7 +62,6 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)recreateActor
 {
-    // Save invocations in mailbox and update target
     [self.actor suspend];
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
@@ -101,8 +100,8 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     NSOperationQueue *queue = actor.actorQueue;
     [pool removeActor:actor];
     NSObject *newActor = [pool createActor];
-    [self updateInvocationTarget:newActor inQueue:queue];
     newActor.actorQueue = queue;
+    [self updateInvocationTarget:newActor inQueue:queue];
     [pool resume];
 }
 
