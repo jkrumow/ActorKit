@@ -7,8 +7,8 @@
 //
 
 #import "NSObject+ActorKitSupervision.h"
+#import "TBActorPool+ActorKitSupervision.h"
 #import "TBActorSupervisor.h"
-#import "TBActorPool.h"
 
 @implementation NSObject (ActorKitSupervision)
 @dynamic supervisor;
@@ -26,7 +26,7 @@
 - (void)crashWithError:(NSError *)error
 {
     if (self.pool) {
-        [self.pool crashWithError:error];
+        [self.pool crashWithActor:self error:error];
     } else if (self.supervisor) {
         [self.supervisor.sync actor:self didCrashWithError:error];
     }

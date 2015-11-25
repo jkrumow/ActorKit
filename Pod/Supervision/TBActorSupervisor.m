@@ -46,6 +46,8 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     return self;
 }
 
+#pragma mark - Creation
+
 - (void)createActor
 {
     NSObject *actor = nil;
@@ -56,24 +58,60 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     [self _createLinkedActors];
 }
 
+#pragma mark - Recreation
+
 - (void)recreateActor
 {
-    // Save invocations in mailbox and update target
-    self.actor.actorQueue.suspended = YES;
+    [self.actor suspend];
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;
-    [self updateInvocationTargetsInQueue:queue];
-    queue.suspended = NO;
+    [self updateInvocationTarget:self.actor inQueue:queue];
+    [self.actor resume];
 }
 
-- (void)updateInvocationTargetsInQueue:(NSOperationQueue *)queue
+- (void)recreatePool
+{
+    TBActorPool *pool = (TBActorPool *)self.actor;
+    [pool suspend];
+    NSOperationQueue *poolQueue = pool.actorQueue;
+    NSArray *queues = [[pool.actors valueForKeyPath:@"actorQueue"] allObjects];
+    [self createActor];
+    TBActorPool *newPool = (TBActorPool *)self.actor;
+    newPool.actorQueue = poolQueue;
+    [self updateInvocationTarget:newPool inQueue:newPool.actorQueue];
+    [self updateMailboxesInPool:newPool withQueues:queues];
+    [newPool resume];
+}
+
+- (void)updateMailboxesInPool:(TBActorPool *)pool withQueues:(NSArray *)queues
+{
+    NSArray *actors = pool.actors.allObjects;
+    for (NSUInteger index=0; index < actors.count; index++) {
+        NSObject *actor = actors[index];
+        actor.actorQueue = queues[index];
+        [self updateInvocationTarget:actor inQueue:actor.actorQueue];
+    }
+}
+
+- (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
+{
+    [pool suspend];
+    NSOperationQueue *queue = actor.actorQueue;
+    [pool removeActor:actor];
+    NSObject *newActor = [pool createActor];
+    newActor.actorQueue = queue;
+    [self updateInvocationTarget:newActor inQueue:queue];
+    [pool resume];
+}
+
+- (void)updateInvocationTarget:(NSObject *)target inQueue:(NSOperationQueue *)queue
 {
     for (NSInvocationOperation *operation in queue.operations) {
         if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
             continue;
         }
-        operation.invocation.target = self.actor;
+        operation.invocation.target = target;
     }
 }
 
@@ -91,7 +129,16 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
-    [self recreateActor];
+    if ([actor isKindOfClass:[TBActorPool class]]) {
+        [self recreatePool];
+    } else {
+        [self recreateActor];
+    }
+}
+
+- (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
+{
+    [self recreateActor:actor inPool:pool];
 }
 
 @end

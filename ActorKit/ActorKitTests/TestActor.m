@@ -46,6 +46,12 @@
     return [NSString stringWithFormat:@"%p", self];
 }
 
+- (NSString *)addressBlocking
+{
+    [self blockSomething];
+    return [self address];
+}
+
 - (void)address:(void (^)(NSString *))completion
 {
     NSString *address = [self address];
@@ -100,6 +106,11 @@
 {
     [self blockSomething];
     completion();
+}
+
+- (void)doCrash
+{
+    @throw [NSException exceptionWithName:@"foo" reason:@"bar" userInfo:nil];
 }
 
 - (double)_randomSleepInterval

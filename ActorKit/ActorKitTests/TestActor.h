@@ -17,15 +17,22 @@
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion;
 - (void)doSomething;
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
+
 - (NSString *)address;
+- (NSString *)addressBlocking;
 - (void)address:(void (^)(NSString *))completion;
 - (void)addressBlocking:(void (^)(NSString *))completion;
+
 - (NSNumber *)returnSomething;
 - (NSNumber *)returnSomethingBlocking;
 - (void)returnSomethingWithCompletion:(void (^)(NSNumber *))completion;
 - (void)returnSomethingBlockingWithCompletion:(void (^)(NSNumber *))completion;
+
 - (void)handler:(id)payload;
 - (void)handlerRaw:(NSDictionary *)payload;
+
 - (void)blockSomething;
 - (void)blockSomethingWithCompletion:(void (^)(void))completion;
+
+- (void)doCrash;
 @end

@@ -7,16 +7,16 @@
 //
 
 #import "TBActorProxyAsync.h"
-#import "TBActorPool.h"
 #import "NSObject+ActorKit.h"
+#import "TBActorOperation.h"
+#import "TBActorPool.h"
 
 @implementation TBActorProxyAsync
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     [invocation setTarget:self.actor];
-    
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invocation];
+    TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:invocation];
     operation.completionBlock = ^{
         [self relinquishActor];
     };

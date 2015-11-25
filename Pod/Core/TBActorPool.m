@@ -14,30 +14,32 @@
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
-@property (nonatomic) NSArray *priv_actors;
-@property (nonatomic) NSMutableArray *loadCounters;
+@property (nonatomic) NSMutableSet *priv_actors;
+@property (nonatomic) Class klass;
+@property (nonatomic, copy) TBActorPoolConfigurationBlock configuration;
 @end
 
 @implementation TBActorPool
 
 - (instancetype)init
 {
-    return [self initWithActors:@[]];
+    return [self initWithSize:0 class:[NSObject class] configuration:nil];
 }
 
-- (instancetype)initWithActors:(NSArray *)actors
+- (instancetype)initWithSize:(NSUInteger)size class:(Class)klass configuration:(TBActorPoolConfigurationBlock)configuration
 {
     self = [super init];
     if (self) {
         self.actorQueue.name = TBAKActorPoolQueue;
         
-        _priv_actors = actors;
-        [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
+        _klass = klass;
+        _configuration = configuration;
         
-        _loadCounters = [NSMutableArray new];
-        for (NSUInteger i=0; i < self.priv_actors.count; i++) {
-            [self.loadCounters addObject:@(0)];
+        _priv_actors = [NSMutableSet new];
+        for (NSUInteger i=0; i < size; i++) {
+            [self.priv_actors addObject:[self _createActor]];
         }
+        [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:self];
     }
     return self;
 }
@@ -47,15 +49,35 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:nil];
 }
 
-- (NSArray *)actors
+- (NSSet *)actors
 {
     return self.priv_actors.copy;
 }
+
+- (void)suspend
+{
+    [super suspend];
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = YES;
+    }
+}
+
+- (void)resume
+{
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = NO;
+    }
+    [super resume];
+}
+
+#pragma mark - Invocatons
 
 - (id)broadcast
 {
     return [[TBActorProxyBroadcast alloc] initWithPool:self];
 }
+
+#pragma mark - Pubsub
 
 - (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector
 {
@@ -85,37 +107,61 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                                                   }];
 }
 
+#pragma mark - Manage actors in pool
+
 - (NSObject *)availableActor
 {
-    NSObject *actor = nil;
     @synchronized(_priv_actors) {
-        __block NSUInteger index = 0;
+        __block NSObject *actor = nil;
         __block NSUInteger lowest = NSUIntegerMax;
-        [self.loadCounters enumerateObjectsUsingBlock:^(NSNumber *count, NSUInteger idx, BOOL *stop) {
-            if (count.unsignedIntegerValue == 0) {
-                index = idx;
+        [self.priv_actors enumerateObjectsUsingBlock:^(NSObject *anActor, BOOL *stop) {
+            if (anActor.loadCount.unsignedIntegerValue == 0) {
+                actor = anActor;
                 *stop = YES;
             }
-            if (count.unsignedIntegerValue < lowest) {
-                lowest = count.unsignedIntegerValue;
-                index = idx;
+            if (anActor.loadCount.unsignedIntegerValue < lowest) {
+                lowest = anActor.loadCount.unsignedIntegerValue;
+                actor = anActor;
             }
         }];
-        actor = self.priv_actors[index];
-        self.loadCounters[index] = @(lowest + 1);
+        actor.loadCount = @(lowest + 1);
+        return actor;
     }
-    return actor;
 }
 
 - (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
-        NSUInteger index = [self.priv_actors indexOfObject:actor];
-        NSUInteger value = [self.loadCounters[index] unsignedIntegerValue];
+        NSUInteger value = actor.loadCount.unsignedIntegerValue;
         value -= 1;
         MAX(0, value);
-        self.loadCounters[index] = @(value);
+        actor.loadCount = @(value);
     }
+}
+
+- (void)removeActor:(NSObject *)actor
+{
+    @synchronized(_priv_actors) {
+        [self.priv_actors removeObject:actor];
+    }
+}
+
+- (NSObject *)createActor
+{
+    @synchronized(_priv_actors) {
+        NSObject *actor = [self _createActor];
+        [self.priv_actors addObject:actor];
+        return actor;
+    }
+}
+
+- (NSObject *)_createActor
+{
+    NSObject *actor = [self.klass new];
+    if (self.configuration) {
+        self.configuration(actor);
+    }
+    return actor;
 }
 
 @end

@@ -80,9 +80,7 @@ Subscribe to a broadcasted message and set a selector which takes the message's 
 Subscribe to a specified actor:
 
 ```objc
-[worker subscribeToActor:anotherActor
-             messageName:@"anotherMessage"
-                selector:@selector(handler:)];
+[worker subscribeToActor:anotherActor messageName:@"anotherMessage" selector:@selector(handler:)];
 ```
 
 ### Publishing messages to other actors
@@ -209,9 +207,17 @@ Access the supervised actor by its id on the supervision pool:
 [[actors[@"master"] sync] doSomething];
 ```
 
-#### Communicating Crashes
+#### Recovering from Crashes
 
-To communicate the crash of a supervised actor call `crashWithError:` from within the actor:
+Whenever an actor crashes it is re-created by its supervisor and will resume executinig messages from its mailbox.
+
+*Special behavior for pools:*
+
+- when the pool actor itself crashes the whole pool is recreated completely and the content of all mailboxes  will be processed by the new pool instance
+
+- when an actor inside the pool crashes only this instance is recreated and its mailbox content will be processed by its successor
+
+You can also communicate a crash manually by calling `crashWithError:`:
 
 ```objc
 @implementation Worker
@@ -238,7 +244,7 @@ Links establish parent-child relationships between actors. Linked actors will be
 
 ## Architecture
 
-This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocationOperation` objects. These three classes practically represent mailbox, thread, runloop and message.
+This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSOperation` objects. These three classes practically represent mailbox, thread, runloop and message.
 
 ## Useful Theory on Actors
 

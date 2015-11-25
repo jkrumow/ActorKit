@@ -7,10 +7,11 @@
 //
 
 #import "TBActorProxyBroadcast.h"
-#import "TBActorPool.h"
 #import "NSObject+ActorKit.h"
+#import "TBActorOperation.h"
 #import "NSException+ActorKit.h"
 #import "NSInvocation+ActorKit.h"
+#import "TBActorPool.h"
 
 @implementation TBActorProxyBroadcast
 
@@ -22,7 +23,7 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    return [self.pool.actors.firstObject methodSignatureForSelector:selector];
+    return [self.pool.actors.anyObject methodSignatureForSelector:selector];
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation
@@ -31,8 +32,8 @@
         
         NSInvocation *forwardInvocation = invocation.tbak_copy;
         [forwardInvocation setTarget:actor];
-    
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:forwardInvocation];
+        
+        TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:forwardInvocation];
         operation.completionBlock = ^{
             [self.pool relinquishActor:actor];
         };

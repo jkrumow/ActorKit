@@ -12,6 +12,7 @@
 #import "TBActorPool.h"
 #import "NSInvocation+ActorKit.h"
 #import "NSObject+ActorKit.h"
+#import "TBActorOperation.h"
 
 @interface TBActorProxyPromise ()
 @property (nonatomic) AnyPromise *promise;
@@ -24,13 +25,15 @@
     // Create invocation for message to be sent to the actor
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
     [forwardedInvocation setTarget:self.actor];
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:forwardedInvocation];
+    TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:forwardedInvocation];
     
     // Create promise wrapping the invocation operation.
     self.promise = [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
-        __block NSInvocationOperation *blockOperation = operation;
+        __block TBActorOperation *blockOperation = operation;
         operation.completionBlock = ^{
-            resolve(blockOperation.result);
+            id returnValue = nil;
+            [blockOperation.invocation getReturnValue:&returnValue];
+            resolve(returnValue);
             [self relinquishActor];
         };
         [self.actor.actorQueue addOperation:operation];
