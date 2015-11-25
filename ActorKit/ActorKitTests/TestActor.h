@@ -18,6 +18,7 @@
 - (void)doSomething;
 - (void)doSomething:(NSString *)stuff withCompletion:(void (^)(NSString *))completion;
 - (NSString *)address;
+- (NSString *)addressBlocking;
 - (void)address:(void (^)(NSString *))completion;
 - (void)addressBlocking:(void (^)(NSString *))completion;
 - (NSNumber *)returnSomething;

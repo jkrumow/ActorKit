@@ -46,6 +46,12 @@
     return [NSString stringWithFormat:@"%p", self];
 }
 
+- (NSString *)addressBlocking
+{
+    [self blockSomething];
+    return [self address];
+}
+
 - (void)address:(void (^)(NSString *))completion
 {
     NSString *address = [self address];

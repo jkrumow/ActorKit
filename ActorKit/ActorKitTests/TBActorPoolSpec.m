@@ -283,10 +283,12 @@ describe(@"TBActorPool", ^{
         __block NSUInteger threshold = taskCount * 0.5;
         
         beforeEach(^{
-            pool = [TestActor poolWithSize:poolSize configuration:^(id actor) {
-                TestActor *testActor = (TestActor *)actor;
-                testActor.uuid = @(5);
-            }];
+            pool = [TestActor poolWithSize:poolSize configuration:nil];
+            NSUInteger uuid = 0;
+            for (TestActor *actor in pool.actors) {
+                actor.uuid = @(uuid);
+                uuid++;
+            }
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
             completionQueue = dispatch_queue_create("completionQueue", DISPATCH_QUEUE_SERIAL);
