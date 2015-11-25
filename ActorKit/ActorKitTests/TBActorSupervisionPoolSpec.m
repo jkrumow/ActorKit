@@ -141,8 +141,6 @@ describe(@"TBActorSupervisionPool", ^{
             
             NSLog(@"results: %@", results);
             
-            expect(results).to.haveACountOf(taskCount);
-            
             NSCountedSet *set = [NSCountedSet setWithArray:results];
             expect(set.count).to.equal(2);
         });
@@ -168,7 +166,7 @@ describe(@"TBActorSupervisionPool", ^{
                     @synchronized(results) {
                         [results addObject:address];
                         
-                        if (results.count == 1) {
+                        if (results.count == 5) {
                             [pool crashWithError:nil];
                         }
                     }
@@ -176,8 +174,6 @@ describe(@"TBActorSupervisionPool", ^{
             });
             
             sleep(1);
-            
-            NSLog(@"results: %@", results);
             
             TBActorPool *newPool = actors[@"pool"];
             TestActor *newWorkerOne = newPool.actors[0];
@@ -189,6 +185,11 @@ describe(@"TBActorSupervisionPool", ^{
             expect(newPool).notTo.equal(pool);
             expect(newWorkerOne).notTo.equal(workerOne);
             expect(newWorkerTwo).notTo.equal(workerTwo);
+            
+            NSLog(@"results: %@", results);
+            
+            NSCountedSet *set = [NSCountedSet setWithArray:results];
+            expect(set.count).to.equal(4);
         });
         
         it(@"executes remaining operations on the re-created pooled actor instance after a crash", ^{
@@ -212,7 +213,7 @@ describe(@"TBActorSupervisionPool", ^{
                     @synchronized(results) {
                         [results addObject:address];
                         
-                        if (results.count == 1) {
+                        if (results.count == 5) {
                             [workerOne doCrash];
                         }
                     }
@@ -221,18 +222,20 @@ describe(@"TBActorSupervisionPool", ^{
             
             sleep(1);
             
-            NSLog(@"results: %@", results);
-            
             TBActorPool *samePool = actors[@"pool"];
-            TestActor *sameWorkerTwo = samePool.actors[0];
-            TestActor *newWorkerOne = samePool.actors[1];
             
-            NSLog(@"0: %@", newWorkerOne);
-            NSLog(@"1: %@", sameWorkerTwo);
+            NSLog(@"0: %@", samePool.actors[0]);
+            NSLog(@"1: %@", samePool.actors[1]);
             
             expect(samePool).to.equal(pool);
-            expect(newWorkerOne).notTo.equal(workerOne);
-            expect(sameWorkerTwo).to.equal(workerTwo);
+            
+            expect(samePool.actors).notTo.contain(workerOne);
+            expect(samePool.actors).to.contain(workerTwo);
+            
+            NSLog(@"results: %@", results);
+            
+            NSCountedSet *set = [NSCountedSet setWithArray:results];
+            expect(set.count).to.equal(3);
         });
     });
     

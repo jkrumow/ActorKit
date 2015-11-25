@@ -61,10 +61,30 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self.priv_actors.copy;
 }
 
+- (void)suspend
+{
+    [super suspend];
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = YES;
+    }
+}
+
+- (void)resume
+{
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = NO;
+    }
+    [super resume];
+}
+
+#pragma mark - Invocatons
+
 - (id)broadcast
 {
     return [[TBActorProxyBroadcast alloc] initWithPool:self];
 }
+
+#pragma mark - Pubsub
 
 - (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector
 {
@@ -93,6 +113,8 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 #pragma clang diagnostic pop
                                                   }];
 }
+
+#pragma mark - Manage actors in pool
 
 - (NSObject *)availableActor
 {
@@ -133,18 +155,22 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 - (void)removeActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
+        if (![self.priv_actors containsObject:actor]) {
+            return;
+        }
         NSUInteger index = [self.priv_actors indexOfObject:actor];
         [self.priv_actors removeObjectAtIndex:index];
         [self.loadCounters removeObjectAtIndex:index];
     }
 }
 
-- (void)createActor
+- (NSObject *)createActor
 {
     @synchronized(_priv_actors) {
         NSObject *actor = [self createActorWithIndex:self.priv_actors.count];
         [self.priv_actors addObject:actor];
         [self.loadCounters addObject:@(0)];
+        return actor;
     }
 }
 

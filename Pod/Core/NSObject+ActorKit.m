@@ -48,6 +48,16 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     objc_setAssociatedObject(self, @selector(pool), pool, OBJC_ASSOCIATION_ASSIGN);
 }
 
+- (void)suspend
+{
+    self.actorQueue.suspended = YES;
+}
+
+- (void)resume
+{
+    self.actorQueue.suspended = NO;
+}
+
 #pragma mark - Invocatons
 
 - (id)sync
@@ -117,5 +127,4 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 {
     return [[TBActorPool alloc] initWithSize:size class:self configuration:configuration];
 }
-
 @end

@@ -42,6 +42,16 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor, NSUInteger index)
 @property (nonatomic, weak, nullable) TBActorPool *pool;
 
 /**
+ *  Suspends the actorQueue.
+ */
+- (void)suspend;
+
+/**
+ *  Resumes the actorQueue.
+ */
+- (void)resume;
+
+/**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxySync instance.

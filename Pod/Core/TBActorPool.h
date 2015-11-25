@@ -66,7 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Creates and adds a new actor to the pool.
+ *
+ *  @return The created actor instance.
  */
-- (void)createActor;
+- (NSObject *)createActor;
 @end
 NS_ASSUME_NONNULL_END

@@ -215,9 +215,9 @@ Whenever an actor crashes it is re-created by its supervisor and will resume exe
 
 *Special behavior for pools:*
 
-- when the pool actor itself crashes the whole pool is recreated completely and all unprocessed messages are lost
+- when the pool actor itself crashes the whole pool is recreated completely and the content of all mailboxes  will be processed by the new pool instance
 
-- when an actor inside the pool crashes only this actor is recreated and its mailbox content will be processed by its successor
+- when an actor inside the pool crashes only this instance is recreated and its mailbox content will be processed by its successor
 
 You can also communicate a crash manually by calling `crashWithError:`:
 

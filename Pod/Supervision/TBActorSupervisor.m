@@ -46,6 +46,8 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     return self;
 }
 
+#pragma mark - Creation
+
 - (void)createActor
 {
     NSObject *actor = nil;
@@ -56,51 +58,55 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     [self _createLinkedActors];
 }
 
+#pragma mark - Recreation
+
 - (void)recreateActor
 {
     // Save invocations in mailbox and update target
-    self.actor.actorQueue.suspended = YES;
+    [self.actor suspend];
     NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
     self.actor.actorQueue = queue;
-    [self updateInvocationTargetsInQueue:queue];
-    queue.suspended = NO;
+    [self updateInvocationTarget:self.actor inQueue:queue];
+    [self.actor resume];
 }
 
 - (void)recreatePool
 {
     TBActorPool *pool = (TBActorPool *)self.actor;
-    pool.actorQueue.suspended = YES;
-    [pool.actorQueue cancelAllOperations];
-    for (NSObject *actor in pool.actors) {
-        actor.actorQueue.suspended = YES;
-        [actor.actorQueue cancelAllOperations];
-    }
+    [pool suspend];
+    NSOperationQueue *poolQueue = pool.actorQueue;
+    NSArray *queues = [pool.actors valueForKeyPath:@"actorQueue"];
     [self createActor];
+    TBActorPool *newPool = (TBActorPool *)self.actor;
+    newPool.actorQueue = poolQueue;
+    [self updateInvocationTarget:newPool inQueue:newPool.actorQueue];
+    NSUInteger index = 0;
+    for (NSObject *actor in newPool.actors) {
+        actor.actorQueue = queues[index];
+        [self updateInvocationTarget:actor inQueue:actor.actorQueue];
+    }
+    [newPool resume];
 }
 
 - (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
 {
-    pool.actorQueue.suspended = YES;
-    for (NSObject *object in pool.actors) {
-        object.actorQueue.suspended = YES;
-    }
+    [pool suspend];
+    NSOperationQueue *queue = actor.actorQueue;
     [pool removeActor:actor];
-    [pool createActor];
-    
-    for (NSObject *object in pool.actors) {
-        object.actorQueue.suspended = NO;
-    }
-    pool.actorQueue.suspended = NO;
+    NSObject *newActor = [pool createActor];
+    [self updateInvocationTarget:newActor inQueue:queue];
+    newActor.actorQueue = queue;
+    [pool resume];
 }
 
-- (void)updateInvocationTargetsInQueue:(NSOperationQueue *)queue
+- (void)updateInvocationTarget:(NSObject *)target inQueue:(NSOperationQueue *)queue
 {
     for (NSInvocationOperation *operation in queue.operations) {
         if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
             continue;
         }
-        operation.invocation.target = self.actor;
+        operation.invocation.target = target;
     }
 }
 
