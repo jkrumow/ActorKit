@@ -209,12 +209,11 @@ Access the supervised actor by its id on the supervision pool:
 
 #### Recovering from Crashes
 
-Whenever an actor crashes it is re-created by its supervisor and will resume executinig messages from its mailbox.
+Whenever an actor crashes it is re-created by its supervisor and will resume executing messages from its mailbox.
 
-*Special behavior for pools:*
+**Special behavior for pools:**
 
-- when the pool actor itself crashes the whole pool is recreated completely and the content of all mailboxes  will be processed by the new pool instance
-
+- when the pool actor itself crashes the whole pool is recreated completely and the content of all mailboxes will be processed by the new pool instance
 - when an actor inside the pool crashes only this instance is recreated and its mailbox content will be processed by its successor
 
 You can also communicate a crash manually by calling `crashWithError:`:
