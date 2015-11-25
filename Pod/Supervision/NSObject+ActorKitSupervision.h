@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TBActorSupervision.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol TBActorSupervision;
 @interface NSObject (ActorKitSupervision)
 
 /**

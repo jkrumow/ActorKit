@@ -18,7 +18,7 @@ __block TestActor *actorTwo;
 __block TestActor *otherActor;
 __block dispatch_queue_t testQueue;
 __block dispatch_queue_t completionQueue;
-__block NSMutableArray *results;
+__block NSMutableArray *addresses;
 
 __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSArray *data, NSUInteger poolSize, NSUInteger threshold) {
     NSLog(@"| worker | task count |");
@@ -45,7 +45,7 @@ describe(@"TBActorPool", ^{
         otherActor = nil;
         testQueue = nil;
         completionQueue = nil;
-        results = nil;
+        addresses = nil;
     });
     
     describe(@"initialization", ^{
@@ -68,6 +68,9 @@ describe(@"TBActorPool", ^{
             expect(pool.actors.count).to.equal(2);
             expect(actorOne).to.beInstanceOf([TestActor class]);
             expect(actorTwo).to.beInstanceOf([TestActor class]);
+            
+            expect(actorOne.uuid).to.equal(5);
+            expect(actorTwo.uuid).to.equal(5);
         });
     });
     
@@ -269,27 +272,27 @@ describe(@"TBActorPool", ^{
             otherActor = [TestActor new];
             testQueue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_CONCURRENT);
             completionQueue = dispatch_queue_create("completionQueue", DISPATCH_QUEUE_SERIAL);
-            results = [NSMutableArray new];
+            addresses = [NSMutableArray new];
         });
         
         it(@"seeds long work synchronously onto multiple actors", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomethingBlocking];
                 dispatch_sync(completionQueue, ^{
-                    [results addObject:uuid];
+                    [addresses addObject:uuid];
                 });
             });
-            expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, taskCount)).to.equal(YES);
         });
         
         it(@"seeds short work synchronously onto multiple actors", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
                 NSNumber *uuid = [pool.sync returnSomething];
                 dispatch_sync(completionQueue, ^{
-                    [results addObject:uuid];
+                    [addresses addObject:uuid];
                 });
             });
-            expect(checkDistribution(results, poolSize, taskCount)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, taskCount)).to.equal(YES);
         });
         
         it(@"seeds long work asynchronously onto multiple actors", ^{
@@ -297,15 +300,15 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
-                            [results addObject:uuid];
-                            if (results.count == taskCount) {
+                            [addresses addObject:uuid];
+                            if (addresses.count == taskCount) {
                                 done();
                             }
                         });
                     }];
                 });
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds short work asynchronously onto multiple actors", ^{
@@ -313,15 +316,15 @@ describe(@"TBActorPool", ^{
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [pool.async returnSomethingWithCompletion:^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
-                            [results addObject:uuid];
-                            if (results.count == taskCount) {
+                            [addresses addObject:uuid];
+                            if (addresses.count == taskCount) {
                                 done();
                             }
                         });
                     }];
                 });
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds long promised onto multiple actors", ^{
@@ -330,15 +333,15 @@ describe(@"TBActorPool", ^{
                     AnyPromise *promise = (AnyPromise *)[pool.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
-                            [results addObject:uuid];
-                            if (results.count == taskCount) {
+                            [addresses addObject:uuid];
+                            if (addresses.count == taskCount) {
                                 done();
                             }
                         });
                     });
                 });
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, threshold)).to.equal(YES);
         });
         
         it(@"seeds short promised onto multiple actors", ^{
@@ -347,15 +350,15 @@ describe(@"TBActorPool", ^{
                     AnyPromise *promise = (AnyPromise *)[pool.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
-                            [results addObject:uuid];
-                            if (results.count == taskCount) {
+                            [addresses addObject:uuid];
+                            if (addresses.count == taskCount) {
                                 done();
                             }
                         });
                     });
                 });
             });
-            expect(checkDistribution(results, poolSize, threshold)).to.equal(YES);
+            expect(checkDistribution(addresses, poolSize, threshold)).to.equal(YES);
         });
     });
 });
