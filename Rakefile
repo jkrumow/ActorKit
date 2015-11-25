@@ -46,5 +46,5 @@ def run_xctool(command, workspace, scheme, destination, sdk)
 end
 
 def run_coverage
-  sh("slather")
+  sh("")
 end
