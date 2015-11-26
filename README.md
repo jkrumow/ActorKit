@@ -40,25 +40,26 @@ pod 'ActorKit'
 
 ## Usage
 
+Importing `<ActorKit/ActorKit.h>` provides you with the core functionality of the framework.
 
-### Creating an actor
+### Creating an Actor
 
-By importing `<ActorKit/ActorKit.h>` each class derived from NSObject can be used as an actor.
+Every subtype of `NSObject` can be turned into an actor:
 
 ```objc
 Worker *worker = [[Worker alloc] initWithName:@"Bee"];
 NSMutableArray *array = [NSMutableArray new];
 ```
 
-### Sending messages to the actor
+### Sending Messages to Actors
 
-Send a synchronous message to the actor:
+To send a synchronous message to the actor initiate the call with `sync`:
 
 ```objc
-[worker.sync doSomething];
+BOOL success = [worker.sync doSomething];
 ```
 
-Send a asynchronous message to the actor:
+Send an asynchronous message to the actor call `async`:
 
 ```objc
 [array.async removeAllObjects];
@@ -66,7 +67,7 @@ Send a asynchronous message to the actor:
 
 ### Subscribing to messages from other actors
 
-Subscribe to a broadcasted message and set a selector which takes the message's payload as an argument:
+To subscribe to a broadcasted message set the message name a selector which takes the message's payload as an argument:
 
 ```objc
 [worker subscribe:@"message" selector:@selector(handler:)];
@@ -77,7 +78,7 @@ Subscribe to a broadcasted message and set a selector which takes the message's 
 }
 ```
 
-Subscribe to a specified actor:
+To subscribe to a specified actor also pass its instance:
 
 ```objc
 [worker subscribeToActor:anotherActor messageName:@"anotherMessage" selector:@selector(handler:)];
@@ -91,9 +92,7 @@ Publish a message with a payload:
 [array publish:@"message" payload:@5];
 ```
 
-### Unsubscribing
-
-To unsibscribe form a message:
+To unsibscribe from a message:
 
 ```objc
 [worker unsubscribe:@"message"];
@@ -103,19 +102,17 @@ Before destroying an actor you should unsubscribe from all messages.
 
 ### Actor Pools
 
-The actor pool class `TBActorPool` is a subtype of actor so it is basically a proxy actor which mananges multiple actors. A received message will be forwarded on an available actor in the pool.
+The class `TBActorPool` is basically a proxy actor which mananges multiple actors of the same type. A message which is send to the pool will be forwarded to an actor inside the pool which has the lowest workload at the time the message is processed.
 
-Create an actor pool by invoking the method below on your class of coice. An actor instance will be created and passed into the configuration block for further initialization:
+You can create an actor pool by invoking the method below on the class of your coice. An actor instance will be created and passed into the configuration block for further initialization:
 
 ```objc
-TBActorPool *pool = [WorkerActor poolWithSize:10 configuration:^(NSObject *actor, NSUInteger index) {
-    WorkerActor *worker = (WorkerActor *)actor;
+TBActorPool *pool = [Worker poolWithSize:10 configuration:^(NSObject *actor) {
+    Worker *worker = (Worker *)actor;
     worker.name = @"worker";
-    worker.id = @(index);
+    worker.id = @(123);
 }];
 ```
-
-The configuration block will be executed on an available actor in the pool.
 
 You can send messages to the pool:
 
@@ -128,10 +125,6 @@ Same goes for subscriptions:
 
 ```objc
 [pool subscribe:@"messageToWorkers" selector:@selector(handler:)];
-```
-
-And unsubscriptions:
-```objc
 [pool unsubscribe:@"messageToWorkers"];
 ```
 
@@ -139,10 +132,10 @@ The handler will be executed on an available actor in the pool.
 
 #### Broadcasts
 
-To send an asynchronous message to all actors in the pool:
+To send an asynchronous message to all actors inside the pool:
 
 ```objc
-[pool.broadcast pause];
+[pool.broadcast ping];
 ```
 
 ### Promises
@@ -185,13 +178,13 @@ end
 
 #### Supervising an Actor
 
-To add an actor to a supervision pool define a creation block and instanciate the actor it:
+To add an actor to a supervision pool define a creation block which instanciates it:
 
 ```objc
 TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 
 [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-    WorkerActor *worker = [WorkerActor new];
+    Worker *worker = [Worker new];
     worker.name = @"master";
     *actor = worker;
 }];
@@ -199,7 +192,7 @@ TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 
 The creation block will be called whenever the actor has to be (re)created.
 
-#### Accessing Actors inside the Supervision Pool
+#### Accessing Actors Inside the Supervision Pool
 
 Access the supervised actor by its id on the supervision pool:
 
