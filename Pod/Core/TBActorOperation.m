@@ -9,7 +9,6 @@
 #import "TBActorOperation.h"
 #import "NSException+ActorKit.h"
 #import "NSError+ActorKit.h"
-#import "NSObject+ActorKitSupervision.h"
 
 @implementation TBActorOperation
 
@@ -38,8 +37,11 @@
         [self.invocation invoke];
     }
     @catch (NSException *exception) {
-        if ([self.invocation.target respondsToSelector:@selector(crashWithError:)]) {
-            [self.invocation.target crashWithError:[NSError wrappingErrorForException:exception]];
+        if ([self.invocation.target respondsToSelector:NSSelectorFromString(@"crashWithError:")]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [self.invocation.target performSelector:NSSelectorFromString(@"crashWithError:") withObject:[NSError wrappingErrorForException:exception]];
+#pragma clang diagnostic pop
         }
     }
 }
