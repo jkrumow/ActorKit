@@ -27,7 +27,7 @@ describe(@"TBActor", ^{
     });
     
     afterEach(^{
-        [actor unsubscribe:@"message"];
+        [actor unsubscribe:@"notification"];
         actor = nil;
         otherActor = nil;
         testQueue = nil;
@@ -90,37 +90,28 @@ describe(@"TBActor", ^{
     
     describe(@"pubsub", ^{
         
-        it (@"handles messages from other actors.", ^{
-            [actor subscribe:@"message" selector:@selector(handler:)];
+        it(@"stores notification name and selector in a dictionary", ^{
+            [actor subscribe:@"notification" selector:@selector(handler:)];
+            
+            expect(actor.subscriptions.allKeys).to.contain(@"notification");
+            expect([actor.subscriptions[@"notification"] isKindOfClass:[NSMutableArray class]]).to.equal(YES);
+        });
+        
+        it (@"handles notifications from other actors.", ^{
+            [actor subscribe:@"notification" selector:@selector(handler:)];
             
             expect(^{
-                [actor publish:@"message" payload:@5];
-            }).to.notify(@"message");
+                [actor publish:@"notification" payload:@5];
+            }).to.notify(@"notification");
             expect(actor.symbol).to.equal(@5);
         });
         
-        it(@"handles messages from a specified actor.", ^{
-            [actor subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
-            actor.symbol = @5;
+        it(@"removes all subscription thwn unsibscribing", ^{
+            [actor subscribe:@"notification" selector:@selector(handler:)];
+            [actor subscribe:@"notification" selector:@selector(doSomething)];
             
-            [otherActor publish:@"message" payload:nil];
-            expect(actor.symbol).to.beNil;
-        });
-        
-        it(@"ignores messages from an unspecified actor.", ^{
-            [actor subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
-            actor.symbol = @5;
-            
-            [actor publish:@"message" payload:@10];
-            expect(actor.symbol).to.equal(@5);
-        });
-        
-        it(@"handles generic NSNotifications", ^{
-            NSObject *sender = [NSObject new];
-            [actor subscribeToSender:sender messageName:@"message" selector:@selector(handlerRaw:)];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
-            expect(actor.symbol).to.equal(@5);
+            [actor unsubscribe:@"notification"];
+            expect(actor.subscriptions[@"notification"]).to.beNil;
         });
     });
     

@@ -222,6 +222,64 @@ describe(@"TBActorSupervisionPool", ^{
         });
     });
     
+    describe(@"pubsub", ^{
+    
+        it(@"re-creates an actor with subscriptions", ^{
+            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+                *actor = [TestActor new];
+            }];
+            
+            TestActor *master = actors[@"master"];
+            expect(master).notTo.beNil;
+            
+            // Create state and crash
+            [master subscribe:@"notification" selector:@selector(handler:)];
+            [master subscribe:@"signal" selector:@selector(handlerRaw:)];
+            [master crashWithError:nil];
+            
+            TestActor *newMaster = actors[@"master"];
+            expect(newMaster).notTo.beNil;
+            expect(newMaster).notTo.equal(master);
+            expect(newMaster.subscriptions.allKeys).to.haveACountOf(2);
+        });
+        
+        it(@"re-creates an actor pool with subscriptions", ^{
+            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
+                *actor = [TestActor poolWithSize:1 configuration:nil];
+            }];
+            
+            TBActorPool *pool = actors[@"pool"];
+            
+            // Create state and crash
+            [pool subscribe:@"notification" selector:@selector(handler:)];
+            [pool.actors.anyObject subscribe:@"signal" selector:@selector(handlerRaw:)];
+            [pool crashWithError:nil];
+            
+            TBActorPool *newPool = actors[@"pool"];
+            expect(newPool.subscriptions.allKeys).to.haveACountOf(1);
+            expect(newPool.actors.anyObject.subscriptions.allKeys).to.haveACountOf(1);
+        });
+        
+        it(@"re-creates a pooled actor instance with subscriptions", ^{
+            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
+                *actor = [TestActor poolWithSize:1 configuration:nil];
+            }];
+            
+            TBActorPool *pool = actors[@"pool"];
+            TestActor *workerOne = pool.actors.anyObject;
+            
+            // Create state and crash
+            [pool subscribe:@"notification" selector:@selector(handler:)];
+            [workerOne subscribe:@"signal" selector:@selector(handlerRaw:)];
+            [workerOne crashWithError:nil];
+            
+            pool = actors[@"pool"];
+            workerOne = pool.actors.anyObject;
+            expect(pool.subscriptions.allKeys).to.haveACountOf(1);
+            expect(workerOne.subscriptions.allKeys).to.haveACountOf(1);
+        });
+    });
+    
     describe(@"linking", ^{
         
         it(@"it recreates linked actors after simultanious crashes", ^{

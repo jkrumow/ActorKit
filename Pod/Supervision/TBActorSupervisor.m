@@ -62,11 +62,11 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)recreateActor
 {
+    NSObject *actor = self.actor;
     [self.actor suspend];
-    NSOperationQueue *queue = self.actor.actorQueue;
     [self createActor];
-    self.actor.actorQueue = queue;
-    [self updateInvocationTarget:self.actor inQueue:queue];
+    [self transferMailboxFromActor:actor toActor:self.actor];
+    [self transferSubscriptionsFromActor:actor toActor:self.actor];
     [self.actor resume];
 }
 
@@ -74,44 +74,71 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 {
     TBActorPool *pool = (TBActorPool *)self.actor;
     [pool suspend];
-    NSOperationQueue *poolQueue = pool.actorQueue;
-    NSArray *queues = [[pool.actors valueForKeyPath:@"actorQueue"] allObjects];
     [self createActor];
     TBActorPool *newPool = (TBActorPool *)self.actor;
-    newPool.actorQueue = poolQueue;
-    [self updateInvocationTarget:newPool inQueue:newPool.actorQueue];
-    [self updateMailboxesInPool:newPool withQueues:queues];
+    [self transferMailboxesFromPool:pool toPool:newPool];
+    [self transferSubscriptionsFromPool:pool toPool:newPool];
     [newPool resume];
-}
-
-- (void)updateMailboxesInPool:(TBActorPool *)pool withQueues:(NSArray *)queues
-{
-    NSArray *actors = pool.actors.allObjects;
-    for (NSUInteger index=0; index < actors.count; index++) {
-        NSObject *actor = actors[index];
-        actor.actorQueue = queues[index];
-        [self updateInvocationTarget:actor inQueue:actor.actorQueue];
-    }
 }
 
 - (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
 {
     [pool suspend];
-    NSOperationQueue *queue = actor.actorQueue;
     [pool removeActor:actor];
     NSObject *newActor = [pool createActor];
-    newActor.actorQueue = queue;
-    [self updateInvocationTarget:newActor inQueue:queue];
+    [self transferMailboxFromActor:actor toActor:newActor];
+    [self transferSubscriptionsFromActor:actor toActor:newActor];
     [pool resume];
 }
 
-- (void)updateInvocationTarget:(NSObject *)target inQueue:(NSOperationQueue *)queue
+- (void)transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
-    for (NSInvocationOperation *operation in queue.operations) {
+    newActor.actorQueue = actor.actorQueue;
+    [self updateInvocationTarget:newActor];
+}
+
+- (void)transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
+{
+    [self transferMailboxFromActor:pool toActor:newPool];
+    NSArray *actors = pool.actors.allObjects;
+    NSArray *newActors = newPool.actors.allObjects;
+    for (NSUInteger index=0; index < actors.count; index++) {
+        NSObject *actor = actors[index];
+        NSObject *newActor = newActors[index];
+        [self transferMailboxFromActor:actor toActor:newActor];
+    }
+}
+
+- (void)updateInvocationTarget:(NSObject *)actor
+{
+    for (NSInvocationOperation *operation in actor.actorQueue.operations) {
         if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
             continue;
         }
-        operation.invocation.target = target;
+        operation.invocation.target = actor;
+    }
+}
+
+- (void)transferSubscriptionsFromActor:(NSObject *)actor toActor:(NSObject *)newActor
+{
+    for (NSString *notificationName in actor.subscriptions.allKeys) {
+        for (NSValue *value in actor.subscriptions[notificationName]) {
+            SEL selector = value.pointerValue;
+            [newActor subscribe:notificationName selector:selector];
+        }
+        [actor unsubscribe:notificationName];
+    }
+}
+
+- (void)transferSubscriptionsFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
+{
+    [self transferSubscriptionsFromActor:pool toActor:newPool];
+    NSArray *actors = pool.actors.allObjects;
+    NSArray *newActors = newPool.actors.allObjects;
+    for (NSUInteger index=0; index < actors.count; index++) {
+        NSObject *actor = actors[index];
+        NSObject *newActor = newActors[index];
+        [self transferSubscriptionsFromActor:actor toActor:newActor];
     }
 }
 

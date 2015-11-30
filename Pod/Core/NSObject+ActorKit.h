@@ -36,10 +36,18 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 @property (nonatomic) NSOperationQueue *actorQueue;
 
 /**
+ *  Stores notification name and selector of a subscription.
+ */
+@property (nonatomic) NSMutableDictionary<NSString *, NSMutableArray *> *subscriptions;
+
+/**
  *  The pool the actor may belong to.
  */
 @property (nonatomic, weak, nullable) TBActorPool *pool;
 
+/**
+ *  The number of operations queued on this actor. Used only when inside a TBActorPool.
+ */
 @property (nonatomic) NSNumber *loadCount;
 
 /**
@@ -67,46 +75,35 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 - (id)async;
 
 /**
+ *  Stores subscription information in property 'subscriptions'.
+ *
+ *  @param notificationName The name of the notification to subscribe to.
+ *  @param selector         The selector to execute whe receiving a notification.
+ */
+- (void)storeSubscription:(NSString *)notificationName selector:(SEL)selector;
+
+/**
  *  Subscribes to an NSNotification sent from other actors.
  *
- *  @param messageName The name of the notification.
- *  @param selector    The selector of the method to be called when receiving the notification.
+ *  @param notificationName The name of the notification.
+ *  @param selector         The selector of the method to be called when receiving the notification.
  */
-- (void)subscribe:(NSString *)messageName selector:(SEL)selector;
-
-/**
- *  Subscribes to an NSNotification sent from a specified actor.
- *
- *  @param actor       The actor to subscribe to.
- *  @param messageName The name of the notification.
- *  @param selector    The selector of the method to be called when receiving the notification.
- */
-- (void)subscribeToActor:(nullable NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
-
-/**
- *  Subscribes to an NSNotification sent from a generic sender.
- *  The method specified by `selector` will receive the raw `userInfo` dictionary.
- *
- *  @param sender      The sender to subscribe to.
- *  @param messageName The name of the notification.
- *  @param selector    The selector of the method to be called when receiving the notification.
- */
-- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribe:(NSString *)notificationName selector:(SEL)selector;
 
 /**
  *  Unsubscribes an NSNotification from other actors or generic senders.
  *
- *  @param messageName The name of the notification.
+ *  @param notificationName The name of the notification.
  */
-- (void)unsubscribe:(NSString *)messageName;
+- (void)unsubscribe:(NSString *)notificationName;
 
 /**
  *  Send a notification to other actors.
  *
- *  @param messageName The name of the notification.
- *  @param payload     The payload of the notification.
+ *  @param notificationName The name of the notification.
+ *  @param payload          The payload of the notification.
  */
-- (void)publish:(NSString *)messageName payload:(nullable id)payload;
+- (void)publish:(NSString *)notificationName payload:(nullable id)payload;
 
 /**
  *  Creates a pool of actors of the current class using a specified configuration block.

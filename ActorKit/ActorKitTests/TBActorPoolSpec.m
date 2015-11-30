@@ -38,7 +38,7 @@ __block BOOL(^checkDistribution)(NSArray *, NSUInteger, NSUInteger) = ^BOOL(NSAr
 describe(@"TBActorPool", ^{
     
     afterEach(^{
-        [pool unsubscribe:@"message"];
+        [pool unsubscribe:@"notification"];
         pool = nil;
         actorOne = nil;
         actorTwo = nil;
@@ -177,9 +177,9 @@ describe(@"TBActorPool", ^{
         
         describe(@"pubsub", ^{
             
-            it (@"handles messages from other actors.", ^{
+            it (@"handles notifications from other actors.", ^{
                 
-                [pool subscribe:@"message" selector:@selector(handler:)];
+                [pool subscribe:@"notification" selector:@selector(handler:)];
                 
                 waitUntil(^(DoneCallback done) {
                     actorOne.monitorBlock = ^{
@@ -188,7 +188,7 @@ describe(@"TBActorPool", ^{
                     actorTwo.monitorBlock = ^{
                         done();
                     };
-                    [pool publish:@"message" payload:@8];
+                    [pool publish:@"notification" payload:@8];
                 });
                 
                 if (actorOne.symbol) {
@@ -200,59 +200,6 @@ describe(@"TBActorPool", ^{
                 }
             });
             
-            it(@"handles messages from a specified actor.", ^{
-                
-                [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
-                
-                waitUntil(^(DoneCallback done) {
-                    actorOne.monitorBlock = ^{
-                        done();
-                    };
-                    actorTwo.monitorBlock = ^{
-                        done();
-                    };
-                    [otherActor publish:@"message" payload:@10];
-                });
-                
-                if (actorOne.symbol) {
-                    expect(actorOne.symbol).to.equal(@10);
-                    expect(actorTwo.symbol).to.beNil;
-                } else {
-                    expect(actorOne.symbol).to.beNil;
-                    expect(actorTwo.symbol).to.equal(@10);
-                }
-            });
-            
-            it(@"ignores messages from an unspecified actor.", ^{
-                
-                [pool subscribeToActor:otherActor messageName:@"message" selector:@selector(handler:)];
-                [pool publish:@"message" payload:@10];
-                expect(actorOne.symbol).to.beNil;
-                expect(actorTwo.symbol).to.beNil;
-            });
-            
-            it(@"handles generic NSNotifications", ^{
-                NSObject *sender = [NSObject new];
-                [pool subscribeToSender:sender messageName:@"message" selector:@selector(handlerRaw:)];
-                
-                waitUntil(^(DoneCallback done) {
-                    actorOne.monitorBlock = ^{
-                        done();
-                    };
-                    actorTwo.monitorBlock = ^{
-                        done();
-                    };
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"message" object:sender userInfo:@{@"symbol":@5}];
-                });
-                
-                if (actorOne.symbol) {
-                    expect(actorOne.symbol).to.equal(@5);
-                    expect(actorTwo.symbol).to.beNil;
-                } else {
-                    expect(actorOne.symbol).to.beNil;
-                    expect(actorTwo.symbol).to.equal(@5);
-                }
-            });
         });
     });
     

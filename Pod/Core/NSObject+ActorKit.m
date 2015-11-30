@@ -17,6 +17,7 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;
+@dynamic subscriptions;
 @dynamic pool;
 @dynamic loadCount;
 
@@ -37,6 +38,23 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 - (void)setActorQueue:(NSOperationQueue *)actorQueue
 {
     objc_setAssociatedObject(self, @selector(actorQueue), actorQueue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSMutableDictionary *)subscriptions
+{
+    @synchronized(self) {
+        NSMutableDictionary *subscriptions = objc_getAssociatedObject(self, @selector(subscriptions));
+        if (subscriptions == nil) {
+            subscriptions = [NSMutableDictionary new];
+            self.subscriptions = subscriptions;
+        }
+        return subscriptions;
+    }
+}
+
+- (void)setSubscriptions:(NSMutableArray *)subscriptions
+{
+    objc_setAssociatedObject(self, @selector(subscriptions), subscriptions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (TBActorPool *)pool
@@ -90,16 +108,22 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
 
 #pragma mark - Pubsub
 
-- (void)subscribe:(NSString *)messageName selector:(SEL)selector
+- (void)storeSubscription:(NSString *)notificationName selector:(SEL)selector
 {
-    [self subscribeToActor:nil messageName:messageName selector:selector];
+    if (self.subscriptions[notificationName] == nil) {
+        self.subscriptions[notificationName] = [NSMutableArray new];
+    }
+    NSMutableArray *selectors = self.subscriptions[notificationName];
+    [selectors addObject:[NSValue valueWithPointer:selector]];
 }
 
-- (void)subscribeToActor:(NSObject *)actor messageName:(NSString *)messageName selector:(SEL)selector;
+- (void)subscribe:(NSString *)notificationName selector:(SEL)selector
 {
+    [self storeSubscription:notificationName selector:selector];
+    
     __weak typeof(self) weakSelf = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:messageName
-                                                      object:actor
+    [[NSNotificationCenter defaultCenter] addObserverForName:notificationName
+                                                      object:nil
                                                        queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
 #pragma clang diagnostic push
@@ -109,32 +133,19 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
                                                   }];
 }
 
-- (void)subscribeToSender:(id)sender messageName:(NSString *)messageName selector:(SEL)selector
+- (void)unsubscribe:(NSString *)notificationName
 {
-    __weak typeof(self) weakSelf = self;
-    [[NSNotificationCenter defaultCenter] addObserverForName:messageName
-                                                      object:sender
-                                                       queue:self.actorQueue
-                                                  usingBlock:^(NSNotification *note) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [weakSelf performSelector:selector withObject:note.userInfo];
-#pragma clang diagnostic pop
-                                                  }];
+    [self.subscriptions removeObjectForKey:notificationName];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
 
-- (void)unsubscribe:(NSString *)messageName
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:messageName object:nil];
-}
-
-- (void)publish:(NSString *)messageName payload:(id)payload
+- (void)publish:(NSString *)notificationName payload:(id)payload
 {
     NSDictionary *dictionary = nil;
     if (payload) {
         dictionary = @{TBAKActorPayload:[payload copy]}; // Copy payload to prevent shared state.
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:messageName
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
                                                         object:self
                                                       userInfo:dictionary];
 }
