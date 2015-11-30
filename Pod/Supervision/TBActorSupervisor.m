@@ -94,7 +94,12 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
     newActor.actorQueue = actor.actorQueue;
-    [self updateInvocationTarget:newActor];
+    for (NSInvocationOperation *operation in actor.actorQueue.operations) {
+        if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
+            continue;
+        }
+        operation.invocation.target = actor;
+    }
 }
 
 - (void)transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
@@ -106,16 +111,6 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
         NSObject *actor = actors[index];
         NSObject *newActor = newActors[index];
         [self transferMailboxFromActor:actor toActor:newActor];
-    }
-}
-
-- (void)updateInvocationTarget:(NSObject *)actor
-{
-    for (NSInvocationOperation *operation in actor.actorQueue.operations) {
-        if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
-            continue;
-        }
-        operation.invocation.target = actor;
     }
 }
 
