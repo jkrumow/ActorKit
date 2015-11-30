@@ -14,7 +14,7 @@ A lightweight actor framework in Objective-C.
 * Actor Pools
 * Synchronous and asynchronous invocations
 * Promises
-* Message subscription and publication
+* Notification subscription and publication
 * Supervision
 * Linking
 
@@ -65,12 +65,12 @@ Send an asynchronous message to the actor call `async`:
 [array.async removeAllObjects];
 ```
 
-### Subscribing to messages from other actors
+### Subscribing to notifications from other actors
 
-To subscribe to a broadcasted message set the message name a selector which takes the message's payload as an argument:
+To subscribe to a broadcasted notification set the notification name a selector which takes the notification's payload as an argument:
 
 ```objc
-[worker subscribe:@"message" selector:@selector(handler:)];
+[worker subscribe:@"notification" selector:@selector(handler:)];
 
 - (void)handler:(NSNumber *)number
 {
@@ -78,27 +78,21 @@ To subscribe to a broadcasted message set the message name a selector which take
 }
 ```
 
-To subscribe to a specified actor also pass its instance:
+### Publishing notifications to other actors
+
+Publish a notification with a payload:
 
 ```objc
-[worker subscribeToActor:anotherActor messageName:@"anotherMessage" selector:@selector(handler:)];
+[array publish:@"notification" payload:@5];
 ```
 
-### Publishing messages to other actors
-
-Publish a message with a payload:
+To unsibscribe from a notification:
 
 ```objc
-[array publish:@"message" payload:@5];
+[worker unsubscribe:@"notification"];
 ```
 
-To unsibscribe from a message:
-
-```objc
-[worker unsubscribe:@"message"];
-```
-
-Before destroying an actor you should unsubscribe from all messages.
+Before destroying an actor you should unsubscribe from all notification.
 
 ### Actor Pools
 
@@ -124,8 +118,8 @@ You can send messages to the pool:
 Same goes for subscriptions:
 
 ```objc
-[pool subscribe:@"messageToWorkers" selector:@selector(handler:)];
-[pool unsubscribe:@"messageToWorkers"];
+[pool subscribe:@"notificationToWorkers" selector:@selector(handler:)];
+[pool unsubscribe:@"notificationToWorkers"];
 ```
 
 The handler will be executed on an available actor in the pool.

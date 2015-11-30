@@ -3,6 +3,7 @@
 ## 0.16.0
 
 - re-add supervision and linking via subspec `Supervision`
+- simplified pub-sub API
 
 ## 0.15.0
 

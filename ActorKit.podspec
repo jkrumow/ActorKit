@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
                        * Actor Pools
                        * Synchronous and asynchronous invocations
                        * Promises
-                       * Message subscription and publication
+                       * Notification subscription and publication
                        * Supervision
                        * Linking
                        DESC
