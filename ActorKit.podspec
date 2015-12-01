@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Supervision' do |supervision|
     supervision.source_files = 'Pod/Supervision'
+    supervision.dependency 'ActorKit/Core'
   end
 
   s.subspec 'Promises' do |promises|
