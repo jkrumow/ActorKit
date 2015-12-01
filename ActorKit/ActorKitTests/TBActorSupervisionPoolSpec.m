@@ -237,10 +237,10 @@ describe(@"TBActorSupervisionPool", ^{
             [master subscribe:@"signal" selector:@selector(handlerRaw:)];
             [master crashWithError:nil];
             
-            TestActor *newMaster = actors[@"master"];
-            expect(newMaster).notTo.beNil;
-            expect(newMaster).notTo.equal(master);
-            expect(newMaster.subscriptions.allKeys).to.haveACountOf(2);
+            master = actors[@"master"];
+            expect(master.subscriptions.allKeys).to.haveACountOf(2);
+            expect(master.subscriptions.allKeys).to.contain(@"notification");
+            expect(master.subscriptions.allKeys).to.contain(@"signal");
         });
         
         it(@"re-creates an actor pool with subscriptions", ^{
@@ -255,9 +255,13 @@ describe(@"TBActorSupervisionPool", ^{
             [pool.actors.anyObject subscribe:@"signal" selector:@selector(handlerRaw:)];
             [pool crashWithError:nil];
             
-            TBActorPool *newPool = actors[@"pool"];
-            expect(newPool.subscriptions.allKeys).to.haveACountOf(1);
-            expect(newPool.actors.anyObject.subscriptions.allKeys).to.haveACountOf(1);
+            pool = actors[@"pool"];
+            TestActor *worker = pool.actors.anyObject;
+            
+            expect(pool.subscriptions.allKeys).to.haveACountOf(1);
+            expect(pool.subscriptions.allKeys).to.contain(@"notification");
+            expect(worker.subscriptions.allKeys).to.haveACountOf(1);
+            expect(worker.subscriptions.allKeys).to.contain(@"signal");
         });
         
         it(@"re-creates a pooled actor instance with subscriptions", ^{
@@ -266,17 +270,20 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *workerOne = pool.actors.anyObject;
+            TestActor *worker = pool.actors.anyObject;
             
             // Create state and crash
             [pool subscribe:@"notification" selector:@selector(handler:)];
-            [workerOne subscribe:@"signal" selector:@selector(handlerRaw:)];
-            [workerOne crashWithError:nil];
+            [worker subscribe:@"signal" selector:@selector(handlerRaw:)];
+            [worker crashWithError:nil];
             
             pool = actors[@"pool"];
-            workerOne = pool.actors.anyObject;
+            worker = pool.actors.anyObject;
+            
             expect(pool.subscriptions.allKeys).to.haveACountOf(1);
-            expect(workerOne.subscriptions.allKeys).to.haveACountOf(1);
+            expect(pool.subscriptions.allKeys).to.contain(@"notification");
+            expect(worker.subscriptions.allKeys).to.haveACountOf(1);
+            expect(worker.subscriptions.allKeys).to.contain(@"signal");
         });
     });
     
