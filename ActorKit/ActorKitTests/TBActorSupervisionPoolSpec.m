@@ -224,6 +224,15 @@ describe(@"TBActorSupervisionPool", ^{
     
     describe(@"pubsub", ^{
     
+        afterEach(^{
+            [actors[@"master"] unsubscribe:@"notification"];
+            [actors[@"master"] unsubscribe:@"signal"];
+            [actors[@"pool"] unsubscribe:@"notification"];
+            
+            TBActorPool *pool = actors[@"pool"];
+            [pool.actors.anyObject unsubscribe:@"signal"];
+        });
+        
         it(@"re-creates an actor with subscriptions", ^{
             [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
                 *actor = [TestActor new];
@@ -249,6 +258,7 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
+            TestActor *worker = pool.actors.anyObject;
             
             // Create state and crash
             [pool subscribe:@"notification" selector:@selector(handler:)];
@@ -256,7 +266,7 @@ describe(@"TBActorSupervisionPool", ^{
             [pool crashWithError:nil];
             
             pool = actors[@"pool"];
-            TestActor *worker = pool.actors.anyObject;
+            worker = pool.actors.anyObject;
             
             expect(pool.subscriptions.allKeys).to.haveACountOf(1);
             expect(pool.subscriptions.allKeys).to.contain(@"notification");
