@@ -54,20 +54,20 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self.priv_actors.copy;
 }
 
-- (void)suspend
+- (void)tbak_suspend
 {
-    [super suspend];
+    [super tbak_suspend];
     for (NSObject *actor in self.actors) {
         actor.actorQueue.suspended = YES;
     }
 }
 
-- (void)resume
+- (void)tbak_resume
 {
     for (NSObject *actor in self.actors) {
         actor.actorQueue.suspended = NO;
     }
-    [super resume];
+    [super tbak_resume];
 }
 
 #pragma mark - Invocatons

@@ -63,32 +63,32 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)recreateActor
 {
     NSObject *actor = self.actor;
-    [self.actor suspend];
+    [self.actor tbak_suspend];
     [self createActor];
     [self transferMailboxFromActor:actor toActor:self.actor];
     [self transferSubscriptionsFromActor:actor toActor:self.actor];
-    [self.actor resume];
+    [self.actor tbak_resume];
 }
 
 - (void)recreatePool
 {
     TBActorPool *pool = (TBActorPool *)self.actor;
-    [pool suspend];
+    [pool tbak_suspend];
     [self createActor];
     TBActorPool *newPool = (TBActorPool *)self.actor;
     [self transferMailboxesFromPool:pool toPool:newPool];
     [self transferSubscriptionsFromPool:pool toPool:newPool];
-    [newPool resume];
+    [newPool tbak_resume];
 }
 
 - (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
 {
-    [pool suspend];
+    [pool tbak_suspend];
     [pool removeActor:actor];
     NSObject *newActor = [pool createActor];
     [self transferMailboxFromActor:actor toActor:newActor];
     [self transferSubscriptionsFromActor:actor toActor:newActor];
-    [pool resume];
+    [pool tbak_resume];
 }
 
 - (void)transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor

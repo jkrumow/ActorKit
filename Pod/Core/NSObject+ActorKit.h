@@ -53,12 +53,12 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 /**
  *  Suspends the actorQueue.
  */
-- (void)suspend;
+- (void)tbak_suspend;
 
 /**
  *  Resumes the actorQueue.
  */
-- (void)resume;
+- (void)tbak_resume;
 
 /**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.

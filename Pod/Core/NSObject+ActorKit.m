@@ -84,12 +84,12 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
     objc_setAssociatedObject(self, @selector(loadCount), loadCount, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)suspend
+- (void)tbak_suspend
 {
     self.actorQueue.suspended = YES;
 }
 
-- (void)resume
+- (void)tbak_resume
 {
     self.actorQueue.suspended = NO;
 }
