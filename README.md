@@ -177,10 +177,10 @@ To add an actor to a supervision pool define a creation block which instanciates
 ```objc
 TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 
-[actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
+[actors superviseWithId:@"master" creationBlock:^NSObject * {
     Worker *worker = [Worker new];
     worker.name = @"master";
-    *actor = worker;
+    return worker;
 }];
 ```
 

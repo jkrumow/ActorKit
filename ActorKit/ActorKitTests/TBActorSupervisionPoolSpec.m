@@ -42,8 +42,8 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     it(@"creates an actor with a given ID from a creation block", ^{
-        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-            *actor = [TestActor new];
+        [actors superviseWithId:@"master" creationBlock:^NSObject * {
+            return [TestActor new];
         }];
         
         TestActor *master = actors[@"master"];
@@ -55,8 +55,8 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     it(@"returns supervisors by given actor ids", ^{
-        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-            *actor = [TestActor new];
+        [actors superviseWithId:@"master" creationBlock:^NSObject * {
+            return [TestActor new];
         }];
         
         NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
@@ -67,8 +67,8 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     it(@"returns the id of a given actor instance", ^{
-        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-            *actor = [TestActor new];
+        [actors superviseWithId:@"master" creationBlock:^NSObject * {
+            return [TestActor new];
         }];
         TestActor *actor = actors[@"master"];
         TestActor *otherActor = [TestActor new];
@@ -78,20 +78,22 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     it(@"throws an exception when an Id is already in use", ^{
-        [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-            *actor = [TestActor new];
+        [actors superviseWithId:@"master" creationBlock:^NSObject * {
+            return [TestActor new];
         }];
         
         expect(^{
-            [actors superviseWithId:@"master" creationBlock:nil];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
         }).to.raise(TBAKException);
     });
     
     describe(@"crashes and recreation", ^{
         
         it(@"re-creates an actor after a crash", ^{
-            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
             
             TestActor *master = actors[@"master"];
@@ -107,8 +109,8 @@ describe(@"TBActorSupervisionPool", ^{
         
         it(@"executes remaining operations on the re-created actor instance after a crash", ^{
             
-            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
             
             TestActor *master = actors[@"master"];
@@ -139,8 +141,8 @@ describe(@"TBActorSupervisionPool", ^{
         
         it(@"re-creates a new actor pool after a crash", ^{
             
-            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:2 configuration:nil];
+            [actors superviseWithId:@"pool" creationBlock:^NSObject * {
+                return [TestActor poolWithSize:2 configuration:nil];
             }];
             
             TBActorPool *pool = actors[@"pool"];
@@ -181,8 +183,8 @@ describe(@"TBActorSupervisionPool", ^{
         
         it(@"executes remaining operations on the re-created pooled actor instance after a crash", ^{
             
-            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:2 configuration:nil];
+            [actors superviseWithId:@"pool" creationBlock:^NSObject * {
+                return [TestActor poolWithSize:2 configuration:nil];
             }];
             
             TBActorPool *pool = actors[@"pool"];
@@ -234,8 +236,8 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"re-creates an actor with subscriptions", ^{
-            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
             
             TestActor *master = actors[@"master"];
@@ -253,8 +255,8 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"re-creates an actor pool with subscriptions", ^{
-            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:1 configuration:nil];
+            [actors superviseWithId:@"pool" creationBlock:^NSObject * {
+                return [TestActor poolWithSize:1 configuration:nil];
             }];
             
             TBActorPool *pool = actors[@"pool"];
@@ -275,8 +277,8 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"re-creates a pooled actor instance with subscriptions", ^{
-            [actors superviseWithId:@"pool" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor poolWithSize:1 configuration:nil];
+            [actors superviseWithId:@"pool" creationBlock:^NSObject * {
+                return [TestActor poolWithSize:1 configuration:nil];
             }];
             
             TBActorPool *pool = actors[@"pool"];
@@ -300,17 +302,17 @@ describe(@"TBActorSupervisionPool", ^{
     describe(@"linking", ^{
         
         it(@"it recreates linked actors after simultanious crashes", ^{
-            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"child" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"otherChild" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"otherChild" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"child.child" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"child.child" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
             
             [actors linkActor:@"child" toParentActor:@"master"];
@@ -383,17 +385,17 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"throws an exception when linking actors causes circular references", ^{
-            [actors superviseWithId:@"master" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"child" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"otherChild" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"otherChild" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
-            [actors superviseWithId:@"child.child" creationBlock:^(NSObject **actor) {
-                *actor = [TestActor new];
+            [actors superviseWithId:@"child.child" creationBlock:^NSObject * {
+                return [TestActor new];
             }];
             
             [actors linkActor:@"child" toParentActor:@"master"];

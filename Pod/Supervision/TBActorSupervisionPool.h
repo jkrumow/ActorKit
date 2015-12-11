@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param Id            The ID of the actor to create.
  *  @param creationBlock The block to create the actor.
  */
-- (void)superviseWithId:(NSString *)Id creationBlock:(nullable TBActorCreationBlock)creationBlock;
+- (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock;
 
 /**
  *  Links two actors by their IDs. If the parent actor crashes, the given supervisor

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param actor A pointer to the actor to create.
  */
-typedef void (^TBActorCreationBlock)(NSObject * _Nonnull * _Nonnull actor);
+typedef NSObject * _Nonnull (^TBActorCreationBlock)(void);
 
 @class TBActorSupervisionPool;
 

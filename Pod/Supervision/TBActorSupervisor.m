@@ -50,8 +50,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)createActor
 {
-    NSObject *actor = nil;
-    self.creationBlock(&actor);
+    NSObject *actor = self.creationBlock();
     actor.supervisor = self;
     self.actor = actor;
     self.supervisionPool[self.Id] = actor;
