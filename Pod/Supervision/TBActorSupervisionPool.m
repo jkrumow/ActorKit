@@ -60,11 +60,7 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
     if (self.supervisors[Id]) {
         @throw [NSException tbak_supervisionDuplicateException:Id];
     }
-    TBActorSupervisor *supervisor = [[TBActorSupervisor alloc] initWithPool:self];
-    supervisor.Id = Id;
-    supervisor.creationBlock = creationBlock;
-    self.supervisors[Id] = supervisor;
-    [supervisor createActor];
+    self.supervisors[Id] = [[TBActorSupervisor alloc] initWithPool:self Id:Id creationBlock:creationBlock];
 }
 
 - (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId

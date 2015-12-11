@@ -36,26 +36,28 @@ typedef NSObject * _Nonnull (^TBActorCreationBlock)(void);
 /**
  *  The unique ID of the supervised actor.
  */
-@property (nonatomic) NSString *Id;
+@property (nonatomic, readonly) NSString *Id;
 
 /**
- *  THe block used to create the supervised actor.
+ *  The block used to create the supervised actor.
  */
-@property (nonatomic, copy, nullable) TBActorCreationBlock creationBlock;
+@property (nonatomic, copy, readonly) TBActorCreationBlock creationBlock;
 
 /**
  *  IDs of linked actors.
  */
-@property (nonatomic) NSMutableSet *links;
+@property (nonatomic, readonly) NSMutableSet *links;
 
 /**
  *  Initializes a supervisor with a given supervision pool instance.
  *
- *  @param pool The supervision pool
+ *  @param pool    The supervision pool
+ *  @param Id      The ID of the supervised actor
+ *  @creationBlock The block to create the supervised actor
  *
  *  @return The initialized supervisor instance.
  */
-- (instancetype)initWithPool:(TBActorSupervisionPool *)pool NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPool:(TBActorSupervisionPool *)pool Id:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Creates an actor and puts it under supervision.

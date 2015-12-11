@@ -22,26 +22,36 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (instancetype)init
 {
-    return [self initWithPool:[TBActorSupervisionPool new]];
+    return [self initWithPool:[TBActorSupervisionPool new] Id:@"" creationBlock:^NSObject * _Nonnull{
+        return nil;
+    }];
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems
 {
-    return [self initWithPool:[TBActorSupervisionPool new]];
+    return [self initWithPool:[TBActorSupervisionPool new] Id:@"" creationBlock:^NSObject * _Nonnull{
+        return nil;
+    }];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    return [self initWithPool:[TBActorSupervisionPool new]];
+    return [self initWithPool:[TBActorSupervisionPool new] Id:@"" creationBlock:^NSObject * _Nonnull{
+        return nil;
+    }];
 }
 
-- (instancetype)initWithPool:(TBActorSupervisionPool *)pool
+- (instancetype)initWithPool:(TBActorSupervisionPool *)pool Id:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
 {
     self = [super init];
     if (self) {
         self.actorQueue.name = TBAKActorSupervisorQueue;
         _supervisionPool = pool;
+        _Id = Id;
+        _creationBlock = creationBlock;
         _links = [NSMutableSet new];
+        
+        [self createActor];
     }
     return self;
 }
