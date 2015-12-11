@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  This block helps to create an actor.
  *
- *  @param actor A pointer to the actor to create.
+ *  @return The created actor.
  */
 typedef NSObject * _Nonnull (^TBActorCreationBlock)(void);
 
