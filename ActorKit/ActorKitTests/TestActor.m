@@ -110,7 +110,7 @@
 
 - (void)doCrash
 {
-    @throw [NSException exceptionWithName:@"foo" reason:@"bar" userInfo:nil];
+    @throw [NSException exceptionWithName:@"TestActorException" reason:@"doCrash" userInfo:nil];
 }
 
 - (double)_randomSleepInterval

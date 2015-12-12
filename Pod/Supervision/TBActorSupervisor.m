@@ -10,6 +10,7 @@
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKitSupervision.h"
 #import "TBActorPool.h"
+#import "NSError+ActorKit.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
 
@@ -160,6 +161,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
+    NSLog(@"Actor %p did crash with error: %@", actor, error.tbak_errorDescription);
     if ([actor isKindOfClass:[TBActorPool class]]) {
         [self recreatePool];
     } else {
@@ -169,6 +171,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
 {
+    NSLog(@"Actor %p in pool %p did crash with error: %@", actor, pool, error.tbak_errorDescription);
     [self recreateActor:actor inPool:pool];
 }
 

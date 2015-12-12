@@ -25,7 +25,9 @@ FOUNDATION_EXPORT NSString * const TBAKUnderlyingException;
  *
  *  @return The created NSError instance.
  */
-+ (instancetype)wrappingErrorForException:(NSException *)exception;
++ (instancetype)tbak_wrappingErrorForException:(NSException *)exception;
+
+- (NSString *)tbak_errorDescription;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -264,7 +264,7 @@ describe(@"TBActorSupervisionPool", ^{
             
             // Create state and crash
             [pool subscribe:@"notification" selector:@selector(handler:)];
-            [pool.actors.anyObject subscribe:@"signal" selector:@selector(handlerRaw:)];
+            [worker subscribe:@"signal" selector:@selector(handlerRaw:)];
             [pool crashWithError:nil];
             
             pool = actors[@"pool"];

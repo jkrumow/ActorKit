@@ -13,9 +13,18 @@ NSString * const TBAKUnderlyingException = @"underlyingException";
 
 @implementation NSError (ActorKit)
 
-+ (instancetype)wrappingErrorForException:(NSException *)exception
++ (instancetype)tbak_wrappingErrorForException:(NSException *)exception
 {
     return [NSError errorWithDomain:TBAKErrorDomain code:100 userInfo:@{TBAKUnderlyingException:exception}];
+}
+
+- (NSString *)tbak_errorDescription
+{
+    if (self.userInfo[TBAKUnderlyingException]) {
+        NSException *exception = self.userInfo[TBAKUnderlyingException];
+        return [NSString stringWithFormat:@"Exception in actor operation: %@, '%@', at: %@", exception.name, exception.reason, exception.callStackSymbols];
+    }
+    return self.localizedDescription;
 }
 
 @end

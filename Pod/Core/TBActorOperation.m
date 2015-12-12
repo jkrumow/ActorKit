@@ -40,8 +40,10 @@
         if ([self.invocation.target respondsToSelector:NSSelectorFromString(@"crashWithError:")]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [self.invocation.target performSelector:NSSelectorFromString(@"crashWithError:") withObject:[NSError wrappingErrorForException:exception]];
+            [self.invocation.target performSelector:NSSelectorFromString(@"crashWithError:") withObject:[NSError tbak_wrappingErrorForException:exception]];
 #pragma clang diagnostic pop
+        } else {
+            NSLog(@"Exception in actor operation: %@, '%@', at: %@", exception.name, exception.reason, exception.callStackSymbols);
         }
     }
 }
