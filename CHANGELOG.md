@@ -1,6 +1,6 @@
 # ActorKit CHANGELOG
 
-## 0.17.0
+## 0.20.0
 
 - re-throw exceptions when no supervisor was found
 
