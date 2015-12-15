@@ -24,7 +24,7 @@ NSString * const TBAKUnderlyingException = @"underlyingException";
         NSException *exception = self.userInfo[TBAKUnderlyingException];
         return [NSString stringWithFormat:@"Exception in actor operation: %@, '%@', at: %@", exception.name, exception.reason, exception.callStackSymbols];
     }
-    return self.localizedDescription;
+    return [NSString stringWithFormat:@"%@ %li %@", self.domain, (long)self.code, self.localizedDescription];
 }
 
 @end
