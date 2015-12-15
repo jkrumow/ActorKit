@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  This category extends TBActorPool with methods specific to supervision.
+ */
 @interface TBActorPool (ActorKitSupervision)
 
 /**

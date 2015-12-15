@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  This category extends NSException with methods to create supervision specific exception objects.
+ */
 @interface NSException (ActorKitSupervision)
 
 /**

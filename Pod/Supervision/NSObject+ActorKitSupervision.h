@@ -13,6 +13,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  This category extends NSObject with methods specific to supervision.
+ */
 @interface NSObject (ActorKitSupervision)
 
 /**
