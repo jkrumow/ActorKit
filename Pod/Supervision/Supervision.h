@@ -12,3 +12,4 @@
 #import "NSException+ActorKitSupervision.h"
 #import "NSObject+ActorKitSupervision.h"
 #import "TBActorPool+ActorKitSupervision.h"
+#import "TBActorOperation+Supervision.h"

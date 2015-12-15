@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.17.0
+
+- re-throw exceptions when no supervisor was found
+
 ## 0.16.0
 
 - re-add supervision and linking via subspec `Supervision`
