@@ -11,8 +11,10 @@
 
 @implementation TBActorOperation (Supervision)
 
-- (BOOL)handleCrash:(NSException *)exception forTarget:(NSObject *)target
+- (BOOL)handleCrash:(NSException *)exception forInvocation:(NSInvocation *)invocation
 {
+    NSObject *target = invocation.target;
+    
     if ([target respondsToSelector:NSSelectorFromString(@"supervisor")]) {
         
 #pragma clang diagnostic push
