@@ -8,6 +8,7 @@
 
 #import "TBActorPool+ActorKitSupervision.h"
 #import "NSObject+ActorKitSupervision.h"
+#import "NSObject+ActorKit.h"
 #import "TBActorSupervisor.h"
 
 @implementation TBActorPool (ActorKitSupervision)

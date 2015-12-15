@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-#import "NSObject+ActorKit.h"
-
 NS_ASSUME_NONNULL_BEGIN
+
+/**
+ *  A block to configure a pool of actors.
+ *
+ *  @param actor The actor instance to configure.
+ */
+typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 
 /**
  *  This class represents a pool of actor instances.

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
+#import "TBActorPool.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -16,14 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
-/**
- *  A block to configure a pool of actors.
- *
- *  @param actor The actor instance to configure.
- */
-typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
-
-@class TBActorPool;
+//@class TBActorPool;
 
 /**
  *  This category extends NSObject with actor model functionality.

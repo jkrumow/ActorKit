@@ -7,6 +7,7 @@
 //
 
 #import "TBActorOperation.h"
+#import "NSObject+ActorKit.h"
 #import "NSException+ActorKit.h"
 #import "NSError+ActorKit.h"
 
