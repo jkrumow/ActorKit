@@ -9,7 +9,6 @@
 #import "NSObject+ActorKit.h"
 #import "TBActorProxySync.h"
 #import "TBActorProxyAsync.h"
-#import "TBActorPool.h"
 
 NSUInteger const TBAKActorQueueMaxOperationCount = 1;
 NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";

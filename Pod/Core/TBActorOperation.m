@@ -7,7 +7,6 @@
 //
 
 #import "TBActorOperation.h"
-#import "NSObject+ActorKit.h"
 
 @implementation TBActorOperation
 

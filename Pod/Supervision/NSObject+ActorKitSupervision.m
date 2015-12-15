@@ -7,9 +7,7 @@
 //
 
 #import "NSObject+ActorKitSupervision.h"
-#import "NSObject+ActorKit.h"
 #import "TBActorPool+ActorKitSupervision.h"
-#import "TBActorSupervisor.h"
 
 @implementation NSObject (ActorKitSupervision)
 @dynamic supervisor;

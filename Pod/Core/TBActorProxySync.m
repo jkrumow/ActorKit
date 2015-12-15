@@ -9,7 +9,6 @@
 #import "TBActorProxySync.h"
 #import "NSObject+ActorKit.h"
 #import "TBActorOperation.h"
-#import "TBActorPool.h"
 
 @implementation TBActorProxySync
 

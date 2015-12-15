@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "TBActorSupervision.h"
+#import "NSObject+ActorKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

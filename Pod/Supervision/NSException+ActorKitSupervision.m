@@ -7,6 +7,7 @@
 //
 
 #import "NSException+ActorKitSupervision.h"
+#import "NSException+ActorKit.h"
 
 static NSString * const TBAKSupervisionDuplicateExceptionReason = @"Cannot supervise actor. ID %@ already in use.";
 static NSString * const TBAKSupervisionLinkExceptionReason = @"Linking %@ to %@ will cause circular references.";

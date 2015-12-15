@@ -7,11 +7,9 @@
 //
 
 #import "TBActorProxyBroadcast.h"
+#import "NSInvocation+ActorKit.h"
 #import "NSObject+ActorKit.h"
 #import "TBActorOperation.h"
-#import "NSException+ActorKit.h"
-#import "NSInvocation+ActorKit.h"
-#import "TBActorPool.h"
 
 @implementation TBActorProxyBroadcast
 

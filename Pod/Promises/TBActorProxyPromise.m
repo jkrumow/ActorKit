@@ -9,7 +9,6 @@
 #import <PromiseKit/PromiseKit.h>
 
 #import "TBActorProxyPromise.h"
-#import "TBActorPool.h"
 #import "NSInvocation+ActorKit.h"
 #import "NSObject+ActorKit.h"
 #import "TBActorOperation.h"

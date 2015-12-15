@@ -18,8 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 
-//@class TBActorPool;
-
 /**
  *  This category extends NSObject with actor model functionality.
  */
