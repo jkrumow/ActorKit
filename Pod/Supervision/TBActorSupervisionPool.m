@@ -85,12 +85,12 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
 
 - (id)objectForKeyedSubscript:(NSString *)key
 {
-    return [self.actors.sync objectForKey:key];
+    return (self.actors.sync)[key];
 }
 
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key
 {
-    [self.actors.sync setObject:obj forKey:key];
+    (self.actors.sync)[key] = obj;
 }
 
 @end

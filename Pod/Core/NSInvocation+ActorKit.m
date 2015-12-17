@@ -12,8 +12,8 @@
 
 - (id)tbak_copy
 {
-	NSInvocation *copy = [NSInvocation invocationWithMethodSignature:[self methodSignature]];
-	NSUInteger numberOfArguments = [[self methodSignature] numberOfArguments];
+	NSInvocation *copy = [NSInvocation invocationWithMethodSignature:self.methodSignature];
+	NSUInteger numberOfArguments = self.methodSignature.numberOfArguments;
 	
 	for (int i = 0; i < numberOfArguments; i++) {
 		char buffer[sizeof(intmax_t)];

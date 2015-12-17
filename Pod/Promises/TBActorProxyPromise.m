@@ -23,7 +23,7 @@
 {
     // Create invocation for message to be sent to the actor
     NSInvocation *forwardedInvocation = invocation.tbak_copy;
-    [forwardedInvocation setTarget:self.actor];
+    forwardedInvocation.target = self.actor;
     TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:forwardedInvocation];
     
     // Create promise wrapping the invocation operation.
@@ -39,7 +39,7 @@
     }];
     
     // Return promise back to original sender - change invocation selector to helper method
-    [invocation setSelector:@selector(_returnPromise)];
+    invocation.selector = @selector(_returnPromise);
     [invocation invoke];
 }
 

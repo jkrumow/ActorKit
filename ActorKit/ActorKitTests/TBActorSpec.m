@@ -127,7 +127,7 @@ describe(@"TBActor", ^{
         
         it(@"creates its operation queue lazily once", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                NSOperationQueue *queue = [actor actorQueue];
+                NSOperationQueue *queue = actor.actorQueue;
                 dispatch_sync(completionQueue, ^{
                     [results addObject:queue];
                 });

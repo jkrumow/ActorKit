@@ -29,7 +29,7 @@
     for (NSObject *actor in self.pool.actors) {
         
         NSInvocation *forwardInvocation = invocation.tbak_copy;
-        [forwardInvocation setTarget:actor];
+        forwardInvocation.target = actor;
         
         TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:forwardInvocation];
         operation.completionBlock = ^{

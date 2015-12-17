@@ -26,7 +26,7 @@
 
 - (void)setSymbol:(NSNumber *)symbol withCompletion:(void (^)(NSNumber *))completion
 {
-    [self setSymbol:symbol];
+    self.symbol = symbol;
     completion(symbol);
 }
 

@@ -14,7 +14,7 @@
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    [invocation setTarget:self.actor];
+    invocation.target = self.actor;
     
     TBActorOperation *operation = [[TBActorOperation alloc] initWithInvocation:invocation];
     [self.actor.actorQueue addOperations:@[operation] waitUntilFinished:YES];
