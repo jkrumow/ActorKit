@@ -10,7 +10,7 @@
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKitSupervision.h"
 #import "TBActorOperation+Supervision.h"
-#import "TBACtorOperation.h"
+#import "TBActorOperation.h"
 #import "NSError+ActorKit.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
