@@ -9,6 +9,8 @@
 #import "TBActorSupervisor.h"
 #import "TBActorSupervisionPool.h"
 #import "NSObject+ActorKitSupervision.h"
+#import "TBActorOperation+Supervision.h"
+#import "TBACtorOperation.h"
 #import "NSError+ActorKit.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
@@ -103,8 +105,8 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
     newActor.actorQueue = actor.actorQueue;
-    for (NSInvocationOperation *operation in newActor.actorQueue.operations) {
-        if (operation.isExecuting || operation.isCancelled || operation.isFinished) {
+    for (TBActorOperation *operation in newActor.actorQueue.operations) {
+        if (![operation isKindOfClass:TBActorOperation.class] || (operation.isExecuting || operation.isCancelled || operation.isFinished)) {
             continue;
         }
         operation.invocation.target = newActor;
