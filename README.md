@@ -196,7 +196,7 @@ Access the supervised actor by its id on the supervision pool:
 
 #### Recovering from Crashes
 
-Whenever an actor crashes it is re-created by its supervisor and will resume executing messages from its mailbox.
+Whenever an actor crashes it is re-created by its supervisor and will resume processing pending messages from its mailbox.
 
 **Special behavior for pools:**
 
@@ -219,6 +219,8 @@ You can also communicate a crash manually by calling `crashWithError:`:
 
 @end
 ```
+
+**Warning:** Scheduling your own operations on the actor queue directly is strongly discouraged since the supervision can not guarantee that this operations can be executed properly by the new actor instance.
 
 #### Linking Actors
 
