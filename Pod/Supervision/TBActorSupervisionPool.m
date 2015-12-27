@@ -43,12 +43,12 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
 
 - (NSString *)idForActor:(NSObject *)actor
 {
-    return [[self.actors allKeysForObject:actor] firstObject];
+    return [self.actors allKeysForObject:actor].firstObject;
 }
 
 - (NSArray *)supervisorsForIds:(NSSet *)Ids
 {
-    NSMutableArray *supervisors = [[self.supervisors objectsForKeys:[Ids allObjects]
+    NSMutableArray *supervisors = [[self.supervisors objectsForKeys:Ids.allObjects
                                                      notFoundMarker:[NSNull null]]
                                    mutableCopy];
     [supervisors removeObject:[NSNull null]];
