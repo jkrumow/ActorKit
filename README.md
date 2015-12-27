@@ -178,7 +178,7 @@ To add an actor to a supervision pool define a creation block which instanciates
 TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 
 [actors superviseWithId:@"master" creationBlock:^NSObject * {
-    Worker *worker = [Worker new];
+    Worker *worker = Worker.new;
     worker.name = @"master";
     return worker;
 }];
@@ -191,7 +191,7 @@ The creation block will be called whenever the actor has to be (re)created.
 Access the supervised actor by its id on the supervision pool:
 
 ```objc
-[[actors[@"master"] sync] doSomething];
+[actors[@"master"].sync doSomething];
 ```
 
 #### Recovering from Crashes
@@ -219,6 +219,7 @@ You can also communicate a crash manually by calling `crashWithError:`:
 
 @end
 ```
+**Attention:** Cocoa is not a framework which employs exceptions as a legitimate means to communicate errors. There are a lot of layers which prevent exceptions to bubble up the stack until they can be handled by the supervisor (GCD etc.). So be prepared for exceptions which still can crash the application.
 
 **Warning:** Scheduling your own operations on the actor queue directly is strongly discouraged since the supervision can not guarantee that this operations can be executed properly by the new actor instance.
 
