@@ -41,6 +41,13 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
                configuration:(nullable TBActorPoolConfigurationBlock)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
+ *  The size of the pool.
+ *
+ *  @return The size.
+ */
+- (NSUInteger)size;
+
+/**
  *  Creates a TBActorProxyBroadcast instance to handle the message sent to the pool.
  *
  *  @return The TBActorProxyBroadcast instance.

@@ -50,6 +50,11 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     [self.priv_actors makeObjectsPerformSelector:@selector(setPool:) withObject:nil];
 }
 
+- (NSUInteger)size
+{
+    return self.priv_actors.count;
+}
+
 - (NSSet *)actors
 {
     return self.priv_actors.copy;
@@ -58,14 +63,14 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 - (void)tbak_suspend
 {
     [super tbak_suspend];
-    for (NSObject *actor in self.actors) {
+    for (NSObject *actor in self.priv_actors) {
         actor.actorQueue.suspended = YES;
     }
 }
 
 - (void)tbak_resume
 {
-    for (NSObject *actor in self.actors) {
+    for (NSObject *actor in self.priv_actors) {
         actor.actorQueue.suspended = NO;
     }
     [super tbak_resume];
