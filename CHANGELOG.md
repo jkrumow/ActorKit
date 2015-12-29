@@ -3,6 +3,7 @@
 ## 0.20.0
 
 - re-throw exceptions when no supervisor was found
+- code cleanup and stability improvements
 
 ## 0.16.0
 
