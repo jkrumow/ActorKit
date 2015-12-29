@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  This class represents an operation to execute an NSInvocation on an actor's operation queue.
+ *  It catches exceptions and passes them on via the selector `tbak_handleCrash:(NSException *)exception forInvocation:(NSInvocation *)invocation` if a subtype or a category implements it.
  */
 @interface TBActorOperation : NSOperation
 

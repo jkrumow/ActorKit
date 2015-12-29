@@ -38,8 +38,8 @@
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if ([self respondsToSelector:NSSelectorFromString(@"handleCrash:forInvocation:")] &&
-            [self performSelector:NSSelectorFromString(@"handleCrash:forInvocation:")
+        if ([self respondsToSelector:NSSelectorFromString(@"tbak_handleCrash:forInvocation:")] &&
+            [self performSelector:NSSelectorFromString(@"tbak_handleCrash:forInvocation:")
                        withObject:exception
                        withObject:self.invocation]) {
                 return;

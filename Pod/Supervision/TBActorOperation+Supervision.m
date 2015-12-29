@@ -11,23 +11,20 @@
 
 @implementation TBActorOperation (Supervision)
 
-- (BOOL)handleCrash:(NSException *)exception forInvocation:(NSInvocation *)invocation
+- (BOOL)tbak_handleCrash:(NSException *)exception forInvocation:(NSInvocation *)invocation
 {
     NSObject *target = invocation.target;
     
-    if ([target respondsToSelector:NSSelectorFromString(@"supervisor")]) {
-        
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        
-        if ([target performSelector:NSSelectorFromString(@"supervisor")] ||
-            [target.pool performSelector:NSSelectorFromString(@"supervisor")]) {
+    if ([target respondsToSelector:NSSelectorFromString(@"supervisor")]) {
+        if ([target performSelector:NSSelectorFromString(@"supervisor")] || [target.pool performSelector:NSSelectorFromString(@"supervisor")]) {
             [target performSelector:NSSelectorFromString(@"crashWithError:") withObject:[NSError tbak_wrappingErrorForException:exception]];
             return YES;
         }
-        
-#pragma clang diagnostic pop
     }
+#pragma clang diagnostic pop
+    
     return NO;
 }
 
