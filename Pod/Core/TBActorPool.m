@@ -113,7 +113,9 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
                 actor = anActor;
             }
         }];
-        actor.loadCount = @(lowest + 1);
+        if (actor) {
+            actor.loadCount = @(actor.loadCount.unsignedIntegerValue + 1);
+        }
         return actor;
     }
 }
@@ -121,10 +123,9 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
 - (void)relinquishActor:(NSObject *)actor
 {
     @synchronized(_priv_actors) {
-        NSUInteger value = actor.loadCount.unsignedIntegerValue;
-        value -= 1;
-        MAX(0, value);
-        actor.loadCount = @(value);
+        if (actor.loadCount.unsignedIntegerValue > 0) {
+            actor.loadCount = @(actor.loadCount.unsignedIntegerValue - 1);
+        }
     }
 }
 
