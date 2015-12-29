@@ -15,7 +15,7 @@
 static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
-@property (nonatomic) NSMutableSet *priv_actors;
+@property (nonatomic) NSMutableArray *priv_actors;
 @property (nonatomic) Class klass;
 @property (nonatomic, copy) TBActorPoolConfigurationBlock configuration;
 @end
@@ -36,7 +36,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
         _klass = klass;
         _configuration = configuration;
         
-        _priv_actors = [NSMutableSet new];
+        _priv_actors = [NSMutableArray new];
         for (NSUInteger i=0; i < size; i++) {
             [self.priv_actors addObject:[self _createActor]];
         }
@@ -55,7 +55,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     return self.priv_actors.count;
 }
 
-- (NSSet *)actors
+- (NSArray *)actors
 {
     return self.priv_actors.copy;
 }
@@ -108,7 +108,7 @@ static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool
     @synchronized(_priv_actors) {
         __block NSObject *actor = nil;
         __block NSUInteger lowest = NSUIntegerMax;
-        [self.priv_actors enumerateObjectsUsingBlock:^(NSObject *anActor, BOOL *stop) {
+        [self.priv_actors enumerateObjectsUsingBlock:^(NSObject *anActor, NSUInteger idx, BOOL *stop) {
             if (anActor.loadCount.unsignedIntegerValue == 0) {
                 actor = anActor;
                 *stop = YES;

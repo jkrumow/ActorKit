@@ -25,7 +25,7 @@ typedef void (^TBActorPoolConfigurationBlock)(NSObject *actor);
 /**
  *  The actors in the pool.
  */
-@property (nonatomic, readonly) NSSet<__kindof NSObject *> *actors;
+@property (nonatomic, readonly) NSArray<__kindof NSObject *> *actors;
 
 /**
  *  Designated initializer for a pool with an array of actors.

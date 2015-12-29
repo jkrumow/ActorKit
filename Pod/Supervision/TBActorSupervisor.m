@@ -116,11 +116,9 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
 {
     [self transferMailboxFromActor:pool toActor:newPool];
-    NSArray *actors = pool.actors.allObjects;
-    NSArray *newActors = newPool.actors.allObjects;
-    for (NSUInteger index=0; index < actors.count; index++) {
-        NSObject *actor = actors[index];
-        NSObject *newActor = newActors[index];
+    for (NSUInteger index=0; index < pool.actors.count; index++) {
+        NSObject *actor = pool.actors[index];
+        NSObject *newActor = newPool.actors[index];
         [self transferMailboxFromActor:actor toActor:newActor];
     }
 }
@@ -139,11 +137,9 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)transferSubscriptionsFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
 {
     [self transferSubscriptionsFromActor:pool toActor:newPool];
-    NSArray *actors = pool.actors.allObjects;
-    NSArray *newActors = newPool.actors.allObjects;
-    for (NSUInteger index=0; index < actors.count; index++) {
-        NSObject *actor = actors[index];
-        NSObject *newActor = newActors[index];
+    for (NSUInteger index=0; index < pool.actors.count; index++) {
+        NSObject *actor = pool.actors[index];
+        NSObject *newActor = newPool.actors[index];
         [self transferSubscriptionsFromActor:actor toActor:newActor];
     }
 }

@@ -65,8 +65,8 @@ describe(@"TBActorPool", ^{
             expect(pool.actors.count).to.equal(2);
             expect(pool.size).to.equal(2);
 
-            actorOne = pool.actors.allObjects[0];
-            actorTwo = pool.actors.allObjects[1];
+            actorOne = pool.actors[0];
+            actorTwo = pool.actors[1];
             expect(actorOne).to.beInstanceOf([TestActor class]);
             expect(actorTwo).to.beInstanceOf([TestActor class]);
             expect(actorOne.uuid).to.equal(5);
@@ -81,8 +81,8 @@ describe(@"TBActorPool", ^{
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(5);
             }];
-            actorOne = pool.actors.allObjects[0];
-            actorTwo = pool.actors.allObjects[1];
+            actorOne = pool.actors[0];
+            actorTwo = pool.actors[1];
             otherActor = [TestActor new];
         });
         

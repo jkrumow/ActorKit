@@ -146,8 +146,8 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *workerOne = pool.actors.allObjects[0];
-            TestActor *workerTwo = pool.actors.allObjects[1];
+            TestActor *workerOne = pool.actors[0];
+            TestActor *workerTwo = pool.actors[1];
             
             NSLog(@"actors: %@", pool.actors);
             
@@ -188,8 +188,8 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *workerOne = pool.actors.allObjects[0];
-            TestActor *workerTwo = pool.actors.allObjects[1];
+            TestActor *workerOne = pool.actors[0];
+            TestActor *workerTwo = pool.actors[1];
             
             NSLog(@"actors: %@", pool.actors);
             
@@ -232,7 +232,7 @@ describe(@"TBActorSupervisionPool", ^{
             [actors[@"pool"] unsubscribe:@"notification"];
             
             TBActorPool *pool = actors[@"pool"];
-            [pool.actors.anyObject unsubscribe:@"signal"];
+            [pool.actors.firstObject unsubscribe:@"signal"];
         });
         
         it(@"re-creates an actor with subscriptions", ^{
@@ -260,7 +260,7 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *worker = pool.actors.anyObject;
+            TestActor *worker = pool.actors.firstObject;
             
             // Create state and crash
             [pool subscribe:@"notification" selector:@selector(handler:)];
@@ -268,7 +268,7 @@ describe(@"TBActorSupervisionPool", ^{
             [pool crashWithError:nil];
             
             pool = actors[@"pool"];
-            worker = pool.actors.anyObject;
+            worker = pool.actors.firstObject;
             
             expect(pool.subscriptions.allKeys).to.haveACountOf(1);
             expect(pool.subscriptions.allKeys).to.contain(@"notification");
@@ -282,7 +282,7 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TBActorPool *pool = actors[@"pool"];
-            TestActor *worker = pool.actors.anyObject;
+            TestActor *worker = pool.actors.firstObject;
             
             // Create state and crash
             [pool subscribe:@"notification" selector:@selector(handler:)];
@@ -290,7 +290,7 @@ describe(@"TBActorSupervisionPool", ^{
             [worker crashWithError:nil];
             
             pool = actors[@"pool"];
-            worker = pool.actors.anyObject;
+            worker = pool.actors.firstObject;
             
             expect(pool.subscriptions.allKeys).to.haveACountOf(1);
             expect(pool.subscriptions.allKeys).to.contain(@"notification");
