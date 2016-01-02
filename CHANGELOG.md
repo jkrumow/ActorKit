@@ -2,7 +2,7 @@
 
 ## 0.20.0
 
-- re-throw exceptions when no supervisor was found
+- re-throw exceptions when not under supervision
 - code cleanup and stability improvements
 
 ## 0.16.0
