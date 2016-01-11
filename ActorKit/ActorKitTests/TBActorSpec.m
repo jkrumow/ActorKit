@@ -106,7 +106,17 @@ describe(@"TBActor", ^{
             expect(actor.symbol).to.equal(@5);
         });
         
-        it(@"removes all subscription thwn unsibscribing", ^{
+        it(@"handles notifications from generic senders", ^{
+            [actor subscribe:@"notification" selector:@selector(handler:)];
+            
+            NSDictionary *userInfo = @{@"value":@5};
+            [NSNotificationCenter.defaultCenter postNotificationName:@"notification" object:nil userInfo:userInfo];
+            
+            NSDictionary *payload = (NSDictionary *)actor.symbol;
+            expect(payload).to.equal(userInfo);
+        });
+        
+        it(@"removes all subscriptions when unsubscribing", ^{
             [actor subscribe:@"notification" selector:@selector(handler:)];
             [actor subscribe:@"notification" selector:@selector(doSomething)];
             

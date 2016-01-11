@@ -125,9 +125,14 @@ NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
                                                       object:nil
                                                        queue:self.actorQueue
                                                   usingBlock:^(NSNotification *note) {
+                                                      
+                                                      id payload = note.userInfo[TBAKActorPayload];
+                                                      if (payload == nil) {
+                                                          payload = note.userInfo;
+                                                      }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                                                      [weakSelf performSelector:selector withObject:note.userInfo[TBAKActorPayload]];
+                                                          [weakSelf performSelector:selector withObject:payload];
 #pragma clang diagnostic pop
                                                   }];
 }

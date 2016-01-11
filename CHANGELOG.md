@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.21.0
+
+- handles regular NSNotification by passing the whole `userInfo` dictionary instead of only the `TBAKActorPayload`
+
 ## 0.20.0
 
 - re-throw exceptions when not under supervision
