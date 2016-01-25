@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 0.22.0
+
+- improved log output for crashes under supervision
+
 ## 0.21.0
 
 - handles regular NSNotification by passing the whole `userInfo` dictionary instead of only the `TBAKActorPayload`
