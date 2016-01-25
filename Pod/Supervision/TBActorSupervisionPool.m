@@ -41,6 +41,21 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
     return self;
 }
 
+- (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
+{
+    if (self.supervisors[Id]) {
+        @throw [NSException tbak_supervisionDuplicateException:Id];
+    }
+    self.supervisors[Id] = [[TBActorSupervisor alloc] initWithPool:self Id:Id creationBlock:creationBlock];
+}
+
+- (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId
+{
+    [self _validateLinkFrom:actorId to:parentActorId];
+    TBActorSupervisor *supervisor = self.supervisors[parentActorId];
+    [supervisor.links addObject:actorId];
+}
+
 - (NSString *)idForActor:(NSObject *)actor
 {
     return [self.actors allKeysForObject:actor].firstObject;
@@ -55,19 +70,12 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.
     return supervisors;
 }
 
-- (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock
+- (void)updateSupervisorsWithIds:(NSSet *)Ids
 {
-    if (self.supervisors[Id]) {
-        @throw [NSException tbak_supervisionDuplicateException:Id];
+    NSArray *supervisors = [self supervisorsForIds:Ids];
+    for (TBActorSupervisor *supervisor in supervisors) {
+        [supervisor.sync recreateActor];
     }
-    self.supervisors[Id] = [[TBActorSupervisor alloc] initWithPool:self Id:Id creationBlock:creationBlock];
-}
-
-- (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId
-{
-    [self _validateLinkFrom:actorId to:parentActorId];
-    TBActorSupervisor *supervisor = self.supervisors[parentActorId];
-    [supervisor.links addObject:actorId];
 }
 
 - (void)_validateLinkFrom:(NSString *)actorId to:(NSString *)parentActorId

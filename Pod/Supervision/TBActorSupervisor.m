@@ -62,10 +62,9 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)createActor
 {
-    NSObject *actor = self.creationBlock();
-    actor.supervisor = self;
-    self.actor = actor;
-    self.supervisionPool[self.Id] = actor;
+    _actor = self.creationBlock();
+    self.actor.supervisor = self;
+    self.supervisionPool[self.Id] = self.actor;
     [self _createLinkedActors];
 }
 
@@ -74,7 +73,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 - (void)recreateActor
 {
     NSObject *actor = self.actor;
-    [self.actor tbak_suspend];
+    [actor tbak_suspend];
     [self createActor];
     [self transferMailboxFromActor:actor toActor:self.actor];
     [self transferSubscriptionsFromActor:actor toActor:self.actor];
@@ -148,17 +147,16 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)_createLinkedActors
 {
-    NSArray *linkedSupervisors = [self.supervisionPool supervisorsForIds:self.links];
-    for (TBActorSupervisor *supervisor in linkedSupervisors) {
-        [supervisor.sync recreateActor];
-    }
+    [self.supervisionPool updateSupervisorsWithIds:self.links];
 }
 
 #pragma mark - TBActorSupervison
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
-    NSLog(@"Actor %p did crash with error: %@", actor, error.tbak_errorDescription);
+    NSLog(@"Actor '%@' <%p> did crash with error: %@",
+          [self.supervisionPool idForActor:actor], actor, error.tbak_errorDescription);
+    
     if ([actor isKindOfClass:[TBActorPool class]]) {
         [self recreatePool];
     } else {
@@ -168,7 +166,9 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
 
 - (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
 {
-    NSLog(@"Actor %p in pool %p did crash with error: %@", actor, pool, error.tbak_errorDescription);
+    NSLog(@"Actor <%p> in pool '%@' <%p> did crash with error: %@",
+          actor, [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
+    
     [self recreateActor:actor inPool:pool];
 }
 

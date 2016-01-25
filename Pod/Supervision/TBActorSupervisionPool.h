@@ -70,6 +70,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray *)supervisorsForIds:(NSSet *)Ids;
 
+/**
+ *  Tells supervisors to recreate their actors for a given set actor ids.
+ *
+ *  @param Ids A set of actor IDs.
+ */
+- (void)updateSupervisorsWithIds:(NSSet *)Ids;
+
 - (nullable id)objectForKeyedSubscript:(NSString *)key;
 - (void)setObject:(id)obj forKeyedSubscript:(NSString *)key;
 @end
