@@ -29,7 +29,7 @@
 		15A281231B73E76C0069A18B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		15DD52331BFFB68900E773C0 /* TBActorSupervisionPoolSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBActorSupervisionPoolSpec.m; sourceTree = "<group>"; };
 		3A323D28861E79BBBDD808C5 /* Pods_ActorKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ActorKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B5175FA1B74D03700C7E67B /* ActorKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ActorKit.podspec; path = ../ActorKit.podspec; sourceTree = "<group>"; };
+		3B5175FA1B74D03700C7E67B /* ActorKit.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; name = ActorKit.podspec; path = ../ActorKit.podspec; sourceTree = "<group>"; };
 		D9DF5FC9ABDBF034F8609FD7 /* Pods-ActorKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKitTests/Pods-ActorKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		DB3A3E28BFC2580A7DBE911D /* Pods-ActorKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActorKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActorKitTests/Pods-ActorKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */

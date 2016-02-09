@@ -16,11 +16,11 @@
 static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
 
 @interface TBActorSupervisor ()
-@property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
 @property (nonatomic) NSObject *actor;
 @end
 
 @implementation TBActorSupervisor
+@synthesize supervisionPool = _supervisionPool;
 
 - (instancetype)init
 {

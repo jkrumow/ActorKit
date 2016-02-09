@@ -11,11 +11,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class TBActorPool;
+@class TBActorSupervisionPool;
 
 /**
  *  This protocol defines the interactor between an actor and a supervisor.
  */
 @protocol TBActorSupervision <NSObject>
+
+/**
+ *  The supervisionpool this supervisor belongs to.
+ */
+@property (nonatomic, weak) TBActorSupervisionPool *supervisionPool;
 
 /**
  *  Notifies the receiver that the specified actor has crashed with an error.
