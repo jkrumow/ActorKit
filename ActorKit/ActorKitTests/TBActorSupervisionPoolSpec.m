@@ -317,7 +317,7 @@ describe(@"TBActorSupervisionPool", ^{
             
             [actors linkActor:@"child" toParentActor:@"master"];
             [actors linkActor:@"otherChild" toParentActor:@"master"];
-            [actors linkActor:@"child.child" toParentActor:@"master"];
+            [actors linkActor:@"child.child" toParentActor:@"child"];
             
             TestActor *master = actors[@"master"];
             TestActor *child = actors[@"child"];
@@ -370,6 +370,13 @@ describe(@"TBActorSupervisionPool", ^{
             expect(newChild).notTo.equal(child);
             expect(newOtherChild).notTo.equal(otherChild);
             expect(newChildChild).notTo.equal(childChild);
+            
+            TBActorSupervisor *masterSupervisor = (TBActorSupervisor *)newMaster.supervisor;
+            expect(masterSupervisor.links).to.contain(@"child");
+            expect(masterSupervisor.links).to.contain(@"otherChild");
+            
+            TBActorSupervisor *childSupervisor = (TBActorSupervisor *)newChild.supervisor;
+            expect(childSupervisor.links).to.contain(@"child.child");
             
             NSLog(@"addresses: %@", addresses);
             NSLog(@"addresses2: %@", addresses2);

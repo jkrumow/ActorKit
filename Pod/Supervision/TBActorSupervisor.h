@@ -31,7 +31,7 @@ typedef NSObject * _Nonnull (^TBActorCreationBlock)(void);
  *  TBActorSupervisor *supervisor = ...
  *  NSObject *actor = supervisor[@"myActor"];
  */
-@interface TBActorSupervisor : NSMutableDictionary <TBActorSupervision>
+@interface TBActorSupervisor : NSObject <TBActorSupervision>
 
 /**
  *  The unique ID of the supervised actor.
