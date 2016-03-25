@@ -180,6 +180,7 @@ TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 [actors superviseWithId:@"master" creationBlock:^NSObject * {
     Worker *worker = Worker.new;
     worker.name = @"master";
+    worker.Id = @(123);
     return worker;
 }];
 ```
