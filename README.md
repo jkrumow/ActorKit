@@ -67,7 +67,7 @@ Send an asynchronous message to the actor call `async`:
 
 ### Subscribing to notifications from other actors
 
-To subscribe to a broadcasted notification set the notification name a selector which takes the notification's payload as an argument:
+To subscribe to a broadcasted notification set the notification name and a selector which takes the notification's payload as an argument:
 
 ```objc
 [worker subscribe:@"notification" selector:@selector(handler:)];
@@ -83,16 +83,16 @@ To subscribe to a broadcasted notification set the notification name a selector 
 Publish a notification with a payload:
 
 ```objc
-[array publish:@"notification" payload:@5];
+[self publish:@"notification" payload:@5];
 ```
 
-To unsibscribe from a notification:
+To unsubscribe from a notification:
 
 ```objc
 [worker unsubscribe:@"notification"];
 ```
 
-Before destroying an actor you should unsubscribe from all notification.
+Before destroying an actor you should unsubscribe from all notifications.
 
 ### Actor Pools
 
@@ -104,7 +104,7 @@ You can create an actor pool by invoking the method below on the class of your c
 TBActorPool *pool = [Worker poolWithSize:10 configuration:^(NSObject *actor) {
     Worker *worker = (Worker *)actor;
     worker.name = @"worker";
-    worker.id = @(123);
+    worker.Id = @(123);
 }];
 ```
 
@@ -170,9 +170,9 @@ end
 #import <ActorKit/Supervision.h>
 ```
 
-#### Supervising an Actor
+#### Supervised Actors
 
-To add an actor to a supervision pool define a creation block which instanciates it:
+You can create supervised actors by passing an id and a creation block to a supervision pool:
 
 ```objc
 TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
@@ -184,7 +184,7 @@ TBActorSupervisionPool *actors = [TBActorSupervisionPool new];
 }];
 ```
 
-The creation block will be called whenever the actor has to be (re)created.
+The creation block will be called whenever the actor needs to be (re)created.
 
 #### Accessing Actors Inside the Supervision Pool
 
@@ -194,14 +194,22 @@ Access the supervised actor by its id on the supervision pool:
 [actors[@"master"].sync doSomething];
 ```
 
+#### Linking Actors
+
+Links establish parent-child relationships between actors. Linked actors will be supervised depending on each other. If the parent actor crashes the child actor will be re-created as well.
+
+```objc
+[actors linkActor:@"child" toParentActor:@"master"];
+```
+
 #### Recovering from Crashes
 
-Whenever an actor crashes it is re-created by its supervisor and will resume processing pending messages from its mailbox.
+Whenever a supervised actor crashes it is re-created and will resume processing pending messages from its mailbox.
 
 **Special behavior for pools:**
 
 - when the pool actor itself crashes the whole pool is recreated completely and the content of all mailboxes will be processed by the new pool instance
-- when an actor inside the pool crashes only this instance is recreated and its mailbox content will be processed by its successor
+- when an actor inside the pool crashes only that instance is recreated and its mailbox content will be processed by its successor
 
 You can also communicate a crash manually by calling `crashWithError:`:
 
@@ -223,17 +231,9 @@ You can also communicate a crash manually by calling `crashWithError:`:
 
 **Warning:** Scheduling your own operations on the actor queue directly is strongly discouraged since the supervision can not guarantee that this operations can be executed properly by the new actor instance.
 
-#### Linking Actors
-
-Links establish parent-child relationships between actors. Linked actors will be supervised depending on each other. If the parent actor crashes the child actor will be re-created as well.
-
-```objc
-[actors linkActor:@"child" toParentActor:@"master"];
-```
-
 ## Architecture
 
-This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSOperation` objects. These three classes practically represent mailbox, thread, runloop and message.
+This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocation` and `NSOperation` objects. These classes represent mailboxes, threads and messages etc.
 
 ## Useful Theory on Actors
 
