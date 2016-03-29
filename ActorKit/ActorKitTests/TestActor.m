@@ -11,6 +11,15 @@
 @implementation TestActor
 @synthesize symbol = _symbol;
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        srand ((unsigned int)time(NULL));
+    }
+    return self;
+}
+
 - (void)setSymbol:(NSNumber *)symbol
 {
     _symbol = symbol;
@@ -115,7 +124,12 @@
 
 - (double)_randomSleepInterval
 {
-    return (rand() % 1000) / 1000.0;
+    return (randomNumberInRange(0, 1000) / 1000.0);
+}
+
+NSInteger randomNumberInRange(NSInteger from, NSInteger to)
+{
+    return to + rand() / (RAND_MAX / (from - to + 1) + 1);
 }
 
 @end
