@@ -11,6 +11,11 @@
 
 @implementation TBActorPool (ActorKitSupervision)
 
+- (void)crashWithError:(NSError *)error
+{
+    [self.supervisor.sync pool:self didCrashWithError:error];
+}
+
 - (void)crashWithActor:(NSObject *)actor error:(NSError *)error
 {
     [self.supervisor.sync actor:actor inPool:self didCrashWithError:error];

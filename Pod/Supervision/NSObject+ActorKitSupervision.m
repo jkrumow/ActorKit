@@ -26,9 +26,14 @@
 {
     if (self.pool) {
         [self.pool crashWithActor:self error:error];
-    } else if (self.supervisor) {
+    } else {
         [self.supervisor.sync actor:self didCrashWithError:error];
     }
+}
+
+- (BOOL)isSupervised
+{
+    return ((self.supervisor) || (self.pool.supervisor));
 }
 
 @end

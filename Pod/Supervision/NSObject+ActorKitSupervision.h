@@ -24,6 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) NSObject <TBActorSupervision> *supervisor;
 
 /**
+ *  Returns `YES` when the actor or its pool is supervised.
+ *
+ *  @return `YES` when supervised.
+ */
+- (BOOL)isSupervised;
+
+/**
  *  Notifies the supervisor about the crash using the TBActorSupervison protocol.
  *
  *  @param error The optional error.

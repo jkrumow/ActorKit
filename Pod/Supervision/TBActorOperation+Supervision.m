@@ -17,8 +17,8 @@
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    if ([target respondsToSelector:NSSelectorFromString(@"supervisor")]) {
-        if ([target performSelector:NSSelectorFromString(@"supervisor")] || [target.pool performSelector:NSSelectorFromString(@"supervisor")]) {
+    if ([target respondsToSelector:NSSelectorFromString(@"isSupervised")]) {
+        if ([target performSelector:NSSelectorFromString(@"isSupervised")]) {
             [target performSelector:NSSelectorFromString(@"crashWithError:") withObject:[NSError tbak_wrappingErrorForException:exception]];
             return YES;
         }

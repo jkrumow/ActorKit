@@ -157,11 +157,15 @@ static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBAct
     NSLog(@"Actor '%@' <%p> did crash with error: %@",
           [self.supervisionPool idForActor:actor], actor, error.tbak_errorDescription);
     
-    if ([actor isKindOfClass:[TBActorPool class]]) {
-        [self recreatePool];
-    } else {
-        [self recreateActor];
-    }
+    [self recreateActor];
+}
+
+- (void)pool:(TBActorPool *)pool didCrashWithError:(NSError *)error
+{
+    NSLog(@"Pool '%@' <%p> did crash with error: %@",
+          [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
+    
+    [self recreatePool];
 }
 
 - (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error

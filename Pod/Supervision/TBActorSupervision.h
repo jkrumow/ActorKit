@@ -32,6 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)actor:(NSObject *)actor didCrashWithError:(nullable NSError *)error;
 
 /**
+ *  Notifies the receiver that the specified pool has crashed with an error.
+ *
+ *  @param pool The pool which has crashed.
+ *  @param error The error describing the crash.
+ */
+- (void)pool:(TBActorPool *)pool didCrashWithError:(nullable NSError *)error;
+
+/**
  *  Notifies the receiver that the specified actor has crashed with an error.
  *
  *  @param actor The actor which has crashed.
