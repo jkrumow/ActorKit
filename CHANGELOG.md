@@ -1,5 +1,14 @@
 # ActorKit CHANGELOG
 
+## 0.30.0
+
+- cleaned up supervision code
+
+## 0.25.0
+
+- cleaned up supervision code
+- improved tests
+
 ## 0.22.0
 
 - improved log output for crashes under supervision
