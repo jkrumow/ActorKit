@@ -2,6 +2,7 @@
 
 ## 0.30.0
 
+- promise sub spec supports all four platforms now
 - cleaned up supervision code
 
 ## 0.25.0
