@@ -11,8 +11,8 @@
 #import "TBActorProxyAsync.h"
 
 NSUInteger const TBAKActorQueueMaxOperationCount = 1;
-NSString * const TBAKActorQueue = @"com.tarbrain.ActorKit.ActorQueue";
-NSString * const TBAKActorPayload = @"com.tarbrain.ActorKit.ActorPayload";
+NSString * const TBAKActorQueue = @"com.jkrumow.ActorKit.ActorQueue";
+NSString * const TBAKActorPayload = @"com.jkrumow.ActorKit.ActorPayload";
 
 @implementation NSObject (ActorKit)
 @dynamic actorQueue;

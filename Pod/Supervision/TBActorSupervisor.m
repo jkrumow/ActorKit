@@ -13,7 +13,7 @@
 #import "TBActorOperation.h"
 #import "NSError+ActorKit.h"
 
-static NSString * const TBAKActorSupervisorQueue = @"com.tarbrain.ActorKit.TBActorSupervisor";
+static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActorSupervisor";
 
 @interface TBActorSupervisor ()
 @property (nonatomic) NSObject *actor;

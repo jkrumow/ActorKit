@@ -10,7 +10,7 @@
 #import "NSObject+ActorKit.h"
 #import "NSException+ActorKitSupervision.h"
 
-static NSString * const TBAKActorSupervisionPoolQueue = @"com.tarbrain.ActorKit.TBActorSupervisionPool";
+static NSString * const TBAKActorSupervisionPoolQueue = @"com.jkrumow.ActorKit.TBActorSupervisionPool";
 
 @interface TBActorSupervisionPool ()
 @property (nonatomic) NSMutableDictionary *actors;

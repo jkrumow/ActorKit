@@ -12,7 +12,7 @@
 #import "TBActorProxyAsync.h"
 #import "TBActorProxyBroadcast.h"
 
-static NSString * const TBAKActorPoolQueue = @"com.tarbrain.ActorKit.TBActorPool";
+static NSString * const TBAKActorPoolQueue = @"com.jkrumow.ActorKit.TBActorPool";
 
 @interface TBActorPool ()
 @property (nonatomic) NSMutableArray *priv_actors;

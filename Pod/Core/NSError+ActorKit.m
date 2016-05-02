@@ -8,7 +8,7 @@
 
 #import "NSError+ActorKit.h"
 
-NSString * const TBAKErrorDomain = @"com.tarbrain.ActorKit";
+NSString * const TBAKErrorDomain = @"com.jkrumow.ActorKit";
 NSString * const TBAKUnderlyingException = @"underlyingException";
 
 @implementation NSError (ActorKit)
