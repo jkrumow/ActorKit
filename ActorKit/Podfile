@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 use_frameworks!
 
-target 'ActorKitTests', :exclusive => true do
+target 'ActorKitTests' do
   pod 'ActorKit', :path => '../'
   pod 'ActorKit/Supervision', :path => '../'
   pod 'ActorKit/Promises', :path => '../'
