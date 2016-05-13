@@ -20,11 +20,6 @@ task :test do
   run_tests
 end
 
-desc "Generate coverage report"
-task :coverage do
-  run_coverage
-end
-
 task :default => [:build, :test]
 
 private
@@ -43,8 +38,4 @@ end
 
 def run_xctool(command, workspace, scheme, destination, sdk)
     sh("xctool #{command} -workspace #{workspace} -scheme #{scheme} -sdk #{sdk} -destination '#{destination}' ONLY_ACTIVE_ARCH=NO")
-end
-
-def run_coverage
-  sh("")
 end

@@ -4,7 +4,6 @@
 [![License](https://img.shields.io/cocoapods/l/ActorKit.svg?style=flat)](http://cocoadocs.org/docsets/ActorKit)
 [![Platform](https://img.shields.io/cocoapods/p/ActorKit.svg?style=flat)](http://cocoadocs.org/docsets/ActorKit)
 [![CI Status](http://img.shields.io/travis/jkrumow/ActorKit.svg?style=flat)](https://travis-ci.org/jkrumow/ActorKit)
-[![Coverage Status](https://img.shields.io/coveralls/jkrumow/ActorKit/master.svg?style=flat)](https://coveralls.io/r/jkrumow/ActorKit)
 
 A lightweight actor framework in Objective-C.
 
