@@ -37,5 +37,5 @@ def run_tests
 end
 
 def run_xctool(command, workspace, scheme, destination, sdk)
-    sh("xctool #{command} -workspace #{workspace} -scheme #{scheme} -sdk #{sdk} -destination '#{destination}' ONLY_ACTIVE_ARCH=NO")
+  sh("xctool #{command} -workspace #{workspace} -scheme #{scheme} -sdk #{sdk} -destination '#{destination}' ONLY_ACTIVE_ARCH=NO")
 end
