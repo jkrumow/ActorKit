@@ -1,5 +1,13 @@
 # ActorKit CHANGELOG
 
+## 0.51.0
+
+- cleanup error messages
+
+## 0.50.0
+
+- updated project after change of github user name
+
 ## 0.30.0
 
 - promise sub spec supports all four platforms now
