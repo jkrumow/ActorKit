@@ -154,7 +154,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
 
 - (void)actor:(NSObject *)actor didCrashWithError:(NSError *)error
 {
-    NSLog(@"Actor '%@' <%p> did crash with error: %@",
+    NSLog(@"Actor '%@' <%p> crashed: %@",
           [self.supervisionPool idForActor:actor], actor, error.tbak_errorDescription);
     
     [self recreateActor];
@@ -162,7 +162,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
 
 - (void)pool:(TBActorPool *)pool didCrashWithError:(NSError *)error
 {
-    NSLog(@"Pool '%@' <%p> did crash with error: %@",
+    NSLog(@"Pool '%@' <%p> crashed: %@",
           [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
     
     [self recreatePool];
@@ -170,7 +170,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
 
 - (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
 {
-    NSLog(@"Actor <%p> in pool '%@' <%p> did crash with error: %@",
+    NSLog(@"Actor <%p> in pool '%@' <%p> crashed: %@",
           actor, [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
     
     [self recreateActor:actor inPool:pool];
