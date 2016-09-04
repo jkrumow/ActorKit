@@ -194,12 +194,26 @@ Access the supervised actor by its id on the supervision pool:
 [actors[@"master"].sync doSomething];
 ```
 
+#### Unsupervising Actors
+
+To remove an actor from a supervision pool:
+
+```objc
+[actors unsuperviseActorWithId:@"master"];
+```
+
 #### Linking Actors
 
-Links establish parent-child relationships between actors. Linked actors will be supervised depending on each other. If the parent actor crashes the child actor will be re-created as well.
+Links establish parent-child relationships between actors. Linked actors will be supervised depending on each other. If the parent actor crashes the child actor will be re-created as well. Whenever an actor is removed from the supervision pool its linked actors are removed as well.
 
 ```objc
 [actors linkActor:@"child" toParentActor:@"master"];
+```
+
+To remove a link:
+
+```objc
+[actors unlinkActor:@"child" fromParentActor:@"master"];
 ```
 
 #### Recovering from Crashes

@@ -11,6 +11,7 @@
 
 static NSString * const TBAKSupervisionDuplicateExceptionReason = @"Cannot supervise actor. ID %@ already in use.";
 static NSString * const TBAKSupervisionLinkExceptionReason = @"Linking %@ to %@ will cause circular references.";
+static NSString * const TBAKSupervisionUnlinkExceptionReason = @"Link between actor %@ and %@ does not exist.";
 
 @implementation NSException (ActorKitSupervision)
 
@@ -22,6 +23,11 @@ static NSString * const TBAKSupervisionLinkExceptionReason = @"Linking %@ to %@ 
 + (NSException *)tbak_supervisionLinkException:(NSString *)linkedActorId to:(NSString *)actorId
 {
     return [NSException exceptionWithName:TBAKException reason:[NSString stringWithFormat:TBAKSupervisionLinkExceptionReason, linkedActorId, actorId] userInfo:nil];
+}
+
++ (NSException *)tbak_supervisionUnlinkException:(NSString *)linkedActorId from:(NSString *)actorId
+{
+    return [NSException exceptionWithName:TBAKException reason:[NSString stringWithFormat:TBAKSupervisionUnlinkExceptionReason, linkedActorId, actorId] userInfo:nil];
 }
 
 @end

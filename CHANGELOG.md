@@ -1,5 +1,10 @@
 # ActorKit CHANGELOG
 
+## 0.55.0
+
+- add unsupervising to supervision subspec
+- add unlinking to supervision subspec
+
 ## 0.51.0
 
 - cleanup error messages

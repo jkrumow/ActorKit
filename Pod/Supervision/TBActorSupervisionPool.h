@@ -60,6 +60,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId;
 
 /**
+ *  Unlinks two linked actors by their IDs.
+ *
+ *  @exception Throws an exception when link does not exist.
+ *
+ *  @param actorId       The actor to unlink.
+ *  @param parentActorId The parent actor to unlink from.
+ */
+- (void)unlinkActor:(NSString *)actorId fromParentActor:(NSString *)parentActorId;
+
+/**
  *  Returns the ID of a given actor instance
  *
  *  @param actor The actor instance.
