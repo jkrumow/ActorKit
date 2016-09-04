@@ -70,7 +70,6 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     _actor = self.creationBlock();
     self.actor.supervisor = self;
     self.supervisionPool[self.Id] = self.actor;
-    [self _createLinkedActors];
 }
 
 - (void)recreateActor
@@ -78,6 +77,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     NSObject *actor = self.actor;
     [actor tbak_suspend];
     [self createActor];
+    [self _recreateLinkedActors];
     [self _transferMailboxFromActor:actor toActor:self.actor];
     [self _transferSubscriptionsFromActor:actor toActor:self.actor];
     [self.actor tbak_resume];
@@ -88,6 +88,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     TBActorPool *pool = (TBActorPool *)self.actor;
     [pool tbak_suspend];
     [self createActor];
+    [self _recreateLinkedActors];
     TBActorPool *newPool = (TBActorPool *)self.actor;
     [self _transferMailboxesFromPool:pool toPool:newPool];
     [self _transferSubscriptionsFromPool:pool toPool:newPool];
@@ -146,7 +147,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     }
 }
 
-- (void)_createLinkedActors
+- (void)_recreateLinkedActors
 {
     [self.supervisionPool updateSupervisorsWithIds:self.links];
 }
