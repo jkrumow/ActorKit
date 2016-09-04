@@ -68,40 +68,38 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     [self _createLinkedActors];
 }
 
-#pragma mark - Recreation
-
 - (void)recreateActor
 {
     NSObject *actor = self.actor;
     [actor tbak_suspend];
     [self createActor];
-    [self transferMailboxFromActor:actor toActor:self.actor];
-    [self transferSubscriptionsFromActor:actor toActor:self.actor];
+    [self _transferMailboxFromActor:actor toActor:self.actor];
+    [self _transferSubscriptionsFromActor:actor toActor:self.actor];
     [self.actor tbak_resume];
 }
 
-- (void)recreatePool
+- (void)_recreatePool
 {
     TBActorPool *pool = (TBActorPool *)self.actor;
     [pool tbak_suspend];
     [self createActor];
     TBActorPool *newPool = (TBActorPool *)self.actor;
-    [self transferMailboxesFromPool:pool toPool:newPool];
-    [self transferSubscriptionsFromPool:pool toPool:newPool];
+    [self _transferMailboxesFromPool:pool toPool:newPool];
+    [self _transferSubscriptionsFromPool:pool toPool:newPool];
     [newPool tbak_resume];
 }
 
-- (void)recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
+- (void)_recreateActor:(NSObject *)actor inPool:(TBActorPool *)pool
 {
     [pool tbak_suspend];
     [pool removeActor:actor];
     NSObject *newActor = [pool createActor];
-    [self transferMailboxFromActor:actor toActor:newActor];
-    [self transferSubscriptionsFromActor:actor toActor:newActor];
+    [self _transferMailboxFromActor:actor toActor:newActor];
+    [self _transferSubscriptionsFromActor:actor toActor:newActor];
     [pool tbak_resume];
 }
 
-- (void)transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
+- (void)_transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
     newActor.actorQueue = actor.actorQueue;
     for (TBActorOperation *operation in newActor.actorQueue.operations) {
@@ -112,17 +110,17 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     }
 }
 
-- (void)transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
+- (void)_transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
 {
-    [self transferMailboxFromActor:pool toActor:newPool];
+    [self _transferMailboxFromActor:pool toActor:newPool];
     for (NSUInteger index=0; index < pool.actors.count; index++) {
         NSObject *actor = pool.actors[index];
         NSObject *newActor = newPool.actors[index];
-        [self transferMailboxFromActor:actor toActor:newActor];
+        [self _transferMailboxFromActor:actor toActor:newActor];
     }
 }
 
-- (void)transferSubscriptionsFromActor:(NSObject *)actor toActor:(NSObject *)newActor
+- (void)_transferSubscriptionsFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
     for (NSString *notificationName in actor.subscriptions.allKeys) {
         for (NSValue *value in actor.subscriptions[notificationName]) {
@@ -133,17 +131,15 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     }
 }
 
-- (void)transferSubscriptionsFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
+- (void)_transferSubscriptionsFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
 {
-    [self transferSubscriptionsFromActor:pool toActor:newPool];
+    [self _transferSubscriptionsFromActor:pool toActor:newPool];
     for (NSUInteger index=0; index < pool.actors.count; index++) {
         NSObject *actor = pool.actors[index];
         NSObject *newActor = newPool.actors[index];
-        [self transferSubscriptionsFromActor:actor toActor:newActor];
+        [self _transferSubscriptionsFromActor:actor toActor:newActor];
     }
 }
-
-#pragma mark - Internal methods
 
 - (void)_createLinkedActors
 {
@@ -165,7 +161,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     NSLog(@"Pool '%@' <%p> crashed: %@",
           [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
     
-    [self recreatePool];
+    [self _recreatePool];
 }
 
 - (void)actor:(NSObject *)actor inPool:(TBActorPool *)pool didCrashWithError:(NSError *)error
@@ -173,7 +169,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     NSLog(@"Actor <%p> in pool '%@' <%p> crashed: %@",
           actor, [self.supervisionPool idForActor:pool], pool, error.tbak_errorDescription);
     
-    [self recreateActor:actor inPool:pool];
+    [self _recreateActor:actor inPool:pool];
 }
 
 @end
