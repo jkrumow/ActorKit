@@ -58,7 +58,12 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     return self;
 }
 
-#pragma mark - Creation
+- (void)dealloc
+{
+    [self _destroyActor];
+}
+
+#pragma mark - Actor lifecycle
 
 - (void)createActor
 {
@@ -144,6 +149,11 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
 - (void)_createLinkedActors
 {
     [self.supervisionPool updateSupervisorsWithIds:self.links];
+}
+
+- (void)_destroyActor
+{
+    
 }
 
 #pragma mark - TBActorSupervison

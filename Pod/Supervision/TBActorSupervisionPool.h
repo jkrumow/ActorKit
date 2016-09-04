@@ -42,6 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)superviseWithId:(NSString *)Id creationBlock:(TBActorCreationBlock)creationBlock;
 
 /**
+ *  Removes a specified actor and all linked actors from the supervision pool.
+ *
+ *  @param Id The ID of the actor to remove.
+ */
+- (void)unsuperviseActorWithId:(NSString *)Id;
+
+/**
  *  Links two actors by their IDs. If the parent actor crashes, the given supervisor
  *  will re-create the linked actors as well.
  *

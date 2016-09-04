@@ -414,6 +414,42 @@ describe(@"TBActorSupervisionPool", ^{
             }).to.raise(TBAKException);
         });
     });
+    
+    describe(@"unsupervision", ^{
+        
+        it(@"destroys supervisor and actor", ^{
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            
+            [actors unsuperviseActorWithId:@"master"];
+            
+            TestActor *master = actors[@"master"];
+            TestActor *child = actors[@"child"];
+            expect(master).to.beNil();
+            expect(child).notTo.beNil();
+        });
+        
+        it(@"destroys supervisor, actor and linked actors", ^{
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            [actors linkActor:@"child" toParentActor:@"master"];
+            
+            [actors unsuperviseActorWithId:@"master"];
+            
+            TestActor *master = actors[@"master"];
+            TestActor *child = actors[@"child"];
+            expect(master).to.beNil();
+            expect(child).to.beNil();
+        });
+    });
 });
 
 SpecEnd

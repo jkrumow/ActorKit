@@ -49,6 +49,12 @@ static NSString * const TBAKActorSupervisionPoolQueue = @"com.jkrumow.ActorKit.T
     self.supervisors[Id] = [[TBActorSupervisor alloc] initWithPool:self Id:Id creationBlock:creationBlock];
 }
 
+- (void)unsuperviseActorWithId:(NSString *)Id
+{
+    [self.actors removeObjectForKey:Id];
+    [self.supervisors removeObjectForKey:Id];
+}
+
 - (void)linkActor:(NSString *)actorId toParentActor:(NSString *)parentActorId
 {
     [self _validateLinkFrom:actorId to:parentActorId];
