@@ -105,6 +105,20 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
     [pool tbak_resume];
 }
 
+- (void)_recreateLinkedActors
+{
+    [self.supervisionPool updateSupervisorsWithIds:self.links];
+}
+
+- (void)_destroyActor
+{
+    for (NSString *link in self.links) {
+        [self.supervisionPool unsuperviseActorWithId:link];
+    }
+    [self.actor tbak_suspend];
+    [self _removeSubscriptionsFromActor:self.actor];
+}
+
 - (void)_transferMailboxFromActor:(NSObject *)actor toActor:(NSObject *)newActor
 {
     newActor.actorQueue = actor.actorQueue;
@@ -133,6 +147,13 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
             SEL selector = value.pointerValue;
             [newActor subscribe:notificationName selector:selector];
         }
+    }
+    [self _removeSubscriptionsFromActor:actor];
+}
+
+- (void)_removeSubscriptionsFromActor:(NSObject *)actor
+{
+    for (NSString *notificationName in actor.subscriptions.allKeys) {
         [actor unsubscribe:notificationName];
     }
 }
@@ -145,16 +166,6 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
         NSObject *newActor = newPool.actors[index];
         [self _transferSubscriptionsFromActor:actor toActor:newActor];
     }
-}
-
-- (void)_recreateLinkedActors
-{
-    [self.supervisionPool updateSupervisorsWithIds:self.links];
-}
-
-- (void)_destroyActor
-{
-    
 }
 
 #pragma mark - TBActorSupervison
