@@ -47,7 +47,7 @@ describe(@"TBActorSupervisionPool", ^{
         }];
         
         TestActor *master = actors[@"master"];
-        expect(master).notTo.beNil;
+        expect(master).notTo.beNil();
         
         master.uuid = @(1);
         NSNumber *uuid = [[actors[@"master"] sync] uuid];
@@ -74,7 +74,7 @@ describe(@"TBActorSupervisionPool", ^{
         TestActor *otherActor = [TestActor new];
         
         expect([actors idForActor:actor]).to.equal(@"master");
-        expect([actors idForActor:otherActor]).to.beNil;
+        expect([actors idForActor:otherActor]).to.beNil();
     });
     
     it(@"throws an exception when an Id is already in use", ^{
@@ -97,13 +97,13 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TestActor *master = actors[@"master"];
-            expect(master).notTo.beNil;
+            expect(master).notTo.beNil();
             
             // Create state and crash
             [master crashWithError:nil];
             
             TestActor *newMaster = actors[@"master"];
-            expect(newMaster).notTo.beNil;
+            expect(newMaster).notTo.beNil();
             expect(newMaster).notTo.equal(master);
         });
         
@@ -241,7 +241,7 @@ describe(@"TBActorSupervisionPool", ^{
             }];
             
             TestActor *master = actors[@"master"];
-            expect(master).notTo.beNil;
+            expect(master).notTo.beNil();
             
             // Create state and crash
             [master subscribe:@"notification" selector:@selector(handler:)];
@@ -361,10 +361,10 @@ describe(@"TBActorSupervisionPool", ^{
             TestActor *newOtherChild = actors[@"otherChild"];
             TestActor *newChildChild = actors[@"child.child"];
             
-            expect(newMaster).notTo.beNil;
-            expect(newChild).notTo.beNil;
-            expect(newOtherChild).notTo.beNil;
-            expect(newChildChild).notTo.beNil;
+            expect(newMaster).notTo.beNil();
+            expect(newChild).notTo.beNil();
+            expect(newOtherChild).notTo.beNil();
+            expect(newChildChild).notTo.beNil();
             
             expect(newMaster).notTo.equal(master);
             expect(newChild).notTo.equal(child);

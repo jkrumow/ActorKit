@@ -52,8 +52,8 @@ describe(@"TBActorPool", ^{
         
         it(@"creates an empty pool when not initialized using designated initializer.", ^{
             pool = [[TBActorPool alloc] init];
-            expect(pool).notTo.beNil;
-            expect(pool.actors).to.beNil;
+            expect(pool).notTo.beNil();
+            expect(pool.actors.count).to.equal(0);
         });
         
         it(@"creates a pool of actors of its own class and a pool configuration block.", ^{
@@ -61,10 +61,10 @@ describe(@"TBActorPool", ^{
                 TestActor *testActor = (TestActor *)actor;
                 testActor.uuid = @(5);
             }];
-
+            
             expect(pool.actors.count).to.equal(2);
             expect(pool.size).to.equal(2);
-
+            
             actorOne = pool.actors[0];
             actorTwo = pool.actors[1];
             expect(actorOne).to.beInstanceOf([TestActor class]);
@@ -100,9 +100,9 @@ describe(@"TBActorPool", ^{
                 
                 if (actorOne.symbol) {
                     expect(actorOne.symbol).to.equal(@123);
-                    expect(actorTwo.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.beNil();
                 } else {
-                    expect(actorOne.symbol).to.beNil;
+                    expect(actorOne.symbol).to.beNil();
                     expect(actorTwo.symbol).to.equal(@123);
                 }
             });
@@ -124,9 +124,9 @@ describe(@"TBActorPool", ^{
                 
                 if (actorOne.symbol) {
                     expect(actorOne.symbol).to.equal(456);
-                    expect(actorTwo.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.beNil();
                 } else {
-                    expect(actorOne.symbol).to.beNil;
+                    expect(actorOne.symbol).to.beNil();
                     expect(actorTwo.symbol).to.equal(@456);
                 }
             });
@@ -193,9 +193,9 @@ describe(@"TBActorPool", ^{
                 
                 if (actorOne.symbol) {
                     expect(actorOne.symbol).to.equal(8);
-                    expect(actorTwo.symbol).to.beNil;
+                    expect(actorTwo.symbol).to.beNil();
                 } else {
-                    expect(actorOne.symbol).to.beNil;
+                    expect(actorOne.symbol).to.beNil();
                     expect(actorTwo.symbol).to.equal(8);
                 }
             });

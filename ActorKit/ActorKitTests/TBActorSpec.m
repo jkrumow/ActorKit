@@ -121,7 +121,7 @@ describe(@"TBActor", ^{
             [actor subscribe:@"notification" selector:@selector(doSomething)];
             
             [actor unsubscribe:@"notification"];
-            expect(actor.subscriptions[@"notification"]).to.beNil;
+            expect(actor.subscriptions[@"notification"]).to.beNil();
         });
     });
     
