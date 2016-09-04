@@ -33,5 +33,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return The created exception.
  */
 + (NSException *)tbak_supervisionLinkException:(NSString *)linkedActorId to:(NSString *)actorId;
+
+/**
+ *  Thrown when unlinking is not possible.
+ *
+ *  @param linkedActorId The actor to unlink.
+ *  @param actorId       The actor to unlink from.
+ *
+ *  @return The created exception.
+ */
++ (NSException *)tbak_supervisionUnlinkException:(NSString *)linkedActorId from:(NSString *)actorId;
+
 @end
 NS_ASSUME_NONNULL_END

@@ -415,6 +415,38 @@ describe(@"TBActorSupervisionPool", ^{
         });
     });
     
+    describe(@"unlinking", ^{
+        
+        it(@"unlinks two linked actors", ^{
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            
+            [actors linkActor:@"child" toParentActor:@"master"];
+            [actors unlinkActor:@"child" fromParentActor:@"master"];
+            
+            TestActor *master = actors[@"master"];
+            TBActorSupervisor *masterSupervisor = (TBActorSupervisor *)master.supervisor;
+            expect(masterSupervisor.links).notTo.contain(@"child");
+        });
+        
+        it(@"throws an exception when actors are not linked", ^{
+            [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            [actors superviseWithId:@"child" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            
+            expect(^{
+                [actors unlinkActor:@"child" fromParentActor:@"master"];
+            }).to.raise(TBAKException);
+        });
+    });
+    
     describe(@"unsupervision", ^{
         
         it(@"destroys supervisor and actor", ^{
@@ -440,14 +472,21 @@ describe(@"TBActorSupervisionPool", ^{
             [actors superviseWithId:@"child" creationBlock:^NSObject * {
                 return [TestActor new];
             }];
+            [actors superviseWithId:@"child.child" creationBlock:^NSObject * {
+                return [TestActor new];
+            }];
+            
             [actors linkActor:@"child" toParentActor:@"master"];
+            [actors linkActor:@"child.child" toParentActor:@"child"];
             
             [actors unsuperviseActorWithId:@"master"];
             
             TestActor *master = actors[@"master"];
             TestActor *child = actors[@"child"];
+            TestActor *childChild = actors[@"child.child"];
             expect(master).to.beNil();
             expect(child).to.beNil();
+            expect(childChild).to.beNil();
         });
     });
 });
