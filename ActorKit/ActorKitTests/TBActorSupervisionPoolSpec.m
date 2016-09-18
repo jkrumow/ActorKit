@@ -41,61 +41,58 @@ describe(@"TBActorSupervisionPool", ^{
         expect(instanceOne).to.equal(instanceTwo);
     });
     
-    it(@"creates an actor with a given ID from a creation block", ^{
-        [actors superviseWithId:@"master" creationBlock:^NSObject * {
-            return [TestActor new];
-        }];
+    describe(@"supervising actors", ^{
         
-        TestActor *master = actors[@"master"];
-        expect(master).notTo.beNil();
-        
-        master.uuid = @(1);
-        NSNumber *uuid = [[actors[@"master"] sync] uuid];
-        expect(uuid).to.equal(1);
-    });
-    
-    it(@"returns supervisors by given actor ids", ^{
-        [actors superviseWithId:@"master" creationBlock:^NSObject * {
-            return [TestActor new];
-        }];
-        
-        NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
-        expect(supervisors).to.haveACountOf(1);
-        
-        TBActorSupervisor *supervisor = supervisors.firstObject;
-        expect(supervisor.Id).to.equal(@"master");
-    });
-    
-    it(@"returns the id of a given actor instance", ^{
-        [actors superviseWithId:@"master" creationBlock:^NSObject * {
-            return [TestActor new];
-        }];
-        TestActor *actor = actors[@"master"];
-        TestActor *otherActor = [TestActor new];
-        
-        expect([actors idForActor:actor]).to.equal(@"master");
-        expect([actors idForActor:otherActor]).to.beNil();
-    });
-    
-    it(@"throws an exception when an Id is already in use", ^{
-        [actors superviseWithId:@"master" creationBlock:^NSObject * {
-            return [TestActor new];
-        }];
-        
-        expect(^{
+        beforeEach(^{
             [actors superviseWithId:@"master" creationBlock:^NSObject * {
                 return [TestActor new];
             }];
-        }).to.raise(TBAKException);
+        });
+        
+        it(@"creates an actor with a given ID from a creation block", ^{
+            TestActor *master = actors[@"master"];
+            expect(master).notTo.beNil();
+            
+            master.uuid = @(1);
+            NSNumber *uuid = [[actors[@"master"] sync] uuid];
+            expect(uuid).to.equal(1);
+        });
+        
+        it(@"returns supervisors by given actor ids", ^{
+            NSArray *supervisors = [actors supervisorsForIds:[NSSet setWithObjects:@"master", @"none", nil]];
+            expect(supervisors).to.haveACountOf(1);
+            
+            TBActorSupervisor *supervisor = supervisors.firstObject;
+            expect(supervisor.Id).to.equal(@"master");
+        });
+        
+        it(@"returns the id of a given actor instance", ^{
+            TestActor *actor = actors[@"master"];
+            TestActor *otherActor = [TestActor new];
+            
+            expect([actors idForActor:actor]).to.equal(@"master");
+            expect([actors idForActor:otherActor]).to.beNil();
+        });
+        
+        it(@"throws an exception when an Id is already in use", ^{
+            
+            expect(^{
+                [actors superviseWithId:@"master" creationBlock:^NSObject * {
+                    return [TestActor new];
+                }];
+            }).to.raise(TBAKException);
+        });
     });
     
     describe(@"crashes and recreation", ^{
         
-        it(@"re-creates an actor after a crash", ^{
+        beforeEach(^{
             [actors superviseWithId:@"master" creationBlock:^NSObject * {
                 return [TestActor new];
             }];
-            
+        });
+        
+        it(@"re-creates an actor after a crash", ^{
             TestActor *master = actors[@"master"];
             expect(master).notTo.beNil();
             
@@ -108,11 +105,6 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"executes remaining operations on the re-created actor instance after a crash", ^{
-            
-            [actors superviseWithId:@"master" creationBlock:^NSObject * {
-                return [TestActor new];
-            }];
-            
             TestActor *master = actors[@"master"];
             
             waitUntil(^(DoneCallback done) {
@@ -138,13 +130,17 @@ describe(@"TBActorSupervisionPool", ^{
             NSCountedSet *set = [NSCountedSet setWithArray:addresses];
             expect(set.count).to.equal(2);
         });
+    });
+    
+    describe(@"supervising pools", ^{
         
-        it(@"re-creates a new actor pool after a crash", ^{
-            
+        beforeEach(^{
             [actors superviseWithId:@"pool" creationBlock:^NSObject * {
                 return [TestActor poolWithSize:2 configuration:nil];
             }];
-            
+        });
+        
+        it(@"re-creates a new actor pool after a crash", ^{
             TBActorPool *pool = actors[@"pool"];
             TestActor *workerOne = pool.actors[0];
             TestActor *workerTwo = pool.actors[1];
@@ -182,11 +178,6 @@ describe(@"TBActorSupervisionPool", ^{
         });
         
         it(@"executes remaining operations on the re-created pooled actor instance after a crash", ^{
-            
-            [actors superviseWithId:@"pool" creationBlock:^NSObject * {
-                return [TestActor poolWithSize:2 configuration:nil];
-            }];
-            
             TBActorPool *pool = actors[@"pool"];
             TestActor *workerOne = pool.actors[0];
             TestActor *workerTwo = pool.actors[1];
@@ -225,7 +216,7 @@ describe(@"TBActorSupervisionPool", ^{
     });
     
     describe(@"pubsub", ^{
-    
+        
         afterEach(^{
             [actors[@"master"] unsubscribe:@"notification"];
             [actors[@"master"] unsubscribe:@"signal"];

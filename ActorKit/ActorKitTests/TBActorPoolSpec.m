@@ -93,8 +93,6 @@ describe(@"TBActorPool", ^{
             });
             
             it(@"dispatches invocations synchronously to an idle actor.", ^{
-                
-                
                 [pool.sync blockSomething];
                 [pool.sync setSymbol:@123];
                 

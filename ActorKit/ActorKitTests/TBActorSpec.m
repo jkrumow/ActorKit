@@ -149,7 +149,7 @@ describe(@"TBActor", ^{
         
         it(@"executes concurrent short synchronous invocations safely", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                NSNumber *uuid = [actor.sync returnSomethingBlocking];
+                NSNumber *uuid = [actor.sync returnSomething];
                 dispatch_sync(completionQueue, ^{
                     [results addObject:uuid];
                 });
@@ -159,7 +159,7 @@ describe(@"TBActor", ^{
         
         it(@"executes concurrent long synchronous invocations safely", ^{
             dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                NSNumber *uuid = [actor.sync returnSomething];
+                NSNumber *uuid = [actor.sync returnSomethingBlocking];
                 dispatch_sync(completionQueue, ^{
                     [results addObject:uuid];
                 });
@@ -168,21 +168,6 @@ describe(@"TBActor", ^{
         });
         
         it(@"executes concurrent short asynchronous invocations safely", ^{
-            waitUntil(^(DoneCallback done) {
-                dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    [actor.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
-                        dispatch_sync(completionQueue, ^{
-                            [results addObject:uuid];
-                            if (results.count == taskCount) {
-                                done();
-                            }
-                        });
-                    }];
-                });
-            });
-        });
-        
-        it(@"executes concurrent long asynchronous invocations safely", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
                     [actor.async returnSomethingWithCompletion:^(NSNumber *uuid) {
@@ -197,10 +182,25 @@ describe(@"TBActor", ^{
             });
         });
         
+        it(@"executes concurrent long asynchronous invocations safely", ^{
+            waitUntil(^(DoneCallback done) {
+                dispatch_apply(taskCount, testQueue, ^(size_t index) {
+                    [actor.async returnSomethingBlockingWithCompletion:^(NSNumber *uuid) {
+                        dispatch_sync(completionQueue, ^{
+                            [results addObject:uuid];
+                            if (results.count == taskCount) {
+                                done();
+                            }
+                        });
+                    }];
+                });
+            });
+        });
+        
         it(@"executes concurrent short promised invocations safely", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomethingBlocking];
+                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomething];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];
@@ -216,7 +216,7 @@ describe(@"TBActor", ^{
         it(@"executes concurrent long promised invocations safely", ^{
             waitUntil(^(DoneCallback done) {
                 dispatch_apply(taskCount, testQueue, ^(size_t index) {
-                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomething];
+                    AnyPromise *promise = (AnyPromise *)[actor.promise returnSomethingBlocking];
                     promise.then(^(NSNumber *uuid) {
                         dispatch_sync(completionQueue, ^{
                             [results addObject:uuid];
