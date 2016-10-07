@@ -38,6 +38,6 @@ Pod::Spec.new do |s|
   s.subspec 'Promises' do |promises|
     promises.source_files = 'Pod/Promises'
     promises.dependency 'ActorKit/Core'
-    promises.dependency 'PromiseKit/CorePromise', '~> 3.0'
+    promises.dependency 'PromiseKit/CorePromise', '~> 3.5'
   end
 end
