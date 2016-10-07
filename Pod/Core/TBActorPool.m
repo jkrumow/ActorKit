@@ -60,22 +60,6 @@ static NSString * const TBAKActorPoolQueue = @"com.jkrumow.ActorKit.TBActorPool"
     return self.priv_actors.copy;
 }
 
-- (void)tbak_suspend
-{
-    [super tbak_suspend];
-    for (NSObject *actor in self.priv_actors) {
-        actor.actorQueue.suspended = YES;
-    }
-}
-
-- (void)tbak_resume
-{
-    for (NSObject *actor in self.priv_actors) {
-        actor.actorQueue.suspended = NO;
-    }
-    [super tbak_resume];
-}
-
 #pragma mark - Invocatons
 
 - (id)broadcast

@@ -1,5 +1,5 @@
 //
-//  NSError+ActorKit.h
+//  NSError+ActorKitSupervision.h
 //  ActorKit
 //
 //  Created by Julian Krumow on 22.11.15.
@@ -16,7 +16,7 @@ FOUNDATION_EXPORT NSString * const TBAKUnderlyingException;
 /**
  *  This category extends NSError with ActorKit functionality.
  */
-@interface NSError (ActorKit)
+@interface NSError (ActorKitSupervision)
 
 /**
  *  Returns a wrapping error containing a given NSException object.
@@ -26,7 +26,12 @@ FOUNDATION_EXPORT NSString * const TBAKUnderlyingException;
  *  @return The created NSError instance.
  */
 + (instancetype)tbak_wrappingErrorForException:(NSException *)exception;
-
+    
+/**
+ *  Extracts the description of an underlying exception.
+ *
+ *  @return An NSString containing the description.
+ */
 - (NSString *)tbak_errorDescription;
 
 @end

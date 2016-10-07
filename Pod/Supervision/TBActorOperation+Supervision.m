@@ -7,7 +7,7 @@
 //
 
 #import "TBActorOperation+Supervision.h"
-#import "NSError+ActorKit.h"
+#import "NSError+ActorKitSupervision.h"
 
 @implementation TBActorOperation (Supervision)
 

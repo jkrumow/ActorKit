@@ -11,7 +11,7 @@
 #import "NSObject+ActorKitSupervision.h"
 #import "TBActorOperation+Supervision.h"
 #import "TBActorOperation.h"
-#import "NSError+ActorKit.h"
+#import "NSError+ActorKitSupervision.h"
 
 static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActorSupervisor";
 

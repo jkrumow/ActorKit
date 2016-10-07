@@ -24,6 +24,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) NSObject <TBActorSupervision> *supervisor;
 
 /**
+ *  Suspends the actorQueue.
+ */
+- (void)tbak_suspend;
+    
+/**
+ *  Resumes the actorQueue.
+ */
+- (void)tbak_resume;
+    
+/**
  *  Returns `YES` when the actor or its pool is supervised.
  *
  *  @return `YES` when supervised.

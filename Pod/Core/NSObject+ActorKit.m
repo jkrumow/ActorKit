@@ -83,16 +83,6 @@ NSString * const TBAKActorPayload = @"com.jkrumow.ActorKit.ActorPayload";
     objc_setAssociatedObject(self, @selector(loadCount), loadCount, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)tbak_suspend
-{
-    self.actorQueue.suspended = YES;
-}
-
-- (void)tbak_resume
-{
-    self.actorQueue.suspended = NO;
-}
-
 #pragma mark - Invocatons
 
 - (id)sync

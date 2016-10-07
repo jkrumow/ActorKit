@@ -11,6 +11,21 @@
 
 @implementation TBActorPool (ActorKitSupervision)
 
+- (void)tbak_suspend
+{
+    [super tbak_suspend];
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = YES;
+    }
+}
+    
+- (void)tbak_resume
+{
+    for (NSObject *actor in self.actors) {
+        actor.actorQueue.suspended = NO;
+    }
+    [super tbak_resume];
+}
 - (void)crashWithError:(NSError *)error
 {
     [self.supervisor.sync pool:self didCrashWithError:error];

@@ -44,16 +44,6 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
 @property (nonatomic) NSNumber *loadCount;
 
 /**
- *  Suspends the actorQueue.
- */
-- (void)tbak_suspend;
-
-/**
- *  Resumes the actorQueue.
- */
-- (void)tbak_resume;
-
-/**
  *  Creates a TBActorProxySync instance to handle the message sent to the actor.
  *
  *  @return The TBActorProxySync instance.
