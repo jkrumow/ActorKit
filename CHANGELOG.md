@@ -1,8 +1,8 @@
 # ActorKit CHANGELOG
 
-## 0.6.0
+## 1.0.0
 
-- migrated to PromiseKit ~> 3.5
+- migrated to PromiseKit ~> 4.0
 - moved error handling to supervision subspec
 - moved queue suspension to supervision subspec
 
