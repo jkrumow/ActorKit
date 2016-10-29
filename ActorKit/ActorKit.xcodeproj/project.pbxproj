@@ -344,7 +344,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D35B8CF8B6A9C5122DAB6BA7 /* Pods-ActorKitTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
@@ -366,7 +365,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EFEA6A1257110662D1DA02DC /* Pods-ActorKitTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
