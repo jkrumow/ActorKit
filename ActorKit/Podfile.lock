@@ -16,7 +16,6 @@ DEPENDENCIES:
   - ActorKit/Promises (from `../`)
   - ActorKit/Supervision (from `../`)
   - Expecta
-  - PromiseKit/CorePromise (~> 4.0)
   - Specta
 
 EXTERNAL SOURCES:
@@ -29,6 +28,6 @@ SPEC CHECKSUMS:
   PromiseKit: 8e8ee39d33ff199d92a1a883b5396f6285be6c91
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: 51df3582da4c7682335664384725fe49170b1489
+PODFILE CHECKSUM: 67693e32405f421d0933f143bf17e9e82cb76aa3
 
 COCOAPODS: 1.1.1
