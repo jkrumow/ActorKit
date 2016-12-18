@@ -48,29 +48,16 @@ NSMutableArray *array = [NSMutableArray new];
 
 ### Sending Messages to Actors
 
-To send a synchronous message to the actor initiate the call with `sync`:
+To send a synchronous message to the actor precede the call with `sync`:
 
 ```objc
 BOOL success = [worker.sync doSomething];
 ```
 
-Send an asynchronous message to the actor call `async`:
+Send an asynchronous message to the actor use `async`:
 
 ```objc
 [array.async removeAllObjects];
-```
-
-### Subscribing to notifications from other actors
-
-To subscribe to a broadcasted notification set the notification name and a selector which takes the notification's payload as an argument:
-
-```objc
-[worker subscribe:@"notification" selector:@selector(handler:)];
-
-- (void)handler:(NSNumber *)number
-{
-    // ...
-}
 ```
 
 ### Publishing notifications to other actors
@@ -79,6 +66,19 @@ Publish a notification with a payload:
 
 ```objc
 [self publish:@"notification" payload:@5];
+```
+
+### Subscribing to notifications from other actors
+
+To subscribe to a notification set the notification name and a selector which takes the notification's payload as an argument:
+
+```objc
+[worker subscribe:@"notification" selector:@selector(handler:)];
+
+- (void)handler:(NSNumber *)number
+{
+    // ...
+}
 ```
 
 To unsubscribe from a notification:
@@ -93,7 +93,7 @@ Before destroying an actor you should unsubscribe from all notifications.
 
 The class `TBActorPool` is basically a proxy actor which mananges multiple actors of the same type. A message which is send to the pool will be forwarded to an actor inside the pool which has the lowest workload at the time the message is processed.
 
-You can create an actor pool by invoking the method below on the class of your coice. An actor instance will be created and passed into the configuration block for further initialization:
+You can create an actor pool by invoking the method below on the class of your choice. An actor instance will be created and passed into the configuration block for further initialization:
 
 ```objc
 TBActorPool *pool = [Worker poolWithSize:10 configuration:^(NSObject *actor) {
@@ -117,7 +117,7 @@ Same goes for subscriptions:
 [pool unsubscribe:@"notificationToWorkers"];
 ```
 
-The handler will be executed on an available actor in the pool.
+The handler will be executed by an available actor in the pool.
 
 #### Broadcasts
 
