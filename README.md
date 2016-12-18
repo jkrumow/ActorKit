@@ -247,7 +247,7 @@ This framework seeks for a very simple implementation of actors. It basically co
 
 ## Example Project
 
-To run the example project, clone the repo, and run `pod install` from the `ActorKit` directory first.
+To run the example project, clone the repo, and run `pod install` from the `./ActorKit` directory first.
 
 ## Useful Theory on Actors
 
