@@ -17,10 +17,6 @@ A lightweight actor framework in Objective-C.
 * Supervision
 * Linking
 
-## Example Project
-
-To run the example project, clone the repo, and run `pod install` from the `ActorKit` directory first.
-
 ## Requirements
 
 * iOS 8.0
@@ -248,6 +244,10 @@ You can also communicate a crash manually by calling `crashWithError:`:
 ## Architecture
 
 This framework seeks for a very simple implementation of actors. It basically consists of a category which lazily adds an `NSOperationQueue` to the `NSObject` which should work as an actor. Messages sent to the actor are forwarded by an `NSProxy` using `NSInvocation` and `NSOperation` objects. These classes represent mailboxes, threads and messages etc.
+
+## Example Project
+
+To run the example project, clone the repo, and run `pod install` from the `ActorKit` directory first.
 
 ## Useful Theory on Actors
 
