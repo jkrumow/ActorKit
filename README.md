@@ -22,7 +22,7 @@ A lightweight actor framework in Objective-C.
 * iOS 8.0
 * watchOS 2.0
 * tvOS 9.0
-* OS X 10.9
+* OS X 10.10
 
 ## Installation
 
