@@ -144,8 +144,8 @@ end
 Send a asynchronous message and receive a promise back:
 
 ```objc
-AnyPromise *promise = (AnyPromise *)[worker.promise returnSomethingBlocking];
-promise.then(^(id result) {
+((AnyPromise *)[worker.promise returnSomethingBlocking])
+.then(^(id result) {
     
     // ...
 });
