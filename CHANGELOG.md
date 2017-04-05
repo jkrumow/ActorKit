@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.0.1
+
+- corrected docs
+
 ## 1.0.0
 
 - migrated to PromiseKit ~> 4.0
