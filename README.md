@@ -37,14 +37,14 @@ pod 'ActorKit'
 
 Importing `<ActorKit/ActorKit.h>` provides you with the core functionality of the framework.
 
-### Creating an Actor
-
-Every subtype of `NSObject` can be turned into an actor:
+These objects are regular subtypes of `NSObject`:
 
 ```objc
 Worker *worker = [[Worker alloc] initWithName:@"Bee"];
 NSMutableArray *array = [NSMutableArray new];
 ```
+
+As soon as you start sending messages to them in the fashion described below they will turn into actors automatically. There is nothing else you have to do.
 
 ### Sending Messages to Actors
 
