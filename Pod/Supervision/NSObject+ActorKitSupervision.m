@@ -14,6 +14,9 @@
 
 - (NSObject<TBActorSupervision> *)supervisor
 {
+    if (self.pool) {
+        return self.pool.supervisor;
+    }
     return objc_getAssociatedObject(self, @selector(supervisor));
 }
 
