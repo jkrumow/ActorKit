@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.1.0
+
+- forward supervisor access to pool  when actor is pooled.
+
 ## 1.0.1
 
 - corrected docs
