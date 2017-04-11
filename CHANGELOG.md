@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.1.1
+
+- update load count when supervised actor is recreated
+
 ## 1.1.0
 
 - forward supervisor access to pool  when actor is pooled.
