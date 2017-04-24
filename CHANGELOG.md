@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.1.2
+
+- minor bugfixes
+
 ## 1.1.1
 
 - update load count when supervised actor is recreated

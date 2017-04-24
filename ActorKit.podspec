@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ActorKit"
-  s.version          = "1.1.1"
+  s.version          = "1.1.2"
   s.summary          = "A lightweight actor framework in Objective-C."
   s.description      = <<-DESC
                        Brings the actor model to Objective-C.
