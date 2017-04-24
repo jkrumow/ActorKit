@@ -102,9 +102,7 @@ static NSString * const TBAKActorPoolQueue = @"com.jkrumow.ActorKit.TBActorPool"
                 actor = anActor;
             }
         }];
-        if (actor) {
-            actor.loadCount = @(actor.loadCount.unsignedIntegerValue + 1);
-        }
+        actor.loadCount = @(actor.loadCount.unsignedIntegerValue + 1);
         return actor;
     }
 }
