@@ -8,7 +8,7 @@ PODS:
   - ActorKit/Supervision (1.1.2):
     - ActorKit/Core
   - Expecta (1.0.5)
-  - PromiseKit/CorePromise (4.1.7)
+  - PromiseKit/CorePromise (4.2.2)
   - Specta (1.0.6)
 
 DEPENDENCIES:
@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   ActorKit: a2e71ac40b7df5eaed9a094cd915311a8e0b84d1
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  PromiseKit: 779f2e41faf62d854e7593026ddbcb0bb5c5002d
+  PromiseKit: 00e8886881f151c7e573d06b437915b0bb2970ec
   Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
 
 PODFILE CHECKSUM: d1b12483f8f3755c58ab1e4d913eae840575e96f
