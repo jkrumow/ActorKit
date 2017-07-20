@@ -96,6 +96,16 @@ FOUNDATION_EXPORT NSString * const TBAKActorPayload;
  *  @return The created actor pool instance.
  */
 + (TBActorPool *)poolWithSize:(NSUInteger)size configuration:(nullable TBActorPoolConfigurationBlock)configuration;
+
+/**
+ *  Suspends the actorQueue.
+ */
+- (void)tbak_suspend;
+
+/**
+ *  Resumes the actorQueue.
+ */
+- (void)tbak_resume;
 @end
 
 NS_ASSUME_NONNULL_END

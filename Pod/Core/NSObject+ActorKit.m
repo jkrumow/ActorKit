@@ -150,4 +150,16 @@ NSString * const TBAKActorPayload = @"com.jkrumow.ActorKit.ActorPayload";
 {
     return [[TBActorPool alloc] initWithSize:size class:self configuration:configuration];
 }
+
+#pragma mark  - Queue
+
+- (void)tbak_suspend
+{
+    self.actorQueue.suspended = YES;
+}
+
+- (void)tbak_resume
+{
+    self.actorQueue.suspended = NO;
+}
 @end

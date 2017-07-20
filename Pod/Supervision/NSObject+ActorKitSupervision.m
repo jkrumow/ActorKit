@@ -24,16 +24,6 @@
 {
     objc_setAssociatedObject(self, @selector(supervisor), supervisor, OBJC_ASSOCIATION_ASSIGN);
 }
-
-- (void)tbak_suspend
-{
-    self.actorQueue.suspended = YES;
-}
-    
-- (void)tbak_resume
-{
-    self.actorQueue.suspended = NO;
-}
     
 - (void)crashWithError:(NSError *)error
 {

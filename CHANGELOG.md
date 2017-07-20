@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.2.0
+
+- move suspend and resume into core pod
+
 ## 1.1.2
 
 - minor bugfixes

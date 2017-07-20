@@ -22,16 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Reference to the current supervisor. Can be messaged through TBActorSupervison protocol.
  */
 @property (nonatomic, weak, nullable) NSObject <TBActorSupervision> *supervisor;
-
-/**
- *  Suspends the actorQueue.
- */
-- (void)tbak_suspend;
-    
-/**
- *  Resumes the actorQueue.
- */
-- (void)tbak_resume;
     
 /**
  *  Returns `YES` when the actor or its pool is supervised.
