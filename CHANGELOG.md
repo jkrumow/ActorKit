@@ -1,5 +1,9 @@
 # ActorKit CHANGELOG
 
+## 1.3.0
+
+- update logging in Supervisor class
+
 ## 1.2.0
 
 - move suspend and resume into core pod

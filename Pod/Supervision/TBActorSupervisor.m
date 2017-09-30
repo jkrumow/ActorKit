@@ -123,13 +123,17 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
 {
     newActor.actorQueue = actor.actorQueue;
     for (TBActorOperation *operation in newActor.actorQueue.operations) {
-        if (![operation isKindOfClass:TBActorOperation.class] || (operation.isExecuting || operation.isCancelled || operation.isFinished)) {
+        if (![operation isKindOfClass:TBActorOperation.class] ||
+            (operation.isExecuting ||
+             operation.isCancelled ||
+             operation.isFinished)) {
             continue;
         }
         operation.invocation.target = newActor;
         newActor.loadCount = @(newActor.loadCount.unsignedIntegerValue + 1);
     }
-    NSLog(@"Transferred actor mailbox with %lu messages to actor <%p>", (unsigned long)newActor.loadCount.unsignedIntegerValue, newActor);
+    NSLog(@"Transferred actor mailbox with %lu messages to actor '%@' <%p>",
+          (unsigned long)newActor.loadCount.unsignedIntegerValue, [self.supervisionPool idForActor:actor], newActor);
 }
 
 - (void)_transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
