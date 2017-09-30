@@ -133,7 +133,7 @@ static NSString * const TBAKActorSupervisorQueue = @"com.jkrumow.ActorKit.TBActo
         newActor.loadCount = @(newActor.loadCount.unsignedIntegerValue + 1);
     }
     NSLog(@"Transferred actor mailbox with %lu messages to actor '%@' <%p>",
-          (unsigned long)newActor.loadCount.unsignedIntegerValue, [self.supervisionPool idForActor:actor], newActor);
+          (unsigned long)newActor.loadCount.unsignedIntegerValue, [self.supervisionPool idForActor:newActor], newActor);
 }
 
 - (void)_transferMailboxesFromPool:(TBActorPool *)pool toPool:(TBActorPool *)newPool
