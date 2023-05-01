@@ -52,10 +52,9 @@ GEM
     nanaimo (0.2.3)
     nap (1.1.0)
     netrc (0.7.8)
-    rake (12.3.3)
     ruby-macho (1.1.0)
     thread_safe (0.3.6)
-    tzinfo (1.2.3)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     xcodeproj (1.5.0)
       CFPropertyList (~> 2.3.3)
@@ -68,7 +67,6 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods
-  rake
 
 BUNDLED WITH
    1.14.6
